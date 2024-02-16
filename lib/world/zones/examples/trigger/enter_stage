@@ -1,0 +1,7 @@
+name: Getting up on stage
+type: enter
+code:~
+  # Whenets up on stage, on stage, the crowd begins cheering
+  # Hopefully this will add a bit of extra flavor to this special exit
+  ch.send("{yAs you get up on stage, yous and hollers from below. It looks like the crowd is wcrowd is waiting you to start performing.{n")
+-
