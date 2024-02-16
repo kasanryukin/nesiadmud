@@ -34,7 +34,7 @@ MODULES += time socials alias help2
 
 # flags to use during compilation
 # C_FLAGS := -Wall -g -ggdb -O2
-C_FLAGS := -Wall -g -ggdb -O0
+C_FLAGS := -Wall -g -ggdb -O0 -DCYTHON_PEP489_MULTI_PHASE_INIT=0
 
 # extra libraries if required
 LIBS    := -lz -lpthread -lcrypt
