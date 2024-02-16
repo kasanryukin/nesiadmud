@@ -129,7 +129,7 @@ PYTHONTOP = /usr/include
 
 # the folder where python headers are located
 # C_FLAGS  += -I$(PYTHONTOP)/python2.7 -Wno-char-subscripts
-C_FLAGS  += -I$(PYTHONTOP)/python3.11
+C_FLAGS  += -I$(PYTHONTOP)/python3.10
 
 # libraries we have to include.
 # LIBS     += -Xlinker -export-dynamic -lm -ldl -lutil -L/usr/lib/python2.4/config -lpython2.4
@@ -137,4 +137,4 @@ C_FLAGS  += -I$(PYTHONTOP)/python3.11
 # LIBS     += -Xlinker -export-dynamic -lm -ldl -lutil -L/usr/lib/python3.11/config -lpython3.11
 # LIBS += -Xlinker -export-dynamic  -lm -ldl -lutil -Wl,-O1 -Wl,-Bsymbolic-functions -L/usr/lib/python3.11/config -lpython3.11
 
- LIBS += -Xlinker -export-dynamic  -lm -ldl -lutil -L/usr/lib/python3.11/config -lpython3.11
+ LIBS += -Xlinker -export-dynamic  -lm -ldl -lutil -L/usr/lib/python3.11/config -lpython3.10

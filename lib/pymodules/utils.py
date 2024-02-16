@@ -190,6 +190,3 @@ def chk_conscious(ch, cmd):
 
 attributes = dir(mud)
 print(attributes)
-
-# mud.log_string("Testing makepymethods.")
-
