@@ -76,7 +76,7 @@ dkms.conf
 *.log
 *.sql
 *.sqlite
-
+.sconsign.dblite 
 
 # OS generated files #
 ######################
