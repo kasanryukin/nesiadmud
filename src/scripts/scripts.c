@@ -50,14 +50,33 @@
 // #include <compile.h>
 // #include <eval.h>
 
-
-
-//*****************************************************************************
-// mandatory modules
-//*****************************************************************************
 #include "../olc2/olc.h"
 
+//*****************************************************************************
+// module data
+//*****************************************************************************
+// Define the structure to hold the C-Python modules for initialization
+typedef struct {
+    const char* name; // Module name
+    PyObject* (*initFunc)(void); // Initialization function
+} ModuleInfo;
 
+ModuleInfo modules[] = {
+    {"mudsys",    &PyInit_PyMudSys},
+    {"auxiliary", &PyInit_PyAuxiliary},
+    {"event",     &PyInit_PyEvent},
+    {"storage",   &PyInit_PyStorage},
+    {"account",   &PyInit_PyAccount},
+    {"char",      &PyInit_PyChar},
+    {"room",      &PyInit_PyRoom},
+    {"exit",      &PyInit_PyExit},
+    {"mudsock",   &PyInit_PySocket},
+    {"obj",       &PyInit_PyObj},
+    {"mud",       &PyInit_PyMud},
+    {"hooks",     &PyInit_PyHooks},
+    {"olc",       &PyInit_PyOLC},
+    {NULL, NULL}  
+};
 
 //*****************************************************************************
 // auxiliary data
@@ -405,85 +424,26 @@ void init_scripts(void) {
   // create our locale stack
   locale_stack = newList();
 
-  // initialize python
-  PyImport_AppendInittab("mudsys",    &PyInit_PyMudSys);
-  PyImport_AppendInittab("auxiliary", &PyInit_PyAuxiliary);
-  PyImport_AppendInittab("event",     &PyInit_PyEvent);
-  PyImport_AppendInittab("storage",   &PyInit_PyStorage);
-  PyImport_AppendInittab("account",   &PyInit_PyAccount);
-  PyImport_AppendInittab("char",      &PyInit_PyChar);
-  PyImport_AppendInittab("room",      &PyInit_PyRoom);
-  PyImport_AppendInittab("exit",      &PyInit_PyExit);
-  PyImport_AppendInittab("mudsock",   &PyInit_PySocket);
-  PyImport_AppendInittab("obj",       &PyInit_PyObj);
-  PyImport_AppendInittab("mud",       &PyInit_PyMud);
-  PyImport_AppendInittab("hooks",     &PyInit_PyHooks);
-  PyImport_AppendInittab("olc",       &PyInit_PyOLC);
-
+  // initialize python, these are defined at the top of Scripts.h
+  for (ModuleInfo* mod = modules; mod->name != NULL; mod++) {
+    if (PyImport_AppendInittab(mod->name, mod->initFunc) == -1) {
+        log_string("Error: could not extend in-built modules table for '%s'\n", mod->name);
+    }
+  }
 
   Py_Initialize();
 
-  PyImport_ImportModule("mudsys");
-    PyImport_ImportModule("auxiliary");
-    PyImport_ImportModule("event");
-    PyImport_ImportModule("storage");
-    PyImport_ImportModule("account");
-    PyImport_ImportModule("char");
-    PyImport_ImportModule("room");
-    PyImport_ImportModule("exit");
-    PyImport_ImportModule("mudsock");
-    PyImport_ImportModule("obj");
-    PyImport_ImportModule("mud");
-    PyImport_ImportModule("hooks");
-    PyImport_ImportModule("olc");
-
-/*
-   PyObject *pModule = PyImport_ImportModule("exit");
-    if (pModule == NULL) {
-        log_string("Couldn't find the exit module.");
+  for (ModuleInfo* mod = modules; mod->name != NULL; mod++) {
+      PyObject* pmodule = PyImport_ImportModule(mod->name);
+      if (!pmodule) {
+        log_string("Error: could not import module '%s'\n", mod->name);
         PyErr_Print();
-        return;
-    }
-*/
+      } 
+  }
 
-  //printPythonPath();
   // initialize all of our modules written in C
   PyObject *module = NULL;
 
-//  module = PyInit_PyMudSys();
-
-/*
-  PyInit_PyAuxiliary();
-  PyInit_PyEvent();
-  PyInit_PyStorage();
-  PyInit_PyAccount();
-  PyInit_PyChar();
-  PyInit_PyRoom();
-  PyInit_PyExit();
-  PyInit_PySocket();
-  PyInit_PyObj();
-  PyInit_PyMud();
-  PyInit_PyHooks();
-  PyInit_PyOLC();
-
-  // check for 'em all
-  PyImport_AddModule("mudsys");
-  PyImport_AddModule("auxiliary");
-  PyImport_AddModule("event");
-  PyImport_AddModule("storage");
-  PyImport_AddModule("account");
-  PyImport_AddModule("char");
-  PyImport_AddModule("room");
-  PyImport_AddModule("exit");
-  PyImport_AddModule("mudsock");
-  PyImport_AddModule("obj");
-  PyImport_AddModule("mud");
-  PyImport_AddModule("hooks");
-  PyImport_AddModule("olc");
-*/
-
-
-  // testPythonModules();
   // initialize all of our modules written in Python
   init_pyplugs();
 
