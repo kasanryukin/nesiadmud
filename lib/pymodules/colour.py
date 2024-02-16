@@ -45,36 +45,42 @@ def process_colour_hook(info):
     """When outbound text is being processed, find colour codes and replace them
        by the proper colour escape sequences."""
     sock,  = hooks.parse_info(info)
-    buf    = sock.outbound_text
+    try:
+        buf = sock.outbound_text
+    except UnicodeDecodeError as e:
+        buf = ''
     newbuf = []
 
     # go through our outbound text and process all of the colour codes
     i = 0
     while i < len(buf):
-        if buf[i] == base_colour_marker and i + 1 < len(buf):
-            i = i + 1
-            char  = buf[i]
+        try:
+            if buf[i] == base_colour_marker and i + 1 < len(buf):
+                i = i + 1
+                char  = buf[i]
 
-            # upper case is bright, lower case is dark
-            shade = cLIGHT
-            if char == char.lower():
-                shade = cDARK
+                # upper case is bright, lower case is dark
+                shade = cLIGHT
+                if char == char.lower():
+                    shade = cDARK
 
-            # if it's a valid colour code, build it
-            if char.lower() in base_colours:
-                newbuf.append(colour_start + shade + ';' + \
-                              base_colours[char.lower()] + 'm')
+                # if it's a valid colour code, build it
+                if char.lower() in base_colours:
+                    newbuf.append(colour_start + shade + ';' + \
+                                base_colours[char.lower()] + 'm')
 
-            # if it was an invalid code, ignore it
+                # if it was an invalid code, ignore it
+                else:
+                    newbuf.append(base_colour_marker)
+                    if not char == base_colour_marker:
+                        i = i - 1
+
             else:
-                newbuf.append(base_colour_marker)
-                if not char == base_colour_marker:
-                    i = i - 1
-
-        else:
-            newbuf.append(buf[i])
-        i = i + 1
-
+                newbuf.append(buf[i])
+            i += 1
+        except UnicodeDecodeError as e:
+            newbuf.append('�') 
+            i += 1
     # replace our outbound buffer with the processed text
     sock.outbound_text = ''.join(newbuf)
 
