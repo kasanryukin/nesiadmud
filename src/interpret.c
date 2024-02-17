@@ -50,8 +50,8 @@ void init_commands() {
   //***************************************************************************
   add_cmd("back",       NULL, cmd_back,        "player", FALSE);
   add_cmd("commands",   NULL, cmd_commands,    "player", FALSE);
-  //add_cmd("compress",   NULL, cmd_compress,    "player", FALSE);
-  //add_cmd("groupcmds",  NULL, cmd_groupcmds,   "player", FALSE);
+  add_cmd("compress",   NULL, cmd_compress,    "player", FALSE);
+  add_cmd("groupcmds",  NULL, cmd_groupcmds,   "player", FALSE);
   add_cmd("look",       "l",  cmd_look,        "player", FALSE);
   add_cmd("more",       NULL, cmd_more,        "player", FALSE);
   add_cmd_check("look",        chk_conscious);

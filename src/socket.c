@@ -223,8 +223,8 @@ SOCKET_DATA *new_socket(int sock)
   }
 
   /* negotiate compression */
-  // text_to_buffer(sock_new, (char *) compress_will2);
-  // text_to_buffer(sock_new, (char *) compress_will);
+  text_to_socket(sock_new, (char *) compress_will2);
+  text_to_socket(sock_new, (char *) compress_will);
 
   /* send the greeting */
   // text_to_buffer(sock_new, bufferString(greeting));
@@ -816,8 +816,8 @@ void copyover_recover() {
     hookRun("copyover_complete", hookBuildInfo("sk", dsock));
 
     // negotiate compression
-    text_to_buffer(dsock, (char *) compress_will2);
-    text_to_buffer(dsock, (char *) compress_will);
+    text_to_socket(dsock, (char *) compress_will2);
+    text_to_socket(dsock, (char *) compress_will);
   }
   fclose(fp);
 
@@ -1416,8 +1416,8 @@ COMMAND(cmd_compress)
   /* enable compression */
   if (!charGetSocket(ch)->out_compress) {
     text_to_char(ch, "Trying compression.\n\r");
-    text_to_buffer(charGetSocket(ch), (char *) compress_will2);
-    text_to_buffer(charGetSocket(ch), (char *) compress_will);
+    text_to_socket(charGetSocket(ch), (char *) compress_will2);
+    text_to_socket(charGetSocket(ch), (char *) compress_will);
   }
   else /* disable compression */ {
     if (!compressEnd(charGetSocket(ch), charGetSocket(ch)->compressing, FALSE)){
