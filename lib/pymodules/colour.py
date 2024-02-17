@@ -45,10 +45,7 @@ def process_colour_hook(info):
     """When outbound text is being processed, find colour codes and replace them
        by the proper colour escape sequences."""
     sock,  = hooks.parse_info(info)
-    try:
-        buf = sock.outbound_text
-    except UnicodeDecodeError as e:
-        buf = ''
+    buf = sock.outbound_text
     newbuf = []
 
     # go through our outbound text and process all of the colour codes
