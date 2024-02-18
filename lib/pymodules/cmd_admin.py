@@ -64,7 +64,7 @@ def cmd_pulserate(ch, cmd, arg):
       '''
     if arg == '':
         ch.send("The mud currently has "+mudsys.sys_getval("pulses_per_second")+
-                "pulses per second.")
+                " pulses per second.")
     else:
         pulserate = string.atoi(arg)
         if pulserate == 0 or 1000 % pulse != 0:
