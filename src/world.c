@@ -74,8 +74,15 @@ void world_types_to_zone_types(WORLD_DATA *world, ZONE_DATA *zone) {
   WORLD_TYPE_DATA *type = NULL;
   const char       *key = NULL;
   ITERATE_HASH(key, type, type_i)
+  // FIX: https://github.com/LimpingNinja/nakedmud/issues/4
+  // Melzaren noticed a crash on adding a world-type from Python and using it,
+  // the rest of the code targets by type.
+  if (type->forgetful) {
+    zoneAddForgetfulType(zone, key, type->read_func, type->store_func,type->delete_func, type->key_func);
+  } else {
     zoneAddType(zone, key, type->read_func, type->store_func,type->delete_func,
 		type->key_func);
+  }
   deleteHashIterator(type_i);
 }
 
