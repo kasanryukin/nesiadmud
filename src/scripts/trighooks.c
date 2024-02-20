@@ -154,15 +154,10 @@ void gen_do_trig(TRIGGER_DATA *trig,
   // run the script, then kill our dictionary
   triggerRun(trig, dict);
 
-  // if triggers create methods, it increases the reference count on our
-  // dictionary. This is a known memory leak. We'll try to mitigate it by
-  // cleaning out some of the contents. A better solution is needed, that
-  // makes sure the dictionary itself is not leaked
-  LIST_ITERATOR *vname_i = newListIterator(varnames);
-  char            *vname = NULL;
-  ITERATE_LIST(vname, vname_i) {
-    PyDict_DelItemString(dict, vname);
-  } deleteListIterator(vname_i);
+  // Clean out the contents of the dictionary, decreasing the
+  // reference of the contents.
+  PyDict_Clear(dict);
+
   deleteListWith(varnames, free);
   Py_XDECREF(dict);
 }
