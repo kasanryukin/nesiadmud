@@ -215,9 +215,6 @@ static struct PyModuleDef auxiliary_moduledef = {
 PyMODINIT_FUNC PyInit_PyAuxiliary(void) {
   aux_table = newHashtableSize(MIN_AUX_TABLE_SIZE);
 
-//  Py_InitModule3("auxiliary", pyauxiliary_module_methods,
-//		 "The module for installing auxiliary data");
-
   PyObject *module = PyModule_Create(&auxiliary_moduledef);
 
   if (module == NULL)

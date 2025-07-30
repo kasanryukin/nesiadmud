@@ -355,10 +355,6 @@ PyObject *pyolc_extend(PyObject *self, PyObject *args) {
 //*****************************************************************************/
 
   // create the module
-  //PyObject *m = Py_InitModule3("olc", makePyMethods(pyolc_methods),
-  //  "This is the Python wrapper for the online creation module. Allows users\n"
-  //  "to set up new menus and handlers for editing data, such as characters,\n"
-  //  "while online.");
 
 static struct PyModuleDef olc_moduledef = {
     PyModuleDef_HEAD_INIT,
@@ -406,10 +402,6 @@ PyInit_PyOLC(void) {
     "olc2/olc_extender.h for documentation.");
 
   // create the module
-  //PyObject *m = Py_InitModule3("olc", makePyMethods(pyolc_methods),
-  //  "This is the Python wrapper for the online creation module. Allows users\n"
-  //  "to set up new menus and handlers for editing data, such as characters,\n"
-  //  "while online.");
 
   olc_moduledef.m_methods = makePyMethods(pyolc_methods);
 

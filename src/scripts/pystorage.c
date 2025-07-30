@@ -564,11 +564,7 @@ static struct PyModuleDef pystorage_moduledef = {
 
 PyMODINIT_FUNC PyInit_PyStorage(void) {
 
-//  PyObject *module = Py_InitModule3("storage", PyStorage_module_methods,
-//    "The storage module allows users to save information to disk as key:value\n"
-//    "pairs without having to interact with files directly. This module gives\n"
-//    "users access to two classes: StorageSets and StorageLists. Sets match\n"
-//    "keys to values. Lists hold multiple sets.");
+
 
   PyObject *module = PyModule_Create(&pystorage_moduledef);
 

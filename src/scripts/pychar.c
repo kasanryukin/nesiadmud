@@ -2056,9 +2056,7 @@ void PyChar_addMethod(const char *name, void *f, int flags, const char *doc) {
   listPut(pychar_methods, def);
 }
 
-//  m = Py_InitModule3("char", char_module_methods,
-//    "Contains the Python wrapper for characters, and utilities for searching,\n"
-//    "storing, and generating NPCs from mob prototypes.");
+
 
 static struct PyModuleDef pychar_moduledef = {
     PyModuleDef_HEAD_INIT,
@@ -2325,10 +2323,7 @@ PyMODINIT_FUNC PyInit_PyChar(void) {
   if (PyType_Ready(&PyChar_Type) < 0)
     return NULL;
 
-  // load the module
-//  m = Py_InitModule3("char", char_module_methods,
-//    "Contains the Python wrapper for characters, and utilities for searching,\n"
-//   "storing, and generating NPCs from mob prototypes.");
+
 
   m = PyModule_Create(&pychar_moduledef);
 

@@ -487,7 +487,7 @@ void init_scripts(void) {
 
 //
 // makes a dictionary with all of the neccessary stuff in it, but without
-// a __builtin__ module set
+// a builtins module set
 PyObject *mud_script_dict(void) {
   PyObject* dict = PyDict_New();
 
@@ -541,7 +541,7 @@ PyObject *unrestricted_script_dict(void) {
   PyObject *dict = mud_script_dict();
 
   // add builtins
-  PyObject *builtins = PyImport_ImportModule("__builtin__");
+  PyObject *builtins = PyImport_ImportModule("builtins");
   if(builtins != NULL) {
     PyDict_SetItemString(dict, "__builtins__", builtins);
     Py_DECREF(builtins);

@@ -2,7 +2,7 @@
 #
 # __restricted_builtin__.py
 #
-# This module is designed to replace the __builtin__, but overwrite many of the
+# This module is designed to replace the builtins module, but overwrite many of the
 # functions that would allow an unscrupulous scripter to take malicious actions
 #
 ################################################################################

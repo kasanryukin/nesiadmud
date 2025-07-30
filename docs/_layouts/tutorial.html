@@ -1,0 +1,229 @@
+---
+layout: default
+---
+
+<div class="tutorial-doc">
+  <!-- Tutorial header -->
+  <div class="tutorial-header">
+    <h1>{{ page.title }}</h1>
+    
+    <div class="tutorial-meta">
+      {% if page.difficulty %}
+        <span class="tutorial-difficulty difficulty-{{ page.difficulty }}">{{ page.difficulty | capitalize }}</span>
+      {% endif %}
+      {% if page.time %}
+        <span class="tutorial-time">⏱️ {{ page.time }}</span>
+      {% endif %}
+      {% if page.category %}
+        <span class="tutorial-category">📂 {{ page.category | capitalize }}</span>
+      {% endif %}
+    </div>
+
+    {% if page.description %}
+      <p class="tutorial-description">{{ page.description }}</p>
+    {% endif %}
+  </div>
+
+  <!-- Prerequisites -->
+  {% if page.prerequisites %}
+    <div class="tutorial-prerequisites">
+      <h2>Prerequisites</h2>
+      <ul>
+        {% for prereq in page.prerequisites %}
+          <li>{{ prereq }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  <!-- What you'll learn -->
+  {% if page.learning_objectives %}
+    <div class="tutorial-objectives">
+      <h2>What You'll Learn</h2>
+      <ul>
+        {% for objective in page.learning_objectives %}
+          <li>{{ objective }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  <!-- Tutorial content -->
+  <div class="tutorial-content">
+    {{ content }}
+  </div>
+
+  <!-- Summary -->
+  {% if page.summary %}
+    <div class="tutorial-summary">
+      <h2>Summary</h2>
+      {{ page.summary | markdownify }}
+    </div>
+  {% endif %}
+
+  <!-- Next steps -->
+  {% if page.next_steps %}
+    <div class="tutorial-next-steps">
+      <h2>Next Steps</h2>
+      <ul>
+        {% for step in page.next_steps %}
+          <li>
+            {% if step.url %}
+              <a href="{{ step.url | relative_url }}">{{ step.title }}</a>
+              {% if step.description %} - {{ step.description }}{% endif %}
+            {% else %}
+              {{ step }}
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  <!-- Related tutorials -->
+  {% if page.related %}
+    <div class="tutorial-related">
+      <h2>Related Tutorials</h2>
+      <ul>
+        {% for related in page.related %}
+          <li><a href="{{ related.url | relative_url }}">{{ related.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+.tutorial-doc {
+  max-width: 800px;
+}
+
+.tutorial-header {
+  border-bottom: 2px solid #eee;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.tutorial-meta {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin: 15px 0;
+}
+
+.tutorial-meta span {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.tutorial-difficulty {
+  color: white;
+}
+
+.difficulty-beginner {
+  background: #28a745;
+}
+
+.difficulty-intermediate {
+  background: #ffc107;
+  color: #333;
+}
+
+.difficulty-advanced {
+  background: #dc3545;
+}
+
+.tutorial-time,
+.tutorial-category {
+  background: #f8f9fa;
+  color: #495057;
+  border: 1px solid #dee2e6;
+}
+
+.tutorial-description {
+  font-size: 18px;
+  color: #666;
+  font-style: italic;
+  margin: 15px 0;
+}
+
+.tutorial-prerequisites,
+.tutorial-objectives {
+  background: #e7f3ff;
+  border-left: 4px solid #0066cc;
+  padding: 15px 20px;
+  margin: 20px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.tutorial-prerequisites h2,
+.tutorial-objectives h2 {
+  color: #004499;
+  margin-top: 0;
+}
+
+.tutorial-summary {
+  background: #d4edda;
+  border-left: 4px solid #28a745;
+  padding: 15px 20px;
+  margin: 30px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.tutorial-summary h2 {
+  color: #155724;
+  margin-top: 0;
+}
+
+.tutorial-next-steps {
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+  padding: 15px 20px;
+  margin: 20px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.tutorial-next-steps h2 {
+  color: #856404;
+  margin-top: 0;
+}
+
+.tutorial-related {
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+  margin-top: 30px;
+}
+
+.tutorial-content h2 {
+  color: #333;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+  margin-top: 30px;
+}
+
+.tutorial-content h3 {
+  color: #555;
+  margin-top: 25px;
+}
+
+/* Step numbering for tutorial sections */
+.tutorial-content h2:before {
+  content: "Step " counter(step) ": ";
+  counter-increment: step;
+  color: #0066cc;
+  font-weight: bold;
+}
+
+.tutorial-content {
+  counter-reset: step;
+}
+
+/* Override step numbering for certain headings */
+.tutorial-content h2.no-step:before {
+  content: "";
+  counter-increment: none;
+}
+</style>

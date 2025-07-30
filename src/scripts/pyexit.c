@@ -824,8 +824,6 @@ PyInit_PyExit(void) {
     // log_string("Value of tp_alloc: %p\n", (void *)PyExit_Type.tp_alloc);
 
     // initialize the module
-    //  module = Py_InitModule3("exit", exit_module_methods,
-    //			    "The exit module, for all MUD exit-related stuff.");
 
     module = PyModule_Create(&exit_moduledef);
 

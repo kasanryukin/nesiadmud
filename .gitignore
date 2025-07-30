@@ -1,4 +1,7 @@
 src/NakedMud
+.vscode/
+.kiro/
+
 # Prerequisites
 *.d
 
@@ -86,3 +89,5 @@ dkms.conf
 .Spotlight-V100
 .Trashes
 Thumbs.db
+
+gemfile.lock

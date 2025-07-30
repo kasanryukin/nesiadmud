@@ -289,8 +289,7 @@ PyMethodDef account_module_methods[] = {
 // implementation of pyaccount.h
 //*****************************************************************************/
 
-//    module = Py_InitModule3("account", account_module_methods,
-//                          "Contains the Python wrapper for accounts.");
+
 
 static struct PyModuleDef account_moduledef = {
     PyModuleDef_HEAD_INIT,
@@ -364,9 +363,6 @@ PyInit_PyAccount(void) {
         return NULL;
 
     // initialize the module
-//    module = Py_InitModule3("account", account_module_methods,
-//			    "Contains the Python wrapper for accounts.");
-
     module = PyModule_Create(&account_moduledef);
 
     // make sure the module parsed OK

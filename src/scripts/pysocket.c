@@ -547,11 +547,6 @@ PyMethodDef socket_module_methods[] = {
 // implementation of pysocket.h
 //*****************************************************************************/
 
-  // initialize the module
-    // module = Py_InitModule3("mudsock", socket_module_methods,
-    //  "Contains the Python wrapper for sockets, and utilities for listing\n"
-    //  "currently connected sockets.");
-
 static struct PyModuleDef mudsock_moduledef = {
     PyModuleDef_HEAD_INIT,
     "mudsock",               // <-- should match what WAS in InitModule3
@@ -678,10 +673,6 @@ PyInit_PySocket(void) {
         return NULL;
 
     // initialize the module
-    // module = Py_InitModule3("mudsock", socket_module_methods,
-    //  "Contains the Python wrapper for sockets, and utilities for listing\n"
-    //  "currently connected sockets.");
-
     module = PyModule_Create(&mudsock_moduledef);
 
     // make sure the module parsed OK

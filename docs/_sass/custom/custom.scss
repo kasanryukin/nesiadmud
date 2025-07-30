@@ -1,0 +1,109 @@
+// Custom SCSS for ReadTheDocs-like styling
+
+// Color scheme overrides
+$body-background-color: #ffffff;
+$sidebar-color: #fcfcfc;
+$border-color: #e1e4e8;
+$body-text-color: #24292e;
+$body-heading-color: #24292e;
+$link-color: #0366d6;
+$btn-primary-color: #0366d6;
+$base-button-color: #f6f8fa;
+
+// Navigation styling
+.navigation-list-item {
+  margin: 0;
+  
+  .navigation-list-link {
+    padding: 8px 16px;
+    border-radius: 0;
+    color: $body-text-color;
+    
+    &:hover,
+    &.active {
+      background-color: #f6f8fa;
+      color: $link-color;
+    }
+  }
+}
+
+.navigation-list-child-list {
+  .navigation-list-link {
+    padding-left: 32px;
+    font-size: 14px;
+    color: #586069;
+  }
+}
+
+// Main content styling
+.main-content {
+  h1 {
+    border-bottom: 1px solid $border-color;
+    padding-bottom: 10px;
+  }
+  
+  h2 {
+    border-bottom: 1px solid $border-color;
+    padding-bottom: 8px;
+    margin-top: 24px;
+  }
+  
+  // Code styling
+  pre {
+    background-color: #f6f8fa;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+  }
+  
+  code {
+    background-color: rgba(27,31,35,0.05);
+    border-radius: 3px;
+    font-size: 85%;
+    padding: 0.2em 0.4em;
+  }
+  
+  pre code {
+    background-color: transparent;
+    padding: 0;
+  }
+  
+  // Table styling
+  table {
+    th {
+      background-color: #f6f8fa;
+      border: 1px solid #dfe2e5;
+    }
+    
+    td {
+      border: 1px solid #dfe2e5;
+    }
+    
+    tr:nth-child(2n) {
+      background-color: #f6f8fa;
+    }
+  }
+}
+
+// Sidebar styling
+.side-bar {
+  background-color: $sidebar-color;
+  border-right: 1px solid $border-color;
+}
+
+// Search styling
+.search-input {
+  border: 1px solid #d1d5da;
+  border-radius: 6px;
+  
+  &:focus {
+    border-color: $link-color;
+    box-shadow: 0 0 0 3px rgba(3,102,214,0.3);
+  }
+}
+
+// Footer
+.site-footer {
+  border-top: 1px solid $border-color;
+  color: #586069;
+  font-size: 12px;
+}

@@ -349,8 +349,7 @@ PyInit_PyHooks(void) {
     "remove(type, function)\n\n"
     "Unregister a hook function.");
 
-  //Py_InitModule3("hooks", makePyMethods(pyhooks_methods),
-  //   "The python module for registering and running hooks.");
+
   hooks_moduledef.m_methods = makePyMethods(pyhooks_methods);
 
   PyObject *module = PyModule_Create(&hooks_moduledef);

@@ -1319,9 +1319,7 @@ PyMethodDef obj_module_methods[] = {
 // implementation of pyobj.h
 //*****************************************************************************/
 
-//    m = Py_InitModule3("obj", obj_module_methods,
-//      "Contains the Python wrapper for game objects. Also contains utilities\n"
-//      "for listing, storing, and generating objects from prototypes.");
+
 
 static struct PyModuleDef obj_moduledef = {
     PyModuleDef_HEAD_INIT,
@@ -1491,10 +1489,7 @@ PyInit_PyObj(void) {
     if (PyType_Ready(&PyObj_Type) < 0)
         return NULL;
 
-    // make the obj module
-    // m = Py_InitModule3("obj", obj_module_methods,
-    //  "Contains the Python wrapper for game objects. Also contains utilities\n"
-    //  "for listing, storing, and generating objects from prototypes.");
+
 
     m = PyModule_Create(&obj_moduledef);
 

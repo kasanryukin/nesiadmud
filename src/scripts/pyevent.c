@@ -208,8 +208,7 @@ static struct PyModuleDef event_moduledef = {
 
 PyMODINIT_FUNC PyInit_PyEvent(void) {
 
-//  Py_InitModule3("event", event_module_methods, 
-//    "The event module handles delayed function calls.");
+
 
   PyObject *module = PyModule_Create(&event_moduledef);
 

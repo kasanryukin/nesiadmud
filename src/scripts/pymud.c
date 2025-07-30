@@ -669,8 +669,7 @@ PyInit_PyMud(void) {
     "values in an optional dictionary. Statements are expanded in the default\n"
     "scripting environment.");
 
-  //Py_InitModule3("mud", makePyMethods(pymud_methods),
-  //		 "The mud module, for all MUD misc mud utils.");
+
 
   mud_moduledef.m_methods = makePyMethods(pymud_methods);
 

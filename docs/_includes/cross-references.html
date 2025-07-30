@@ -1,0 +1,141 @@
+<!-- Cross-reference system for linking between documentation pages -->
+
+<!-- Function reference link -->
+{% if include.type == "function" %}
+  {% assign func_page = site.pages | where: "function_name", include.name | first %}
+  {% if func_page %}
+    <a href="{{ func_page.url | relative_url }}" class="cross-ref cross-ref-function" title="Function: {{ include.name }}">
+      <code>{{ include.name }}()</code>
+    </a>
+  {% else %}
+    <code class="cross-ref-missing" title="Documentation not yet available">{{ include.name }}()</code>
+  {% endif %}
+{% endif %}
+
+<!-- Module reference link -->
+{% if include.type == "module" %}
+  {% assign module_page = site.pages | where: "title", include.name | where: "layout", "reference" | first %}
+  {% if module_page %}
+    <a href="{{ module_page.url | relative_url }}" class="cross-ref cross-ref-module" title="Module: {{ include.name }}">
+      {{ include.name }}
+    </a>
+  {% else %}
+    <span class="cross-ref-missing" title="Documentation not yet available">{{ include.name }}</span>
+  {% endif %}
+{% endif %}
+
+<!-- Class reference link -->
+{% if include.type == "class" %}
+  {% assign class_page = site.pages | where: "class_name", include.name | first %}
+  {% if class_page %}
+    <a href="{{ class_page.url | relative_url }}" class="cross-ref cross-ref-class" title="Class: {{ include.name }}">
+      {{ include.name }}
+    </a>
+  {% else %}
+    <span class="cross-ref-missing" title="Documentation not yet available">{{ include.name }}</span>
+  {% endif %}
+{% endif %}
+
+<!-- Tutorial reference link -->
+{% if include.type == "tutorial" %}
+  {% assign tutorial_page = site.pages | where: "title", include.name | where: "layout", "tutorial" | first %}
+  {% if tutorial_page %}
+    <a href="{{ tutorial_page.url | relative_url }}" class="cross-ref cross-ref-tutorial" title="Tutorial: {{ include.name }}">
+      {{ include.name }}
+    </a>
+  {% else %}
+    <span class="cross-ref-missing" title="Tutorial not yet available">{{ include.name }}</span>
+  {% endif %}
+{% endif %}
+
+<!-- Concept reference link -->
+{% if include.type == "concept" %}
+  {% assign concept_page = site.pages | where: "title", include.name | first %}
+  {% if concept_page %}
+    <a href="{{ concept_page.url | relative_url }}" class="cross-ref cross-ref-concept" title="Concept: {{ include.name }}">
+      {{ include.name }}
+    </a>
+  {% else %}
+    <span class="cross-ref-missing" title="Documentation not yet available">{{ include.name }}</span>
+  {% endif %}
+{% endif %}
+
+<!-- Example reference link -->
+{% if include.type == "example" %}
+  {% assign example_page = site.pages | where: "title", include.name | where: "parent", "Examples" | first %}
+  {% if example_page %}
+    <a href="{{ example_page.url | relative_url }}" class="cross-ref cross-ref-example" title="Example: {{ include.name }}">
+      {{ include.name }}
+    </a>
+  {% else %}
+    <span class="cross-ref-missing" title="Example not yet available">{{ include.name }}</span>
+  {% endif %}
+{% endif %}
+
+<style>
+.cross-ref {
+  color: #0066cc;
+  text-decoration: none;
+  border-bottom: 1px dotted #0066cc;
+  transition: all 0.3s ease;
+}
+
+.cross-ref:hover {
+  color: #004499;
+  border-bottom-style: solid;
+  background: rgba(0, 102, 204, 0.1);
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+.cross-ref-function {
+  font-family: 'Courier New', monospace;
+  background: #f8f9fa;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+.cross-ref-module {
+  font-weight: bold;
+}
+
+.cross-ref-class {
+  font-style: italic;
+  color: #28a745;
+  border-bottom-color: #28a745;
+}
+
+.cross-ref-tutorial {
+  color: #ffc107;
+  border-bottom-color: #ffc107;
+}
+
+.cross-ref-tutorial:hover {
+  color: #e0a800;
+}
+
+.cross-ref-concept {
+  color: #6f42c1;
+  border-bottom-color: #6f42c1;
+}
+
+.cross-ref-concept:hover {
+  color: #5a32a3;
+}
+
+.cross-ref-example {
+  color: #fd7e14;
+  border-bottom-color: #fd7e14;
+}
+
+.cross-ref-example:hover {
+  color: #e8690b;
+}
+
+.cross-ref-missing {
+  color: #6c757d;
+  font-style: italic;
+  border-bottom: 1px dotted #6c757d;
+  cursor: help;
+}
+</style>

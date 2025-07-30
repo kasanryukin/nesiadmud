@@ -1140,10 +1140,6 @@ PyMethodDef room_module_methods[] = {
 // implementation of pyroom.h
 //*****************************************************************************/
 
-//    module = Py_InitModule3("room", room_module_methods,
-//      "Contains the Python wrapper for rooms, and utilities for loading and\n"
-//      "instancing rooms.");
-
 static struct PyModuleDef room_moduledef = {
     PyModuleDef_HEAD_INIT,
     "room",               // <-- should match what WAS in InitModule3
@@ -1326,9 +1322,6 @@ PyInit_PyRoom(void) {
         return NULL;
 
     // initialize the module
-//    module = Py_InitModule3("room", room_module_methods,
-//      "Contains the Python wrapper for rooms, and utilities for loading and\n"
-//      "instancing rooms.");
 
     module = PyModule_Create(&room_moduledef);
 

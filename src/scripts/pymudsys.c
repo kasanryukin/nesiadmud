@@ -1380,8 +1380,7 @@ PyInit_PyMudSys(void) {
     "can_edit_zone(ch, zone)\n\n"
     "True or False if a character has permission to edit a zone.");
 
-//  Py_InitModule3("mudsys", makePyMethods(pymudsys_methods),
-//		 "The mudsys module, for all MUD system utils.");
+
   
   mudsys_moduledef.m_methods = makePyMethods(pymudsys_methods);
 
