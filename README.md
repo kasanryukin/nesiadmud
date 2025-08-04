@@ -6,8 +6,8 @@ Welcome to NakedMud 4.1! This documentation contains everything you need to unde
 
 New to NakedMud? Start here:
 
-1. **[Compiling and Running](doc/COMPILING_AND_RUNNING.md)** - Get your MUD server up and running
-2. **[Game Library Guide](doc/GAME_LIBRARY.md)** - Understand how your MUD's content is organized
+1. **[Compiling and Running](doc/compiling_and_running.md)** - Get your MUD server up and running
+2. **[Game Library Guide](doc/game_library.md)** - Understand how your MUD's content is organized
 3. **[OLC for Dummies](doc/OLC_FOR_DUMMIES.md)** - Learn to build worlds with the Online Creation system
 4. **[Credits](CREDITS.md)** - Learn about the people who made NakedMud possible
 
@@ -25,8 +25,8 @@ NakedMud is a "content-less" MUD engine - it provides you with a solid, extensib
 ## Documentation Guide
 
 ### Getting Started
-- **[Compiling and Running](doc/COMPILING_AND_RUNNING.md)** - Step-by-step setup guide with friendly explanations
-- **[Game Library Guide](doc/GAME_LIBRARY.md)** - Understanding the `lib/` directory structure and content organization
+- **[Compiling and Running](doc/compiling_and_running.md)** - Step-by-step setup guide with friendly explanations
+- **[Game Library Guide](doc/game_library.md)** - Understanding the `lib/` directory structure and content organization
 - **[OLC for Dummies](doc/OLC_FOR_DUMMIES.md)** - Fun, comprehensive guide to building with Online Creation
 
 ### Development
@@ -87,9 +87,9 @@ The beauty of this design is that you can create entirely different types of gam
 ## Getting Help
 
 **Documentation Issues?** Check if there's a more specific guide for your question:
-- Building problems? → [Compiling and Running](doc/COMPILING_AND_RUNNING.md)
+- Building problems? → [Compiling and Running](doc/compiling_and_running.md)
 - Code questions? → [C Coding Conventions](doc/c_coding_conventions.md) or [Python Scripting](doc/nakedmud_python.md)
-- Content creation? → [Game Library Guide](doc/GAME_LIBRARY.md) or [OLC for Dummies](doc/OLC_FOR_DUMMIES.md)
+- Content creation? → [Game Library Guide](doc/game_library.md) or [OLC for Dummies](doc/OLC_FOR_DUMMIES.md)
 - Want to add features? → [Extending NakedMud](doc/extending_nakedmud.md)
 
 **Still stuck?** The NakedMud community is friendly and helpful. Don't hesitate to reach out!
