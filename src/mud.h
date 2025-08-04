@@ -161,6 +161,12 @@ typedef unsigned char                     bool;
 #define DFLT_WHAT              "What?"
 #define WHAT                   mudsettingGetString("message_what")
 
+/* MUD Identity Settings */
+#define DFLT_MUD_NAME          "NakedMud"
+#define MUD_NAME               mudsettingGetString("mud_name")
+#define DFLT_WIZARD_NAME       "Admin"
+#define WIZARD_NAME            mudsettingGetString("wizard_name")
+
 /* Location to world path */
 #define DFLT_WORLD_PATH    "../lib/world"
 #define WORLD_PATH         mudsettingGetString("world_path")

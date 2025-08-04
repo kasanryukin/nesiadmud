@@ -36,8 +36,9 @@ Practical examples and code samples demonstrating common patterns and techniques
 
 New to NakedMud? Start here:
 
-1. **[Core Concepts](core-concepts/)** - Learn the fundamental systems
-2. **[Getting Started Tutorial](tutorials/getting-started.md)** - Build your first content
+1. **Run the installer**: `./install.py` - Interactive setup for your MUD configuration
+2. **[Core Concepts](core-concepts/)** - Learn the fundamental systems
+3. **[Getting Started Tutorial](tutorials/getting-started.md)** - Build your first content
 3. **[API Reference](reference/)** - Explore the available functions and modules
 
 ## Key Features

@@ -6,10 +6,11 @@ Welcome to NakedMud 4.1! This documentation contains everything you need to unde
 
 New to NakedMud? Start here:
 
-1. **[Compiling and Running](doc/compiling_and_running.md)** - Get your MUD server up and running
-2. **[Game Library Guide](doc/game_library.md)** - Understand how your MUD's content is organized
-3. **[OLC for Dummies](doc/OLC_FOR_DUMMIES.md)** - Learn to build worlds with the Online Creation system
-4. **[Credits](CREDITS.md)** - Learn about the people who made NakedMud possible
+1. **Run the installer**: `./install.py` - Interactive setup for your MUD configuration
+2. **[Compiling and Running](doc/compiling_and_running.md)** - Get your MUD server up and running
+3. **[Game Library Guide](doc/game_library.md)** - Understand how your MUD's content is organized
+4. **[OLC for Dummies](doc/OLC_FOR_DUMMIES.md)** - Learn to build worlds with the Online Creation system
+5. **[Credits](CREDITS.md)** - Learn about the people who made NakedMud possible
 
 ## What is NakedMud?
 
@@ -25,6 +26,7 @@ NakedMud is a "content-less" MUD engine - it provides you with a solid, extensib
 ## Documentation Guide
 
 ### Getting Started
+- **Installation Script**: Run `./install.py` for interactive MUD configuration
 - **[Compiling and Running](doc/compiling_and_running.md)** - Step-by-step setup guide with friendly explanations
 - **[Game Library Guide](doc/game_library.md)** - Understanding the `lib/` directory structure and content organization
 - **[OLC for Dummies](doc/OLC_FOR_DUMMIES.md)** - Fun, comprehensive guide to building with Online Creation

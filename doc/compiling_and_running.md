@@ -8,6 +8,8 @@ Welcome to NakedMud! This guide will help you get up and running with your own M
 - [Getting Dependencies](#getting-dependencies)
 - [Building Your MUD](#building-your-mud)
 - [Setting Things Up](#setting-things-up)
+  - [Quick Configuration with install.py](#quick-configuration-with-installpy-recommended)
+  - [Manual Configuration](#understanding-the-muddata-file-manual-configuration)
 - [Running Your Server](#running-your-server)
 - [Your First Login](#your-first-login)
 - [When Things Go Wrong](#when-things-go-wrong)
@@ -120,9 +122,22 @@ scons
 
 ## Setting Things Up
 
-### Understanding the muddata File
+### Quick Configuration with install.py (Recommended)
 
-The heart of your MUD's configuration lives in `lib/muddata`. Let's peek at what's important:
+The easiest way to configure your MUD is with our interactive installer:
+
+```bash
+# From your NakedMud root directory
+./install.py
+```
+
+Just press Enter to accept defaults, or type your own values. It's that simple!
+
+![Install Script Image](images/install.png)
+
+### Understanding the muddata File (Manual Configuration)
+
+The heart of your MUD's configuration lives in `lib/muddata`. Let's peek at what's important, though all settings are needed:
 
 ```
 start_room             : tavern_entrance@examples
