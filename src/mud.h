@@ -115,11 +115,6 @@ typedef unsigned char                     bool;
 #define MAX_SCRIPT         16384                  /* max length of a script */
 #define MAX_OUTPUT         8192                   /* well shoot me if it isn't enough   */
 #define FILE_TERMINATOR    "EOF"                  /* end of file marker                 */
-#define COPYOVER_FILE      "../.copyover.dat"     /* tempfile to store copyover data    */
-#define EXE_FILE           "../src/NakedMud"      /* the name of the mud binary         */
-#define DEFAULT_PORT       4000                   /* the default port we run on */
-#define SCREEN_WIDTH       80                     // the width of a term screen
-#define PARA_INDENT        0                      // num of spaces to start para
 
 /* Thread States */
 #define TSTATE_LOOKUP          0  /* Socket is in host_lookup        */
@@ -142,7 +137,7 @@ typedef unsigned char                     bool;
 
 // copyover and executable path, probably safe to leav for now
 #define COPYOVER_FILE      "../.copyover.dat"     /* tempfile to store copyover data    */
-#define EXE_FILE           "../src/ngenmud"       /* the name of the mud binary         */
+#define EXE_FILE           "../src/NakedMud"       /* the name of the mud binary         */
 
 /* the default port we run on */
 #define DFLT_LISTEN_PORT   4000

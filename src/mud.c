@@ -43,9 +43,21 @@ int top_uid(void) {
 // implementation of functions in mud.h
 //*****************************************************************************
 void init_mud_settings() {
-  settings = storage_read(MUD_DATA);
+  // Initialize with default settings first
+  settings = new_storage_set();
+  
+  // Try to load settings from file
+  STORAGE_SET *loaded_settings = storage_read(MUD_DATA);
+  if (loaded_settings != NULL) {
+    // If we successfully loaded settings, use them
+    storage_close(settings);
+    settings = loaded_settings;
+  } else {
+    // If we couldn't load settings, create default ones
+    log_string("Warning: Could not load settings from %s, using defaults", MUD_DATA);
+  }
 
-  // make sure we have initial values for some stuff
+  // Set default values if they don't exist
   if(!*mudsettingGetString("world_path"))
     mudsettingSetString("world_path", DFLT_WORLD_PATH);
   if(!*mudsettingGetString("start_room"))
@@ -68,6 +80,9 @@ void init_mud_settings() {
     mudsettingSetString("message_nothing_special", DFLT_NOTHING_SPECIAL);
   if(!*mudsettingGetString("message_what"))
     mudsettingSetString("message_what", DFLT_WHAT);
+    
+  // Save the settings to create the file if it didn't exist
+  storage_write(settings, MUD_DATA);
 }
 
 void mudsettingSetString(const char *key, const char *val) {

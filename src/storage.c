@@ -11,7 +11,11 @@
 //
 //******************************************************************************
 
+#include <stdlib.h>
+#include <string.h>
 #include <time.h>
+#include <unistd.h>  // for getcwd
+#include <errno.h>   // for errno and strerror
 #include "mud.h"
 #include "utils.h"    // trim
 #include "storage.h"
@@ -549,9 +553,14 @@ void storage_close(STORAGE_SET *set) {
 
 STORAGE_SET *storage_read(const char *fname) {
   FILEBUF *fb = NULL;
-  // we wanted to open a file, but we couldn't ... return an empty set
-  if((fb = fbopen(fname, "r")) == NULL)
-    return NULL;//    return new_storage_set();
+  
+  // Try to open the file
+  if((fb = fbopen(fname, "r")) == NULL) {
+    // Log detailed error information
+    log_string("ERROR: Could not open file %s: %s", fname, strerror(errno));
+    log_string("Current working directory: %s", getcwd(NULL, 0));
+    return NULL;
+  }
 
   // track how long it takes us to parse a storage set
   // struct timeval start_time;

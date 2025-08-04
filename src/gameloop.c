@@ -119,16 +119,6 @@ int main(int argc, char **argv)
     }
   }
 
-  // port number not supplied... just use default
-  if(i > argc-1)
-    mudport = DEFAULT_PORT;
-  else if(i == argc-1)
-    mudport = atoi(argv[argc-1]);
-  else {
-    perror("Arguments were not parsed properly. Could not start MUD.\r\n");
-    return 1;
-  }
-
   /* seed the random number generator */
   srand(time(0));
 
@@ -289,7 +279,15 @@ int main(int argc, char **argv)
   log_string("Force-resetting world");
   worldForceReset(gameworld);
 
-
+  // port number not supplied... just use default
+  if(i > argc-1)
+    mudport = LISTENING_PORT;
+  else if(i == argc-1)
+    mudport = atoi(argv[argc-1]);
+  else {
+    perror("Arguments were not parsed properly. Could not start MUD.\r\n");
+    return 1;
+  }
 
   /**********************************************************************/
   /*                  HANDLE THE SOCKET STARTUP STUFF                   */
