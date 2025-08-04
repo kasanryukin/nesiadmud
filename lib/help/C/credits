@@ -1,5 +1,12 @@
 keywords  : credits
 info      :~
+  This is a continuation of NakedMud(tm) created in order to finish the work
+  of after the passing of Geoff Hollis in polishing up the codebase, modernizing it 
+  with Python 3+ and refining the Python integration, as well as providing some new
+  functionality.
+
+  ORIGINAL CREDITS from Geoff Hollis:
+  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- 
   Thanks go out to Brian Graversen for creating SocketMud(tm), which NakedMud(tm)
   was built on top of. I know nothing (yet) about TCP/IP, and SocketMud(tm) made 
   my life that much easier.

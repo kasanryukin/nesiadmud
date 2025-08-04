@@ -94,7 +94,7 @@ typedef struct input_handler_data {
 // required for looking up a socket's IP in a new thread
 typedef struct lookup_data {
   SOCKET_DATA    * dsock;   // the socket we wish to do a hostlookup on
-  char           * buf;     // the buffer it should be stored in
+  char           * buf;     // the buffer it should be stored in 
 } LOOKUP_DATA;
 
 
@@ -110,6 +110,7 @@ const unsigned char go_ahead [] = { IAC, GA, '\0' };
 
 // used to delete an input handler pair
 void deleteInputHandler(IH_PAIR *pair) {
+  if(!pair) return;
   if(pair->python) {
     Py_XDECREF((PyObject *)pair->handler);
     Py_XDECREF((PyObject *)pair->prompt);

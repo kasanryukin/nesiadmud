@@ -1,9 +1,15 @@
-Test.
-
-GEOFF'S TO DO LIST
+LIMPING NINJA'S TO DO LIST
 +-- CONSIDERATIONS FOR THE FUTURE
-  * A config script for generating neccessary info in /src/scripts/module.mk?
-  * Java client? GUI OLC?
+  * Move all of the mudlib defines into a config file and create a parser
+  * Allow python outside of the PYMOD_LIB directory, allow lazy loading, right
+    now the mud crashes as PYMOD_LIB is an autoload directory and subdirectories
+    make it barf.
+  * Create a master.py which is the first object loaded, this can be used as 
+    an initialization driver and override.
+  * Create an autoload.py which can be used to autoload any additional python 
+    scripts.
+  * Move task list out of this document and into Github.
+  * https://restrictedpython.readthedocs.io/en/latest/index.html
 
 +-- KNOWN BUGS
   * Python accounts aren't dereferencing properly
@@ -12,7 +18,7 @@ GEOFF'S TO DO LIST
   * Script dictionaries aren't fully dereferenced if a script creates a method.
     This is a known memory leak. Figure out how to fix!
  
-+-- NOT COMPLETE
++-- TASK LIST (needs evaluation)
  +-- HIGH PRIORITY
    * make ch.get_slots and ch.get_slot_types congruent
    * expose set_val to Python
@@ -36,6 +42,22 @@ GEOFF'S TO DO LIST
    * worldGetRoom and worldPutRoom should be part of utils, not world
    * redo sets to be in a tree form rather than a table form
    * Rewrite character positions to be string-based and extensible
+   * Move send_message parsing for $ expansion to mudlib, why does the engine
+     actually care about this? Also it's really painful to use preprocessing
+     directives for mudSettings to handle this. (RE: SOMEONE"'s")
+  * https://restrictedpython.readthedocs.io/en/latest/index.html
+
+ +-- MUDLIB PRIORITY
+   * Rewrite the example zone to be a little more interesting and include
+     some samples of scripting and object commands.
+   * Snoop module
+   * Intermud Daemon
+   * OLC for mud settings
+   * Master and Autoload
+     - Domain permissions systems
+     - Wizard home directories
+   * Code based rooms, objects, etc. this is a difficult one. Should they
+     be based on prototypes as (essentially) clones?
 
  +-- LOW PRIORITY
    * Snoop module
