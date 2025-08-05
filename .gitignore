@@ -1,5 +1,7 @@
 NakedMud
 src/NakedMud
+lib/muddata
+
 .vscode/
 .kiro/
 
