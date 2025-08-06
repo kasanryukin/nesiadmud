@@ -82,9 +82,7 @@ void init_mud_settings() {
     mudsettingSetString("message_what", DFLT_WHAT);
   if(!*mudsettingGetString("mud_name"))
     mudsettingSetString("mud_name", DFLT_MUD_NAME);
-  if(!*mudsettingGetString("wizard_name"))
-    mudsettingSetString("wizard_name", DFLT_WIZARD_NAME);
-    
+
   // Save the settings to create the file if it didn't exist
   storage_write(settings, MUD_DATA);
 }

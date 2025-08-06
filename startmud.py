@@ -159,7 +159,6 @@ def print_server_status():
         
         # Scan for admin players and display
         admin_players, staff_players = scan_player_files()
-        admin_name = mud_settings.get('wizard_name', 'Admin')
         
         if admin_players:
             # Show admin players with their roles
@@ -180,9 +179,9 @@ def print_server_status():
                 else:
                     admin_player_list.append(f"{player} (🔑)")  # Default to admin key if no roles found
             
-            admin_display = f"{admin_name} - {', '.join(admin_player_list)}"
+            admin_display = f"{', '.join(admin_player_list)}"
         else:
-            admin_display = admin_name
+            admin_display = "No Admin"
             
         print(f"   • Admin: {Colors.BOLD}{admin_display}{Colors.ENDC}")
         
@@ -305,13 +304,12 @@ def validate_muddata():
     # Display current configuration
     print(f"{Colors.HEADER}Current MUD Configuration:{Colors.ENDC}")
     print(f"  • MUD Name: {Colors.BOLD}{settings.get('mud_name', 'NakedMud')}{Colors.ENDC}")
-    print(f"  • Admin Name: {Colors.BOLD}{settings.get('wizard_name', 'Admin')}{Colors.ENDC}")
     print(f"  • Listening Port: {Colors.BOLD}{settings.get('listening_port', '4000')}{Colors.ENDC}")
     print(f"  • World Path: {Colors.BOLD}{settings.get('world_path', 'Not set')}{Colors.ENDC}")
     print(f"  • Start Room: {Colors.BOLD}{settings.get('start_room', 'Not set')}{Colors.ENDC}")
     
     # Check required fields
-    required_fields = ['mud_name', 'wizard_name', 'start_room', 'world_path', 'listening_port']
+    required_fields = ['mud_name', 'start_room', 'world_path', 'listening_port']
     for field in required_fields:
         if field not in settings or not settings[field]:
             print_error(f"Missing required field in muddata: {field}")

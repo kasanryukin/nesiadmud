@@ -190,7 +190,7 @@ int main(int argc, char **argv)
   init_mud_settings();
   
   // Log the MUD name after settings are loaded
-  log_string("Starting %s - Wizard: %s", MUD_NAME, WIZARD_NAME);
+  log_string("Starting %s on port %d", MUD_NAME, LISTENING_PORT);
 
   log_string("Preparing auxiliary data for usage.");
   init_auxiliaries();

@@ -83,7 +83,7 @@ def write_muddata(muddata_path, settings):
             'start_room', 'paragraph_indent', 'pulses_per_second', 'world_path',
             'listening_port', 'screen_width', 'message_somewhere', 'message_something',
             'message_someone', 'message_nothing_special', 'message_what',
-            'mud_name', 'wizard_name', 'puid'
+            'mud_name', 'puid'
         ]
         
         # Calculate the maximum key length for alignment
@@ -131,7 +131,6 @@ def main():
         'message_nothing_special': 'You see nothing special.',
         'message_what': 'What?',
         'mud_name': 'NakedMud',
-        'wizard_name': 'Admin',
         'puid': '0'
     }
     
@@ -146,12 +145,6 @@ def main():
     settings['mud_name'] = get_input_with_default(
         "What is the name of your MUD?",
         settings.get('mud_name', 'NakedMud')
-    )
-    
-    # Get wizard name
-    settings['wizard_name'] = get_input_with_default(
-        "What should the head administrator be called?",
-        settings.get('wizard_name', 'Admin')
     )
     
     # Get listening port with validation
@@ -184,7 +177,6 @@ def main():
     
     print(f"\n{Colors.HEADER}{Colors.BOLD}=== Configuration Summary ==={Colors.ENDC}")
     print(f"{Colors.OKBLUE}MUD Name:{Colors.ENDC} {settings['mud_name']}")
-    print(f"{Colors.OKBLUE}Wizard Name:{Colors.ENDC} {settings['wizard_name']}")
     print(f"{Colors.OKBLUE}Listening Port:{Colors.ENDC} {settings['listening_port']}")
     print(f"{Colors.OKBLUE}World Path:{Colors.ENDC} {settings['world_path']}")
     print(f"{Colors.OKBLUE}Start Room:{Colors.ENDC} {settings['start_room']}")
