@@ -11,5 +11,5 @@ message_nothing_special: You see nothing special.
 message_what           : What?
 mud_name               : NakedMud
 wizard_name            : Admin
-puid                   : 1
+puid                   : 0
 -

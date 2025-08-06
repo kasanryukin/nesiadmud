@@ -14,6 +14,8 @@ New to NakedMud? Start here:
 
 ## What is NakedMud?
 
+![Server Manager](doc/images/server.png)
+
 NakedMud is a "content-less" MUD engine - it provides you with a solid, extensible foundation for building your own text-based multiplayer game, but without predefined content. Think of it as a blank canvas for your creativity!
 
 **Key Features:**
