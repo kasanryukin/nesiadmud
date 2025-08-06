@@ -10,6 +10,9 @@ Welcome to NakedMud! This guide will help you get up and running with your own M
 - [Setting Things Up](#setting-things-up)
   - [Quick Configuration with install.py](#quick-configuration-with-installpy-recommended)
   - [Manual Configuration](#understanding-the-muddata-file-manual-configuration)
+- [NakedMud Server Manager](#nakedmud-server-manager-recommended)
+  - [Features](#server-manager-features)
+  - [Using the Server Manager](#using-the-server-manager)
 - [Running Your Server](#running-your-server)
 - [Your First Login](#your-first-login)
 - [When Things Go Wrong](#when-things-go-wrong)
@@ -160,7 +163,32 @@ Here's what these mean:
 
 ## Running Your Server
 
-### Basic Startup (The Simple Way)
+### Recommended: Use the Server Manager
+
+![Server Manager](images/server.png)
+
+When you run the server manager, it immediately checks your configuration files to make sure everything is set up correctly. It'll catch common mistakes like missing world files or invalid room references before they cause problems. Once everything checks out, you'll see a status display showing whether your server is running, what port it's using, and who your administrators and staff members are. You'll see little emoji indicators (🔑 for admins, 📜 for scripters, 🔨 for builders) that make it easy to see your staff structure at a glance.
+
+### Using the Server Manager
+
+Getting started is as simple as running one command from your NakedMud directory:
+
+```bash
+./startmud.py
+```
+
+The server manager will validate your current muddata configuration, show you the current status, and if your server isn't already running, it'll start it up automatically. 
+
+![Server Manager Menu](images/server-menu.png)
+
+Once your server is running, you'll get an interactive menu that lets you restart the server (useful after making changes), view recent log entries to see what's happening, or gracefully shut down when you're done. 
+
+The server manager is also smart about process management. It handles zombie processes, ensures clean shutdowns, and can detect if your server crashes and needs to be restarted. This means you can focus on building your world instead of wrestling with server administration.
+
+### Alternative: Manual Startup
+
+If you prefer to run the server directly:
+
 ```bash
 # From your NakedMud root directory
 cd src

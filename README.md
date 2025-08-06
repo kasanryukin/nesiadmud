@@ -8,9 +8,10 @@ New to NakedMud? Start here:
 
 1. **Run the installer**: `./install.py` - Interactive setup for your MUD configuration
 2. **[Compiling and Running](doc/compiling_and_running.md)** - Get your MUD server up and running
-3. **[Game Library Guide](doc/game_library.md)** - Understand how your MUD's content is organized
-4. **[OLC for Dummies](doc/OLC_FOR_DUMMIES.md)** - Learn to build worlds with the Online Creation system
-5. **[Credits](CREDITS.md)** - Learn about the people who made NakedMud possible
+3. **Start your server**: `./startmud.py` - Beautiful server manager with automatic startup and monitoring
+4. **[Game Library Guide](doc/game_library.md)** - Understand how your MUD's content is organized
+5. **[OLC for Dummies](doc/OLC_FOR_DUMMIES.md)** - Learn to build worlds with the Online Creation system
+6. **[Credits](CREDITS.md)** - Learn about the people who made NakedMud possible
 
 ## What is NakedMud?
 
