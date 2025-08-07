@@ -396,6 +396,29 @@ void do_room_to_game_trighooks(const char *info) {
   gen_do_trigs(rm,TRIGVAR_ROOM,"to_game",NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 }
 
+void do_heartbeat_trighooks(const char *info) {
+  // heartbeat triggers run on NPCs and objects only
+  // iterate through all NPCs in the game
+  LIST_ITERATOR *npc_i = newListIterator(mobile_list);
+  CHAR_DATA *npc = NULL;
+  ITERATE_LIST(npc, npc_i) {
+    // only run heartbeat on NPCs (not players) that have triggers
+    if(charGetSocket(npc) == NULL && listSize(charGetTriggers(npc)) > 0) {
+      gen_do_trigs(npc, TRIGVAR_CHAR, "heartbeat", NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+    }
+  } deleteListIterator(npc_i);
+  
+  // iterate through all objects in the game
+  LIST_ITERATOR *obj_i = newListIterator(object_list);
+  OBJ_DATA *obj = NULL;
+  ITERATE_LIST(obj, obj_i) {
+    // only run heartbeat on objects that have triggers
+    if(listSize(objGetTriggers(obj)) > 0) {
+      gen_do_trigs(obj, TRIGVAR_OBJ, "heartbeat", NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+    }
+  } deleteListIterator(obj_i);
+}
+
 
 
 //*****************************************************************************
@@ -424,6 +447,7 @@ void init_trighooks(void) {
   hookAdd("obj_to_game",    do_obj_to_game_trighooks);
   hookAdd("char_to_game",   do_char_to_game_trighooks);
   hookAdd("room_to_game",   do_room_to_game_trighooks);
+  hookAdd("heartbeat",      do_heartbeat_trighooks);
 
   // add our trigger displays
   register_tedit_opt("speech",         "mob, room" );
@@ -443,4 +467,5 @@ void init_trighooks(void) {
   register_tedit_opt("open",           "obj, room" );
   register_tedit_opt("close",          "obj, room" );
   register_tedit_opt("to_game",        "obj, mob, room" );
+  register_tedit_opt("heartbeat",      "obj, mob" );
 }
