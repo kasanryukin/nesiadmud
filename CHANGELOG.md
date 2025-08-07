@@ -1,4 +1,18 @@
-*v4.1.1 In progress* **Git commits:** 53143f1..HEAD
+---
+# NakedMud v4.1.1
+**Git commits:** 53143f1..e0d4174
+Compiled and tested on multiple platforms
+### MAJOR CHANGES
+- **Trigger system expansion** - pre-command interception and heartbeat automation for NPCs and objects
+### ADDED
+- Pre-command trigger system with command blocking and priority-based execution
+- Heartbeat triggers for automated NPC and object behaviors
+- ISSUES.md tracking for known bugs and limitations
+### FIXED
+- Enhanced Python error handling in OLC prototype loading
+### MODIFIED
+- Improved trigger attachment error messages and validation
+- Updated trigger system documentation with comprehensive examples
 
 ---
 # NakedMud v4.1.0
