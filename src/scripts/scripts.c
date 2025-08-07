@@ -341,6 +341,11 @@ COMMAND(cmd_tdelete) {
   char *name = NULL;
   if(!parse_args(ch, TRUE, cmd, arg, "word", &name))
     return;
+  
+  // Warn the user about potential issues
+  send_to_char(ch, "Warning: Deleting a trigger may cause errors in entities that reference it.\r\n");
+  send_to_char(ch, "You may need to edit prototypes to remove trigger references.\r\n");
+  
   do_delete(ch, "trigger", deleteTrigger, name);
 }
 

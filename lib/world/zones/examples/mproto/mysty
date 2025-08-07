@@ -15,6 +15,5 @@ script  :~
   me.gender   = "female"
   
   ### character triggers
-  me.attach("heartbeat")
   me.attach("mysty_greet")
 -

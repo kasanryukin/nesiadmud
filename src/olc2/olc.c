@@ -746,9 +746,20 @@ void olc_from_proto(PROTO_DATA *proto, BUFFER *extra, void *me, void *aspy) {
   run_script(dict, bufferString(to_run), get_key_locale(protoGetKey(proto)));
 
   // make sure it ran ok
-  if(!last_script_ok())
-    log_pyerr("Error converting prototype to OLC editable structure: %s",
-	      protoGetKey(proto));
+  if(!last_script_ok()) {
+    // Check if there's actually a Python error before trying to log it
+    if(PyErr_Occurred()) {
+      log_pyerr("Error converting prototype to OLC editable structure: %s",
+	        protoGetKey(proto));
+    } else {
+      log_string("Error converting prototype to OLC editable structure: %s", 
+                 protoGetKey(proto));
+    }
+    log_string("Note: This error may be due to missing triggers referenced in the prototype.");
+    log_string("The prototype will still be editable, but some trigger references may be missing.");
+    // Clear the Python error state so we don't crash
+    PyErr_Clear();
+  }
 
   // clean up our garbage
   deleteBuffer(to_run);
