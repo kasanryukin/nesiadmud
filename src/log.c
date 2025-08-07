@@ -20,8 +20,18 @@
 #include "storage.h"
 #include "log.h"
 
+char *get_log_dir(void) {
+  static char log_dir[512];
+  sprintf(log_dir, "%s/logs", MUDLIB_PATH);
+  return log_dir;
+}
 
-#define LOG_LIST LOG_DIR"/logs"
+char *get_log_list(void) {
+  static char log_list[512];
+  sprintf(log_list, "%s/logs", MUDLIB_PATH);
+  return log_list;
+}
+#define LOG_LIST get_log_list()
 
 
 // a map from filenames to the keywords we try to log

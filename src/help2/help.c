@@ -32,10 +32,20 @@
 //*****************************************************************************
 
 // the folder where we save persistent helpfiles to disc
-#define HELP_DIR   "../lib/help"
+char *get_help_dir(void) {
+  static char help_dir[512];
+  sprintf(help_dir, "%s/help", MUDLIB_PATH);
+  return help_dir;
+}
+#define HELP_DIR get_help_dir()
 
 // the old file we used to store all help files in
-#define OLD_HELP_FILE "../lib/misc/help"
+char *get_old_help_file(void) {
+  static char old_help_file[512];
+  sprintf(old_help_file, "%s/misc/help", MUDLIB_PATH);
+  return old_help_file;
+}
+#define OLD_HELP_FILE get_old_help_file()
 
 // where we store all of our helpfiles
 NEAR_MAP *help_table;

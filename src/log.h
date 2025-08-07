@@ -9,7 +9,8 @@
 //
 //*****************************************************************************
 
-#define LOG_DIR              "../lib/logs"
+char *get_log_dir(void);
+#define LOG_DIR              get_log_dir()
 
 
 //

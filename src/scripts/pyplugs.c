@@ -27,7 +27,12 @@
 //*****************************************************************************/
 
 // the directory where we keep python modules that we have extended ourself with
-#define PYMOD_LIB       "../lib/pymodules"
+char *get_pymod_lib(void) {
+  static char pymod_lib[512];
+  sprintf(pymod_lib, "%s/pymodules", MUDLIB_PATH);
+  return pymod_lib;
+}
+#define PYMOD_LIB get_pymod_lib()
 
 
 //

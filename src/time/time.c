@@ -43,7 +43,12 @@
 //*****************************************************************************
 // local defines, variables, and structs
 //*****************************************************************************
-#define TIME_FILE   "../lib/misc/time"  // where do we keep time data?
+char *get_time_file(void) {
+  static char time_file[512];
+  sprintf(time_file, "%s/misc/time", MUDLIB_PATH);
+  return time_file;
+}
+#define TIME_FILE get_time_file()  // where do we keep time data?
 #define TIME_UPDATE_DELAY   1 MUD_HOUR  // how long is an in-game hour?
 #define HOURS_PER_DAY               24  // how many hours are in a day?
 #define NUM_MONTHS                   4  // how many months are in a year?

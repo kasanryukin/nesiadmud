@@ -6,6 +6,8 @@
 //
 //*****************************************************************************
 #include <sys/time.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #include "mud.h"
 #include "utils.h"
@@ -111,12 +113,42 @@ int main(int argc, char **argv)
       fCopyOver = TRUE;
       control = atoi(argv[++i]);
     }
+    else if(!strcasecmp(argv[i], "--mudlib-path")) {
+      char *mudlib_path = argv[++i];
+      struct stat st;
+      
+      // Validate that the path exists and is a directory
+      if(stat(mudlib_path, &st) != 0) {
+        fprintf(stderr, "Error: Mudlib path '%s' does not exist.\n", mudlib_path);
+        return 1;
+      }
+      if(!S_ISDIR(st.st_mode)) {
+        fprintf(stderr, "Error: Mudlib path '%s' is not a directory.\n", mudlib_path);
+        return 1;
+      }
+      
+      // Set the mudlib path
+      set_mudlib_path(mudlib_path);
+    }
     else {
       char buf[SMALL_BUFFER];
       sprintf(buf, "Invalid argument, %s (#%d)\r\n", argv[i], i);
       perror(buf);
       return 1;
     }
+  }
+
+  // Validate mudlib path (either provided or default)
+  struct stat st;
+  const char *mudlib_path = get_mudlib_path();
+  if(stat(mudlib_path, &st) != 0) {
+    fprintf(stderr, "Error: Mudlib path '%s' does not exist.\n", mudlib_path);
+    fprintf(stderr, "Please create the directory or specify a different path with --mudlib-path\n");
+    return 1;
+  }
+  if(!S_ISDIR(st.st_mode)) {
+    fprintf(stderr, "Error: Mudlib path '%s' is not a directory.\n", mudlib_path);
+    return 1;
   }
 
   /* seed the random number generator */
@@ -169,7 +201,7 @@ int main(int argc, char **argv)
 
   // change to the lib directory
   log_string("Changing to lib directory.");
-  chdir("../lib");
+  chdir(get_mudlib_path());
 
   log_string("Initializing hooks.");
   init_hooks();

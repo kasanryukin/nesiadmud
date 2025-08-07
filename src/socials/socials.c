@@ -28,7 +28,12 @@
 //*****************************************************************************
 
 // the file where all of the socials are stored
-#define SOCIALS_FILE "../lib/misc/socials"
+char *get_socials_file(void) {
+  static char socials_file[512];
+  sprintf(socials_file, "%s/misc/socials", MUDLIB_PATH);
+  return socials_file;
+}
+#define SOCIALS_FILE get_socials_file()
 
 // the table we store all of the socials in
 HASHTABLE *social_table = NULL;

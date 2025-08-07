@@ -175,6 +175,9 @@ Getting started is as simple as running one command from your NakedMud directory
 
 ```bash
 ./startmud.py
+
+# Or specify a custom mudlib path (defaults to ../lib, relative to src/)
+./startmud.py --mudlib-path /custom/mudlib
 ```
 
 The server manager will validate your current muddata configuration, show you the current status, and if your server isn't already running, it'll start it up automatically. 
@@ -193,6 +196,9 @@ If you prefer to run the server directly:
 # From your NakedMud root directory
 cd src
 ./NakedMud
+
+# Or specify a custom mudlib path (defaults to ../lib, relative to src/)
+./NakedMud --mudlib-path /custom/mudlib
 
 # You should see startup messages - exciting!
 ```

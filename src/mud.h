@@ -169,6 +169,9 @@ typedef unsigned char                     bool;
 #define DFLT_WORLD_PATH    "../lib/world"
 #define WORLD_PATH         mudsettingGetString("world_path")
 
+/* MUD Library Path */
+#define MUDLIB_PATH        get_mudlib_path()
+
 // the room that new characters are dropped into
 #define START_ROOM      mudsettingGetString("start_room")
 #define DFLT_START_ROOM "tavern_entrance@examples"
@@ -201,6 +204,10 @@ void add_py_cmd_check(const char *cmd, void *pyfunc);
 // handled automatically.
 //*****************************************************************************
 void init_mud_settings();
+
+// mudlib path functions
+const char *get_mudlib_path(void);
+void set_mudlib_path(const char *path);
 
 void mudsettingSetString(const char *key, const char *val);
 void mudsettingSetDouble(const char *key, double val);

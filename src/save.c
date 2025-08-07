@@ -73,13 +73,13 @@ const char *get_save_filename(const char *name, int filetype) {
 
   switch(filetype) {
   case FILETYPE_ACCOUNT:
-    sprintf(buf, "../lib/accounts/%c/%s.acct", *pname, pname);
+    sprintf(buf, "%s/accounts/%c/%s.acct", MUDLIB_PATH, *pname, pname);
     break;
   case FILETYPE_PFILE:
-    sprintf(buf, "../lib/players/pfiles/%c/%s.pfile", *pname, pname);
+    sprintf(buf, "%s/players/pfiles/%c/%s.pfile", MUDLIB_PATH, *pname, pname);
     break;
   case FILETYPE_OFILE:
-    sprintf(buf, "../lib/players/objfiles/%c/%s.ofile", *pname, pname);
+    sprintf(buf, "%s/players/objfiles/%c/%s.ofile", MUDLIB_PATH, *pname, pname);
     break;
   default: 
     log_string("ERROR: Tried to write filename for nonexistant char "

@@ -63,6 +63,43 @@ def validate_port(port_str):
     except ValueError:
         return False, "Port must be a valid number"
 
+def validate_mudlib_path(path_str):
+    """Validate mudlib path - check if it exists relative to src/ directory"""
+    script_dir = Path(__file__).parent
+    src_dir = script_dir / "src"
+    
+    # First try the path as given
+    test_path = src_dir / path_str
+    if test_path.exists() and test_path.is_dir():
+        return True, path_str
+    
+    # If that doesn't work, try adding ../ prefix
+    if not path_str.startswith('../'):
+        prefixed_path = f"../{path_str}"
+        test_path = src_dir / prefixed_path
+        if test_path.exists() and test_path.is_dir():
+            return True, prefixed_path
+    
+    return False, f"Directory '{path_str}' does not exist (checked relative to src/ directory)"
+
+def validate_world_path(world_path_str, mudlib_path):
+    """Validate that world path is within the mudlib directory"""
+    script_dir = Path(__file__).parent
+    src_dir = script_dir / "src"
+    
+    # Resolve the mudlib path
+    mudlib_full_path = (src_dir / mudlib_path).resolve()
+    
+    # Try the world path as given
+    world_full_path = (src_dir / world_path_str).resolve()
+    
+    # Check if world path is within mudlib path
+    try:
+        world_full_path.relative_to(mudlib_full_path)
+        return True, world_path_str
+    except ValueError:
+        return False, f"World path must be within the mudlib directory ({mudlib_path})"
+
 def read_existing_muddata(muddata_path):
     """Read existing muddata file and return as a dictionary"""
     settings = {}
@@ -107,22 +144,41 @@ def main():
     print(f"{Colors.OKGREEN}This script will help you configure your NakedMud server.{Colors.ENDC}")
     print(f"{Colors.OKGREEN}Press Enter to accept default values, or type your own.{Colors.ENDC}\n")
     
-    # Determine the muddata file path
-    script_dir = Path(__file__).parent
-    muddata_path = script_dir / "lib" / "muddata"
+    # Get mudlib path first
+    print(f"{Colors.HEADER}{Colors.BOLD}=== MUD Library Path Configuration ==={Colors.ENDC}\n")
+    print(f"{Colors.OKBLUE}The mudlib path is where NakedMud stores all its data files.{Colors.ENDC}")
+    print(f"{Colors.OKBLUE}This path should be relative to the src/ directory.{Colors.ENDC}\n")
     
-    # Create lib directory if it doesn't exist
-    muddata_path.parent.mkdir(exist_ok=True)
+    mudlib_path = None
+    while True:
+        mudlib_input = get_input_with_default(
+            "Where should the mudlib directory be located?",
+            "../lib"
+        )
+        is_valid, result = validate_mudlib_path(mudlib_input)
+        if is_valid:
+            mudlib_path = result
+            break
+        else:
+            print(f"{Colors.FAIL}Error: {result}{Colors.ENDC}")
+    
+    # Determine the muddata file path based on mudlib path
+    script_dir = Path(__file__).parent
+    src_dir = script_dir / "src"
+    muddata_path = src_dir / mudlib_path / "muddata"
+    
+    # Create mudlib directory if it doesn't exist
+    muddata_path.parent.mkdir(parents=True, exist_ok=True)
     
     # Read existing settings
     settings = read_existing_muddata(muddata_path)
     
-    # Set default values for all required settings
+    # Set default values for all required settings (world_path will be set dynamically)
     default_settings = {
         'start_room': 'tavern_entrance@examples',
         'paragraph_indent': '4',
         'pulses_per_second': '10',
-        'world_path': '../lib/world',
+        'world_path': f'{mudlib_path}/world',  # Dynamic based on mudlib path
         'listening_port': '4000',
         'screen_width': '80',
         'message_somewhere': 'somewhere',
@@ -160,11 +216,19 @@ def main():
         else:
             print(f"{Colors.FAIL}Error: {result}{Colors.ENDC}")
     
-    # Get world path
-    settings['world_path'] = get_input_with_default(
-        "Where should world data be stored?",
-        settings.get('world_path', '../lib/world')
-    )
+    # Get world path with validation
+    print(f"\n{Colors.OKBLUE}World data must be stored within the mudlib directory ({mudlib_path}).{Colors.ENDC}")
+    while True:
+        world_input = get_input_with_default(
+            "Where should world data be stored?",
+            settings.get('world_path', f'{mudlib_path}/world')
+        )
+        is_valid, result = validate_world_path(world_input, mudlib_path)
+        if is_valid:
+            settings['world_path'] = result
+            break
+        else:
+            print(f"{Colors.FAIL}Error: {result}{Colors.ENDC}")
     
     # Get start room
     settings['start_room'] = get_input_with_default(
@@ -176,6 +240,7 @@ def main():
     settings['puid'] = '0'
     
     print(f"\n{Colors.HEADER}{Colors.BOLD}=== Configuration Summary ==={Colors.ENDC}")
+    print(f"{Colors.OKBLUE}Mudlib Path:{Colors.ENDC} {mudlib_path}")
     print(f"{Colors.OKBLUE}MUD Name:{Colors.ENDC} {settings['mud_name']}")
     print(f"{Colors.OKBLUE}Listening Port:{Colors.ENDC} {settings['listening_port']}")
     print(f"{Colors.OKBLUE}World Path:{Colors.ENDC} {settings['world_path']}")

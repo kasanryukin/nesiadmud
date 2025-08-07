@@ -18,11 +18,20 @@
 
 //
 // the file where we store all of our mud settings
-#define MUD_DATA       "../lib/muddata"
+char *get_muddata_path(void) {
+  static char muddata_path[512];
+  snprintf(muddata_path, sizeof(muddata_path), "%s/muddata", get_mudlib_path());
+  return muddata_path;
+}
+#define MUD_DATA get_muddata_path()
 
 //
 // our storage set of mud settings
 STORAGE_SET *settings = NULL;
+
+//
+// the path to our mudlib directory
+char *mudlib_path = NULL;
 
 //
 // for generating unique IDs to characters, rooms, objects, exits, etc
@@ -37,7 +46,18 @@ int top_uid(void) {
   return next_available_uid - 1;
 }
 
+//*****************************************************************************
+// mudlib path functions
+//*****************************************************************************
+const char *get_mudlib_path(void) {
+  return mudlib_path ? mudlib_path : "../lib";
+}
 
+void set_mudlib_path(const char *path) {
+  if(mudlib_path)
+    free(mudlib_path);
+  mudlib_path = strdup(path);
+}
 
 //*****************************************************************************
 // implementation of functions in mud.h

@@ -14,6 +14,7 @@ import signal
 import subprocess
 import shlex
 import platform
+import argparse
 from pathlib import Path
 
 # ANSI Color codes for terminal output
@@ -350,7 +351,7 @@ def validate_muddata():
     return True, settings
 
 
-def start_mud():
+def start_mud(mudlib_path=None):
     """Start the MUD server"""
     global mud_process, restart_attempts
     
@@ -369,9 +370,14 @@ def start_mud():
         
         print_status("Starting NakedMud server...")
         
+        # Build command with optional mudlib path
+        cmd = ["./NakedMud"]
+        if mudlib_path:
+            cmd.extend(["--mudlib-path", mudlib_path])
+        
         # Start the MUD process in background
         mud_process = subprocess.Popen(
-            "./NakedMud",
+            cmd,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
             preexec_fn=os.setsid if platform.system() != 'Windows' else None
@@ -544,9 +550,44 @@ def stop_mud():
     time.sleep(1)
 
 
+def validate_mudlib_path(path_str):
+    """Validate mudlib path - check if it exists relative to src/ directory"""
+    script_dir = Path(__file__).parent
+    src_dir = script_dir / "src"
+    
+    # First try the path as given
+    test_path = src_dir / path_str
+    if test_path.exists() and test_path.is_dir():
+        return True, path_str
+    
+    # If that doesn't work, try adding ../ prefix
+    if not path_str.startswith('../'):
+        prefixed_path = f"../{path_str}"
+        test_path = src_dir / prefixed_path
+        if test_path.exists() and test_path.is_dir():
+            return True, prefixed_path
+    
+    return False, f"Directory '{path_str}' does not exist (checked relative to src/ directory)"
+
+
 def main():
     """Main function"""
     try:
+        # Parse command line arguments
+        parser = argparse.ArgumentParser(description='NakedMud Startup Manager')
+        parser.add_argument('--mudlib-path', type=str, help='Path to the mudlib directory (relative to src/)')
+        args = parser.parse_args()
+        
+        # Validate mudlib path if provided
+        mudlib_path = None
+        if args.mudlib_path:
+            is_valid, result = validate_mudlib_path(args.mudlib_path)
+            if not is_valid:
+                print_error(f"Error: {result}")
+                sys.exit(1)
+            mudlib_path = result
+            print_status(f"Using mudlib path: {mudlib_path}")
+        
         # Print the logo and status
         print_logo()
         
@@ -560,7 +601,7 @@ def main():
         # Check if server is running, if not start it automatically
         if not get_mud_process():
             print_status("\nNakedMud is not running. Starting server automatically...")
-            if start_mud():
+            if start_mud(mudlib_path):
                 print_success("Server started successfully!")
                 time.sleep(2)
             else:
@@ -576,7 +617,7 @@ def main():
                 print_logo()
                 print_status("Starting/Restarting NakedMud server...")
                 stop_mud()  # Make sure it's stopped first
-                if start_mud():
+                if start_mud(mudlib_path):
                     print_success("Server started successfully!")
                     time.sleep(2)
             elif choice == '2':

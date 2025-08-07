@@ -179,8 +179,11 @@ void load_muddata() {
   worldSetPath(gameworld, WORLD_PATH);
   worldInit(gameworld);
 
-  greeting = read_file("../lib/txt/greeting");
-  motd     = read_file("../lib/txt/motd");
+  char greeting_path[512], motd_path[512];
+  sprintf(greeting_path, "%s/txt/greeting", MUDLIB_PATH);
+  sprintf(motd_path, "%s/txt/motd", MUDLIB_PATH);
+  greeting = read_file(greeting_path);
+  motd     = read_file(motd_path);
 }
 
 
