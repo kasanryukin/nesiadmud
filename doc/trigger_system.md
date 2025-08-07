@@ -77,6 +77,66 @@ Game Event Occurs
 | `close` | obj, room | When something is closed | `ch` |
 | `to_game` | obj, mob, room | When entity enters the game | - |
 | `heartbeat` | obj, mob | Every 2 seconds (pulse) | - |
+| `pre_command` | obj, mob, room | Before any command execution | `ch`, `cmd`, `arg` |
+
+## Pre-Command Trigger
+
+The `pre_command` trigger is a special trigger that fires before any command is executed, allowing you to intercept, modify, or block commands. This is useful for creating custom commands, handling typos, or adding special behaviors to NPCs and objects.
+
+### Context Variables
+- `ch` - The character executing the command
+- `cmd` - The command name (string)
+- `arg` - The command arguments (string)
+
+### Blocking Commands
+To prevent the normal command from executing, set the `pc_block_command` dynamic variable on the character:
+
+```python
+# Block the command
+ch.setvar("pc_block_command", 1)
+```
+
+**Important:** The system automatically resets this flag to 0 after checking it, so you don't need to manually clear it.
+
+### Usage Examples
+
+```python
+# NPC responding to commands directed at them
+if cmd == "greet" and ch.name == "player":
+    me.send("The shopkeeper nods politely.")
+    ch.setvar("pc_block_command", 1)
+
+# Object with custom commands  
+if cmd == "push" and "button" in arg:
+    ch.send("You push the mysterious button.")
+    # trigger some effect
+    ch.setvar("pc_block_command", 1)
+
+# Room handling specific commands
+if cmd == "xyzzy":
+    ch.send("A hollow voice says 'Fool.'")
+    ch.setvar("pc_block_command", 1)
+```
+
+#### Command Logging
+```python
+# Log all commands for debugging
+import mudsys
+if valid:
+    mudsys.log_string(f"VALID: {ch.name} used '{cmd} {arg}'")
+else:
+    mudsys.log_string(f"INVALID: {ch.name} tried '{cmd} {arg}'")
+# Don't block - let command proceed normally
+```
+
+### Trigger Priority
+Pre-command triggers are checked in this order:
+1. **Self** (triggers on the character executing the command)
+2. **Inventory** (triggers on carried items)
+3. **Room inventory** (triggers on NPCs and objects in the room)
+4. **Room** (triggers on the room itself)
+
+The first trigger that sets `pc_block_command` will prevent further triggers and the original command from executing.
 
 ## Using Triggers in OLC
 

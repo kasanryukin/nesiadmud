@@ -11,13 +11,23 @@
 
 #include "../mud.h"
 #include "../utils.h"
-#include "../hooks.h"
 #include "../character.h"
 #include "../room.h"
 #include "../object.h"
+#include "../exit.h"
+#include "../auxiliary.h"
+#include "../handler.h"
+#include "../hooks.h"
+#include "../inform.h"
+#include "../socket.h"
+#include "../list.h"
+#include "../storage.h"
 #include "../world.h"
 #include "../zone.h"
-
+#include "../save.h"
+#include "../action.h"
+#include "../dyn_vars/dyn_vars.h"
+#include "../parse.h"
 #include "scripts.h"
 #include "pychar.h"
 #include "pyobj.h"
@@ -421,6 +431,79 @@ void do_heartbeat_trighooks(const char *info) {
 
 
 
+void do_pre_command_trighooks(const char *info) {
+  CHAR_DATA *ch = NULL;
+  char *cmd = NULL;
+  char *arg = NULL;
+  int valid = 0;
+  
+  // Parse the hook info first to get character
+  hookParseInfo(info, &ch, &cmd, &arg, &valid);
+  
+  // Prevent infinite recursion from act() calls - per character
+  if(charGetInt(ch, "pc_in_pre_command")) return;
+  charSetInt(ch, "pc_in_pre_command", 1);
+  
+  // 1. Self (the character executing the command)
+  gen_do_trigs(ch, TRIGVAR_CHAR, "pre_command", NULL, NULL, NULL, NULL, cmd, arg, NULL);
+  if(charGetInt(ch, "pc_block_command")) {
+    charDeleteVar(ch, "pc_block_command");
+    charDeleteVar(ch, "pc_in_pre_command");
+    return; // Command handled, stop processing
+  }
+  
+  // 2. Inventory items
+  LIST_ITERATOR *obj_i = newListIterator(charGetInventory(ch));
+  OBJ_DATA *obj = NULL;
+  ITERATE_LIST(obj, obj_i) {
+    gen_do_trigs(obj, TRIGVAR_OBJ, "pre_command", ch, NULL, NULL, NULL, cmd, arg, NULL);
+    if(charGetInt(ch, "pc_block_command")) {
+      deleteListIterator(obj_i);
+      charDeleteVar(ch, "pc_block_command");
+      charDeleteVar(ch, "pc_in_pre_command");
+      return; // Command handled, stop processing
+    }
+  } deleteListIterator(obj_i);
+  
+  // 3. Room inventory (NPCs and objects in the room)
+  ROOM_DATA *room = charGetRoom(ch);
+  if(room) {
+    // Check other characters in the room
+    LIST_ITERATOR *char_i = newListIterator(roomGetCharacters(room));
+    CHAR_DATA *rch = NULL;
+    ITERATE_LIST(rch, char_i) {
+      if(rch != ch) { // Don't check self again
+        gen_do_trigs(rch, TRIGVAR_CHAR, "pre_command", ch, NULL, NULL, NULL, cmd, arg, NULL);
+        if(charGetInt(ch, "pc_block_command")) {
+          deleteListIterator(char_i);
+          charSetInt(ch, "pc_block_command", 0);
+          charSetInt(ch, "pc_in_pre_command", 0);
+          return; // Command handled, stop processing
+        }
+      }
+    } deleteListIterator(char_i);
+    
+    // Check objects in the room
+    LIST_ITERATOR *room_obj_i = newListIterator(roomGetContents(room));
+    OBJ_DATA *room_obj = NULL;
+    ITERATE_LIST(room_obj, room_obj_i) {
+      gen_do_trigs(room_obj, TRIGVAR_OBJ, "pre_command", ch, NULL, NULL, NULL, cmd, arg, NULL);
+      if(charGetInt(ch, "pc_block_command")) {
+        deleteListIterator(room_obj_i);
+        charSetInt(ch, "pc_block_command", 0);
+        charSetInt(ch, "pc_in_pre_command", 0);
+        return; // Command handled, stop processing
+      }
+    } deleteListIterator(room_obj_i);
+    
+    // 4. Room itself (last priority)
+    gen_do_trigs(room, TRIGVAR_ROOM, "pre_command", ch, NULL, NULL, NULL, cmd, arg, NULL);
+  }
+  
+  // Clear recursion flag
+  charDeleteVar(ch, "pc_in_pre_command");
+}
+
 //*****************************************************************************
 // implementation of trighooks.h
 //*****************************************************************************
@@ -448,6 +531,7 @@ void init_trighooks(void) {
   hookAdd("char_to_game",   do_char_to_game_trighooks);
   hookAdd("room_to_game",   do_room_to_game_trighooks);
   hookAdd("heartbeat",      do_heartbeat_trighooks);
+  hookAdd("pre_command",    do_pre_command_trighooks);
 
   // add our trigger displays
   register_tedit_opt("speech",         "mob, room" );
@@ -468,4 +552,5 @@ void init_trighooks(void) {
   register_tedit_opt("close",          "obj, room" );
   register_tedit_opt("to_game",        "obj, mob, room" );
   register_tedit_opt("heartbeat",      "obj, mob" );
+  register_tedit_opt("pre_command",    "obj, mob, room" );
 }

@@ -20,6 +20,7 @@
 // mandatory modules
 //*****************************************************************************
 #include "scripts/scripts.h"
+#include "dyn_vars/dyn_vars.h"
 
 
 
@@ -339,6 +340,14 @@ void do_cmd(CHAR_DATA *ch, char *arg, bool aliases_ok)  {
     if(found == TRUE)
       break;
     else if(cmd != NULL) {
+      // run pre_command hook before executing the command
+      hookRun("pre_command", hookBuildInfo("ch str str int", ch, cmdGetName(cmd), arg, 1));
+      if(charGetInt(ch, "pc_block_command")) {
+        // trigger set block flag, skip normal execution and reset flag
+        charSetInt(ch, "pc_block_command", 0);
+        found = TRUE;
+        break;
+      }
       // execute the command
       if((ret = charTryCmd(ch, cmd, arg)) != -1) {
 	if(ret == TRUE)
@@ -349,9 +358,17 @@ void do_cmd(CHAR_DATA *ch, char *arg, bool aliases_ok)  {
     }
   }
 
-  // nothing usable was found
-  if(found == FALSE)
-    text_to_char(ch, "No such command.\r\n");
+  // nothing usable was found - try pre_command hook for unknown commands
+  if(found == FALSE) {
+    hookRun("pre_command", hookBuildInfo("ch str str int", ch, command, arg, 0));
+    if(charGetInt(ch, "pc_block_command")) {
+      // trigger set block flag, handled the unknown command and reset flag
+      charDeleteVar(ch, "pc_block_command");
+      found = TRUE;
+    } else {
+      text_to_char(ch, "No such command.\r\n");
+    }
+  }
 
   // garbage collection
   deleteList(cmd_tables);
