@@ -267,9 +267,14 @@ def print_warning(message):
     print(f"{Colors.WARNING}⚠ {message}{Colors.ENDC}")
 
 
-def load_muddata():
+def load_muddata(mudlib_path=None):
     """Load and parse the muddata file"""
-    muddata_path = Path("lib/muddata")
+    if mudlib_path:
+        # mudlib_path is relative to src/, so we need to prepend src/
+        muddata_path = Path("src") / mudlib_path / "muddata"
+    else:
+        muddata_path = Path("lib/muddata")
+    
     if not muddata_path.exists():
         print_error(f"MUD data file not found at: {muddata_path}")
         return None
@@ -288,13 +293,13 @@ def load_muddata():
         return None
 
 
-def validate_muddata():
+def validate_muddata(mudlib_path=None):
     """Validate the MUD configuration"""
     global mud_settings
     print_status("Validating MUD configuration...")
     
     # Check muddata file
-    settings = load_muddata()
+    settings = load_muddata(mudlib_path)
     if not settings:
         print_error("Failed to load muddata configuration")
         return False, None
@@ -592,7 +597,7 @@ def main():
         print_logo()
         
         # Validate configuration
-        valid, settings = validate_muddata()
+        valid, settings = validate_muddata(mudlib_path)
         if not valid:
             print_error("\nFailed to validate MUD configuration. Please check the errors above.")
             input("\nPress Enter to exit...")
