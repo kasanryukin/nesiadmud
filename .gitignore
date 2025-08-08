@@ -1,6 +1,7 @@
 NakedMud
 src/NakedMud
 lib/muddata
+solice-lib/
 
 .vscode/
 .kiro/
