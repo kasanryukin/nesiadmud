@@ -556,23 +556,32 @@ def stop_mud():
 
 
 def validate_mudlib_path(path_str):
-    """Validate mudlib path - check if it exists relative to src/ directory"""
+    """Validate mudlib path - converts paths relative to startmud.py into paths relative to src/"""
     script_dir = Path(__file__).parent
     src_dir = script_dir / "src"
     
-    # First try the path as given
-    test_path = src_dir / path_str
-    if test_path.exists() and test_path.is_dir():
-        return True, path_str
-    
-    # If that doesn't work, try adding ../ prefix
-    if not path_str.startswith('../'):
-        prefixed_path = f"../{path_str}"
-        test_path = src_dir / prefixed_path
+    # If it's an absolute path, use it as-is
+    if Path(path_str).is_absolute():
+        test_path = Path(path_str)
         if test_path.exists() and test_path.is_dir():
-            return True, prefixed_path
+            return True, path_str
+        else:
+            return False, f"Absolute directory '{path_str}' does not exist"
     
-    return False, f"Directory '{path_str}' does not exist (checked relative to src/ directory)"
+    # For relative paths, check if they exist relative to startmud.py location
+    startmud_relative_path = script_dir / path_str
+    if startmud_relative_path.exists() and startmud_relative_path.is_dir():
+        # Convert to path relative to src/ directory
+        try:
+            # Get the relative path from src/ to the target directory
+            src_relative_path = startmud_relative_path.resolve().relative_to(src_dir.resolve())
+            return True, str(src_relative_path)
+        except ValueError:
+            # Path is outside src/, so we need to use .. notation
+            src_relative_path = Path("..") / path_str
+            return True, str(src_relative_path)
+    
+    return False, f"Directory '{path_str}' does not exist (checked relative to startmud.py location)"
 
 
 def main():
