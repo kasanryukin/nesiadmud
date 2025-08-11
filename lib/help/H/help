@@ -1,0 +1,23 @@
+keywords  : help
+info      :~
+  Welcome to NakedMud! This help system provides information on commands and features.
+  
+  {W== Getting Help =={n
+  Type {yhelp <topic>{n to get specific information on any command or feature.
+  Use {yhelp <command>{n to see detailed usage and examples.
+  View {Yhelp player{n for a list of all player commands.
+  Type {ycommands{n to see a list ALL available commands.
+  
+  {W== Basic Commands =={n
+  {ycommunication{n  - say, tell, chat, ask, emote, greet
+  {ymovement{n       - look, exits, enter, go
+  {ymanipulation{n   - get, drop, give, put, wear, remove
+  {yinformation{n    - who, inventory, equipment, time
+  
+  {W== Character Management =={n
+  {yalias{n          - create command shortcuts
+  {ystop{n           - interrupt current action
+  {yclear{n          - clear your screen
+  {ymotd{n           - view message of the day
+user_group: 
+-

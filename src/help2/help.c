@@ -154,27 +154,64 @@ COMMAND(cmd_help) {
     LIST_ITERATOR *view_i = NULL;
     int             count = 0;
     
-    ITERATE_NEARMAP(kwd, data, near_i) {
-      // if we can view the help file, list it
-      if(!*data->user_groups || bitIsOneSet(charGetUserGroups(ch), 
-					    data->user_groups))
-	// add it to our list of helps we can view
-	listPut(viewable, strdupsafe(kwd));
-    } deleteNearIterator(near_i);
+    // Build enhanced help index with compact header
+    bufferCat(buf, "{C=============================================================================={n\r\n");
+    bufferCat(buf, "\t{W _______          __              .___ _____            .___               {n\r\n");
+    bufferCat(buf, "\t{W \\      \\ _____  |  | __ ____   __| _//     \\  __ __  __| _/               {n\r\n");
+    bufferCat(buf, "\t{W /   |   \\\\__  \\ |  |/ // __ \\ / __ |/  \\ /  \\|  |  \\/ __ |                {n\r\n");
+    bufferCat(buf, "\t{W/    |    \\/ __ \\|    <\\  ___// /_/ /    Y    \\  |  / /_/ |                {n\r\n");
+    bufferCat(buf, "\t{W\\____|__  (____  /__|_ \\\\___  >____ \\____|__  /____/\\____ |                {n\r\n");
+    bufferCat(buf, "\t{W        \\/     \\/     \\/    \\/     \\/       \\/           \\/                {n\r\n");
+    bufferCat(buf, "{C=============================================================================={n\r\n");
 
-    // sort our list of helps
-    listSortWith(viewable, strcasecmp);
+    // Body from the "help" helpfile (if present)
+    HELP_DATA *index_help = get_help("help", TRUE);
+    if(index_help && *index_help->info) {
+      bprintf(buf, "%s\r\n", index_help->info);
+    }
 
-    // build up our buffer of help topics
-    view_i = newListIterator(viewable);
-    ITERATE_LIST(kwd, view_i) {
-      bprintf(buf, "%-20s", kwd);
-      count++;
-      // only 4 entries per row
-      if((count % 4) == 0) 
-	bufferCat(buf, "\r\n");
-    } deleteListIterator(view_i);
+    // Don't show command list for main help - just the organized categories
+    // Users can use "help commands" or "help player" for full command lists
+
+    // Footer with role-specific references
+    bufferCat(buf, "\r\n{C=============================================================================={n\r\n");
+    bool any_ref = FALSE;
+    bufferCat(buf, "See also: ");
+    if(bitIsOneSet(charGetUserGroups(ch), "builder")) {
+      if(any_ref) bufferCat(buf, ", ");
+      bufferCat(buf, "{yhelp builder{n");
+      any_ref = TRUE;
+    }
+    if(bitIsOneSet(charGetUserGroups(ch), "player")) {
+      if(any_ref) bufferCat(buf, ", ");
+      bufferCat(buf, "{yhelp player{n");
+      any_ref = TRUE;
+    }
+    if(bitIsOneSet(charGetUserGroups(ch), "scripter")) {
+      if(any_ref) bufferCat(buf, ", ");
+      bufferCat(buf, "{yhelp scripter{n");
+      any_ref = TRUE;
+    }
+    if(bitIsOneSet(charGetUserGroups(ch), "admin")) {
+      if(any_ref) bufferCat(buf, ", ");
+      bufferCat(buf, "{yhelp admin{n");
+      any_ref = TRUE;
+    }
+    if(bitIsOneSet(charGetUserGroups(ch), "wizard")) {
+      if(any_ref) bufferCat(buf, ", ");
+      bufferCat(buf, "{yhelp wizard{n");
+      any_ref = TRUE;
+    }
+    if(bitIsOneSet(charGetUserGroups(ch), "playtester")) {
+      if(any_ref) bufferCat(buf, ", ");
+      bufferCat(buf, "{yhelp playtester{n");
+      any_ref = TRUE;
+    }
+    if(!any_ref) {
+      bufferCat(buf, "{yhelp commands{n");
+    }
     bufferCat(buf, "\r\n");
+    bufferCat(buf, "{C=============================================================================={n\r\n");
 
     // show our list
     if(charGetSocket(ch))
@@ -186,10 +223,95 @@ COMMAND(cmd_help) {
   }
 
   // do we have a match?
-  else if( (data = get_help(kwd, TRUE)) == NULL)
-    send_to_char(ch, "No help exists on that topic.\r\n");
+  else if( (data = get_help(kwd, TRUE)) == NULL) {
+    // Check for special command listing keywords
+    if(!strcasecmp(kwd, "player")) {
+      // Show only player commands (no user_groups required)
+      BUFFER *buf = newBuffer(1);
+      NEAR_ITERATOR *near_i = newNearIterator(help_table);
+      const char *topic = NULL;
+      HELP_DATA *help_data = NULL;
+      LIST *player_commands = newList();
+      LIST_ITERATOR *view_i = NULL;
+      int count = 0;
+
+      bprintf(buf, "{WPlayer Commands{n\r\n");
+      bufferCat(buf, "{c--------------------------------------------------------------------------{n\r\n");
+
+      ITERATE_NEARMAP(topic, help_data, near_i) {
+        // show topics with no user_groups OR user_groups containing "player"
+        if(!*help_data->user_groups || 
+           (strcasestr(help_data->user_groups, "player") != NULL))
+          listPut(player_commands, strdupsafe(topic));
+      } deleteNearIterator(near_i);
+
+      // sort our list of helps
+      listSortWith(player_commands, strcasecmp);
+
+      // build up our buffer of help topics
+      view_i = newListIterator(player_commands);
+      ITERATE_LIST(topic, view_i) {
+        bprintf(buf, "%-20s", topic);
+        count++;
+        // only 4 entries per row
+        if((count % 4) == 0) 
+          bufferCat(buf, "\r\n");
+      } deleteListIterator(view_i);
+      bufferCat(buf, "\r\n");
+
+      if(charGetSocket(ch))
+        page_string(charGetSocket(ch), bufferString(buf));
+      deleteListWith(player_commands, free);
+      deleteBuffer(buf);
+    }
+    else {
+      // Try role-based listing
+      BUFFER *buf = newBuffer(1);
+      NEAR_ITERATOR *near_i = newNearIterator(help_table);
+      const char *topic = NULL;
+      HELP_DATA *help_data = NULL;
+      LIST *role_topics = newList();
+      LIST_ITERATOR *topic_i = NULL;
+      int count = 0;
+
+      ITERATE_NEARMAP(topic, help_data, near_i) {
+        // must be viewable by this user and require some user groups
+        if(*help_data->user_groups && bitIsOneSet(charGetUserGroups(ch), help_data->user_groups)) {
+          // check if the requested keyword appears in the group string
+          if(strcasestr(help_data->user_groups, kwd) != NULL)
+            listPut(role_topics, strdupsafe(topic));
+        }
+      } deleteNearIterator(near_i);
+
+      if(listSize(role_topics) == 0) {
+        deleteListWith(role_topics, free);
+        deleteBuffer(buf);
+        send_to_char(ch, "No help exists on that topic.\r\n");
+      }
+      else {
+        listSortWith(role_topics, strcasecmp);
+        // header
+        bprintf(buf, "{W%s Commands{n\r\n", capitalize(kwd));
+        bufferCat(buf, "{c--------------------------------------------------------------------------{n\r\n");
+
+        topic_i = newListIterator(role_topics);
+        ITERATE_LIST(topic, topic_i) {
+          bprintf(buf, "%-20s", topic);
+          count++;
+          if((count % 4) == 0)
+            bufferCat(buf, "\r\n");
+        } deleteListIterator(topic_i);
+        bufferCat(buf, "\r\n");
+
+        if(charGetSocket(ch))
+          page_string(charGetSocket(ch), bufferString(buf));
+        deleteListWith(role_topics, free);
+        deleteBuffer(buf);
+      }
+    }
+  }
   else if(*data->user_groups && !bitIsOneSet(charGetUserGroups(ch), 
-					     data->user_groups))
+				     data->user_groups))
     send_to_char(ch, "You may not view that help file.\r\n");
   else {
     BUFFER *buf = build_help(kwd);

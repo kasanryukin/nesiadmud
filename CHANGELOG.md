@@ -1,3 +1,27 @@
+# NakedMud v4.1.2
+**Git commits:** e0d4174..c3cf689
+Compiled and tested on multiple platforms
+### MAJOR CHANGES
+- **Live reload system** - reload prototypes and help files with safe, in-place instance replacement
+### ADDED
+- Reload commands for prototypes and help files with live replacement
+- Configurable mudlib path support in server manager with dynamic file path resolution
+- Enhanced help system with ASCII header and organized command categories
+### FIXED
+- startmud.py mudlib_path argument handling not working correctly
+### MODIFIED
+- Improved mudlib path validation (accept absolute paths, normalize relative paths)
+- Reorganized resettable room order in example zone data
+- Improved help command behavior with role-based footer and organized display
+### UPGRADE NOTES
+- **New reload commands (builder):**
+  - `rreload <room>`
+  - `mreload <mobile> [room|all]`
+  - `oreload <object> [room|all]`
+  - `hreload <keyword>`
+- **Behavior:** Reloads from disk without reboot; `room|all` replaces live instances safely.
+- **Mudlib path:** You can now pass `--mudlib-path <path>` to `startmud.py`; absolute paths are accepted and relative paths are normalized. Ensure `muddata` and `world/` are under the mudlib directory.
+
 ---
 # NakedMud v4.1.1
 **Git commits:** 53143f1..e0d4174
