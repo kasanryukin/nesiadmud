@@ -305,6 +305,15 @@ void *worldRemoveType(WORLD_DATA *world, const char *type, const char *key) {
   return NULL;
 }
 
+void *worldReloadType(WORLD_DATA *world, const char *type, const char *key) {
+  char name[SMALL_BUFFER], locale[SMALL_BUFFER];
+  ZONE_DATA *zone = NULL;
+  if(parse_worldkey(key, name, locale) && 
+     (zone = hashGet(world->zones, locale)) != NULL)
+    return zoneReloadType(zone, type, name);
+  return NULL;
+}
+
 void worldSaveType(WORLD_DATA *world, const char *type, const char *key) {
   char name[SMALL_BUFFER], locale[SMALL_BUFFER];
   ZONE_DATA *zone = NULL;

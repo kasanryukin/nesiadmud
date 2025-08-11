@@ -258,6 +258,48 @@ void add_help(const char *keywords, const char *info, const char *user_groups,
   deleteListWith(kwds, free);
 }
 
+//
+// non-destructive reload of a help file from disk
+bool reload_help(const char *keyword) {
+  HELP_DATA *help = get_help(keyword, FALSE);
+
+  // does the helpfile exist?
+  if(help != NULL) {
+    // build up a list of all the keywords that reference this helpfile
+    LIST           *kwds = parse_keywords(help->keywords);
+    LIST_ITERATOR *kwd_i = newListIterator(kwds);
+    char            *kwd = NULL;
+    char        *primary = listGet(kwds, 0);
+    char        *filename = get_help_file(primary);
+
+    // make sure the file exists on disk
+    if(!file_exists(filename)) {
+      deleteListWith(kwds, free);
+      return FALSE;
+    }
+
+    // remove all of our data from the help table (but don't delete file)
+    ITERATE_LIST(kwd, kwd_i) {
+      nearMapRemove(help_table, kwd);
+    } deleteListIterator(kwd_i);
+
+    // reload from disk
+    STORAGE_SET *set = storage_read(filename);
+    add_help(read_string(set, "keywords"),
+             read_string(set, "info"),
+             read_string(set, "user_group"),
+             read_string(set, "related"),
+             FALSE);
+    storage_close(set);
+
+    // garbage collection
+    deleteListWith(kwds, free);
+    deleteHelp(help);
+    return TRUE;
+  }
+  return FALSE;
+}
+
 void remove_help(const char *keyword) {
   HELP_DATA *help = get_help(keyword, FALSE);
 

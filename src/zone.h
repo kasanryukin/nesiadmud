@@ -79,6 +79,7 @@ void        zoneSetKey(ZONE_DATA *zone, const char *key);
 const char *zoneGetKey(ZONE_DATA *zone);
 void      *zoneGetType(ZONE_DATA *zone, const char *type, const char *key);
 void   *zoneRemoveType(ZONE_DATA *zone, const char *type, const char *key);
+void   *zoneReloadType(ZONE_DATA *zone, const char *type, const char *key);
 void      zoneSaveType(ZONE_DATA *zone, const char *type, const char *key);
 void       zonePutType(ZONE_DATA *zone, const char *type, const char *key,
 		       void *data);

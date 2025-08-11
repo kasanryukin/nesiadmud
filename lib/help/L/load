@@ -1,0 +1,29 @@
+keywords  : load
+info      :~
+  Please see help OLC for all available commands.
+  
+  As a builder, you can instantiate prototypes directly into the game world
+  using the load command. This command creates live instances of mobile and
+  object prototypes for testing and placement purposes.
+  
+  Syntax: load <type> <reference>
+  
+  The type can be either 'mobile' or 'object' (or abbreviated forms like
+  'mob' and 'obj'). The reference follows standard prototype naming conventions
+  and can include zone specifications.
+  
+  Examples:
+    load mobile guard        - Create a guard mobile in your current room
+    load mob town_guard      - Same as above (abbreviated)
+    load object sword        - Create a sword object in your inventory
+    load obj torch@fooland   - Create a torch from the fooland zone
+  
+  The command will fail if:
+    - The prototype does not exist
+    - The prototype is marked as abstract
+    - There is an error running the prototype script
+  
+  Loaded mobiles appear in your current room, while loaded objects are
+  placed in your inventory.
+user_group: builder
+-

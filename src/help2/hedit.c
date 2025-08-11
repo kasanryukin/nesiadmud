@@ -16,6 +16,7 @@
 
 
 
+
 //*****************************************************************************
 // mandatory modules
 //*****************************************************************************
@@ -176,6 +177,17 @@ COMMAND(cmd_hdelete) {
   }
 }
 
+COMMAND(cmd_hreload) {
+  if(!arg || !*arg)
+    send_to_char(ch, "Which help file would you like to reload?\r\n");
+  else {
+    if(reload_help(arg))
+      send_to_char(ch, "Helpfile for %s reloaded from disk.\r\n", arg);
+    else
+      send_to_char(ch, "No helpfile by that name exists or file not found on disk.\r\n");
+  }
+}
+
 
 
 //*****************************************************************************
@@ -184,5 +196,6 @@ COMMAND(cmd_hdelete) {
 void init_hedit() {
   // add our commands
   add_cmd("hedit",   NULL, cmd_hedit,   "builder", FALSE);
-  add_cmd("hdelete", NULL, cmd_hdelete, "builder", FALSE); 
+  add_cmd("hdelete", NULL, cmd_hdelete, "builder", FALSE);
+  add_cmd("hreload", NULL, cmd_hreload, "builder", FALSE);
 }

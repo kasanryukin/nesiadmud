@@ -42,6 +42,10 @@ void add_help(const char *keywords, const char *info, const char *user_groups,
 	      const char *related, bool persistent);
 
 //
+// non-destructive reload of a help file from disk
+bool reload_help(const char *keyword);
+
+//
 // removes a help file with the given keyword from our records; if it is 
 // persistent, delete it from disc as well
 void remove_help(const char *keyword);

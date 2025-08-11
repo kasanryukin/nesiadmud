@@ -400,6 +400,24 @@ void *zoneRemoveType(ZONE_DATA *zone, const char *type, const char *key) {
   }
 }
 
+//
+// Reload a zone type from disk without deleting the file. This drops the
+// cached entry from memory (if present), clears its key, and then re-reads
+// the file to repopulate the cache.
+void *zoneReloadType(ZONE_DATA *zone, const char *type, const char *key) {
+  ZONE_TYPE_DATA *tdata = hashGet(zone->type_table, type);
+  if(tdata == NULL)
+    return NULL;
+  else {
+    // remove existing cached data if present (non-destructive to disk)
+    void *old = hashRemove(tdata->key_map, key);
+    if(old != NULL)
+      do_zone_setkey(tdata, old, "");
+    // load fresh from disk and cache it
+    return zoneLoadType(zone, type, key);
+  }
+}
+
 void zonePutType(ZONE_DATA *zone, const char *type, const char *key,
 		 void *data) {
   ZONE_TYPE_DATA *tdata = hashGet(zone->type_table, type);

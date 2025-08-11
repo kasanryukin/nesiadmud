@@ -1,0 +1,28 @@
+keywords  : edit, redit, medit, oedit, tedit, dedit, zedit, socedit, hedit
+info      :~
+  Please see help OLC for all available commands.
+  
+  As a builder, you can create and modify zone content using the edit commands.
+  These commands provide interactive interfaces for designing rooms, objects,
+  mobiles, triggers, dialogs, socials, zones, and help files. There is an edit
+  command for each major type of content.
+  
+  edit commands are: redit, medit, oedit, tedit, dedit, zedit, socedit, and hedit.
+  Syntax is as follows: <edit command> <reference>
+  
+  If the reference does not exist, a new prototype will be created. If it
+  exists, you will edit the existing prototype.
+  
+  Examples:
+    redit tavern         - Edit or create room prototype 'tavern'
+    medit guard          - Edit or create mobile prototype 'guard'
+    oedit sword          - Edit or create object prototype 'sword'
+    tedit death_trigger  - Edit or create trigger prototype 'death_trigger'
+    dedit shop_dialog    - Edit or create dialog prototype 'shop_dialog'
+    zedit fooland        - Edit zone 'fooland'
+    socedit smile        - Edit or create social 'smile'
+    hedit OLC            - Edit or create help file 'OLC'
+  
+  To create a new zone, use: zedit new <zone key>
+user_group: builder
+-

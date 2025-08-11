@@ -1,12 +1,22 @@
-keywords  : delete, odelete, mdelete, rdelete, ddelete, tdelete
+keywords  : delete, rdelete, mdelete, odelete, tdelete, ddelete, hdelete
 info      :~
-  As a builder, you may at times create rooms, objects, mobiles, triggers,
-  etc... that you do not want to be part of your zone. You can delete these
-  things with the line of delete functions available. There should be one for
-  each major type of editable zone content. When deleting rooms, anyone in the
-  room will be removed from the game, and sockets will be disconnected.
+  Please see help OLC for all available commands.
   
-  delete commands are: odelete, mdelete, rdelete, tdelete, and ddelete. Syntax
-  is as follows: <delete command> <reference to delete>
+  As a builder, you may at times create rooms, objects, mobiles, triggers,
+  help files, etc... that you do not want to be part of your zone. You can
+  delete these things with the line of delete functions available. There should
+  be one for each major type of editable content. When deleting rooms, anyone
+  in the room will be removed from the game, and sockets will be disconnected.
+  
+  delete commands are: rdelete, mdelete, odelete, tdelete, ddelete, and hdelete.
+  Syntax is as follows: <delete command> <reference to delete>
+  
+  Examples:
+    rdelete tavern       - Delete room prototype 'tavern'
+    mdelete guard        - Delete mobile prototype 'guard'
+    odelete sword        - Delete object prototype 'sword'
+    tdelete death_trap   - Delete trigger prototype 'death_trap'
+    ddelete shop_talk    - Delete dialog prototype 'shop_talk'
+    hdelete old_help     - Delete help file 'old_help'
 user_group: builder
 -

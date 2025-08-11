@@ -1,0 +1,25 @@
+keywords  : list, rlist, mlist, olist, tlist, dlist, zlist
+info      :~
+  Please see help OLC for all available commands.
+  
+  As a builder, you can view all prototypes of a specific type within a zone
+  using the list commands. These commands display all available content for
+  editing and reference. There is a list command for each major type of
+  zone content.
+  
+  list commands are: rlist, mlist, olist, tlist, dlist, and zlist. Syntax
+  is as follows:
+    <list command> <zone key>
+  
+  The zone list command (zlist) does not require a zone argument and shows
+  all available zones.
+  
+  Examples:
+    rlist fooland    - List all room prototypes in the fooland zone
+    mlist fooland    - List all mobile prototypes in the fooland zone
+    olist fooland    - List all object prototypes in the fooland zone
+    tlist fooland    - List all trigger prototypes in the fooland zone
+    dlist fooland    - List all dialog prototypes in the fooland zone
+    zlist            - List all zones
+user_group: builder
+-

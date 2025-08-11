@@ -24,6 +24,7 @@
 #include "../handler.h"
 #include "../object.h"
 #include "../inform.h"
+#include "../body.h"
 #include "olc.h"
 #include "olc_extender.h"
 
@@ -444,6 +445,143 @@ COMMAND(cmd_rreload) {
   }
 }
 
+//
+// reload a mobile prototype from disk and optionally replace live instances
+void reload_mobile(const char *key, bool replace_room, bool replace_all, CHAR_DATA *ch) {
+  // reload the prototype from disk
+  PROTO_DATA *proto = worldReloadType(gameworld, "mproto", key);
+  if(proto == NULL)
+    return;
+
+  // if no replacement requested, we're done
+  if(!replace_room && !replace_all)
+    return;
+
+  // get current room for room-based filtering
+  ROOM_DATA *current_room = (replace_room && ch) ? charGetRoom(ch) : NULL;
+
+  // find and replace live mobiles
+  LIST_ITERATOR *mob_i = newListIterator(mobile_list);
+  CHAR_DATA *mob = NULL;
+  LIST *to_replace = newList();
+  
+  ITERATE_LIST(mob, mob_i) {
+    if(charIsNPC(mob) && !strcmp(charGetClass(mob), key)) {
+      // if replace_room is true, only include mobiles in the current room
+      if(replace_all || (replace_room && charGetRoom(mob) == current_room)) {
+        listPut(to_replace, mob);
+      }
+    }
+  } deleteListIterator(mob_i);
+
+  // replace each mobile
+  LIST_ITERATOR *replace_i = newListIterator(to_replace);
+  ITERATE_LIST(mob, replace_i) {
+    ROOM_DATA *room = charGetRoom(mob);
+    if(room == NULL) continue;
+    
+    // create new mobile from reloaded prototype
+    CHAR_DATA *new_mob = protoMobRun(proto);
+    if(new_mob != NULL) {
+      // transfer inventory from old to new
+      LIST *inv = charGetInventory(mob);
+      OBJ_DATA *obj = NULL;
+      while((obj = listPop(inv)) != NULL) {
+        obj_from_char(obj);
+        obj_to_char(obj, new_mob);
+      }
+      
+      // transfer equipment from old to new
+      LIST *eq = bodyGetAllEq(charGetBody(mob));
+      while((obj = listPop(eq)) != NULL) {
+        const char *positions = bodyEquippedWhere(charGetBody(mob), obj);
+        if(try_unequip(mob, obj)) {
+          try_equip(new_mob, obj, positions, "");
+        }
+      } deleteList(eq);
+      
+      // place new mobile in same room
+      char_to_room(new_mob, room);
+      
+      // remove old mobile
+      extract_mobile(mob);
+    }
+  } deleteListIterator(replace_i);
+  deleteList(to_replace);
+}
+
+//
+// reload an object prototype from disk and optionally replace live instances
+void reload_object(const char *key, bool replace_room, bool replace_all, CHAR_DATA *ch) {
+  // reload the prototype from disk
+  PROTO_DATA *proto = worldReloadType(gameworld, "oproto", key);
+  if(proto == NULL)
+    return;
+
+  // if no replacement requested, we're done
+  if(!replace_room && !replace_all)
+    return;
+
+  // get current room for room-based filtering
+  ROOM_DATA *current_room = (replace_room && ch) ? charGetRoom(ch) : NULL;
+
+  // find and replace live objects
+  LIST_ITERATOR *obj_i = newListIterator(object_list);
+  OBJ_DATA *obj = NULL;
+  LIST *to_replace = newList();
+  
+  ITERATE_LIST(obj, obj_i) {
+    if(!strcmp(objGetClass(obj), key)) {
+      // if replace_room is true, only include objects in the current room
+      if(replace_all || (replace_room && objGetRoom(obj) == current_room)) {
+        listPut(to_replace, obj);
+      }
+    }
+  } deleteListIterator(obj_i);
+
+  // replace each object
+  LIST_ITERATOR *replace_i = newListIterator(to_replace);
+  ITERATE_LIST(obj, replace_i) {
+    ROOM_DATA *room = objGetRoom(obj);
+    CHAR_DATA *carrier = objGetCarrier(obj);
+    CHAR_DATA *wearer = objGetWearer(obj);
+    OBJ_DATA *container = objGetContainer(obj);
+    
+    // create new object from reloaded prototype
+    OBJ_DATA *new_obj = protoObjRun(proto);
+    if(new_obj != NULL) {
+      // transfer contents from old to new (for containers/furniture)
+      LIST *contents = objGetContents(obj);
+      OBJ_DATA *content = NULL;
+      while((content = listPop(contents)) != NULL) {
+        obj_from_obj(content);
+        obj_to_obj(content, new_obj);
+      }
+      
+      // place new object in same location as old
+      if(room != NULL) {
+        obj_to_room(new_obj, room);
+      } else if(carrier != NULL) {
+        obj_to_char(new_obj, carrier);
+      } else if(wearer != NULL) {
+        // try to equip in same position
+        const char *positions = bodyEquippedWhere(charGetBody(wearer), obj);
+        if(try_unequip(wearer, obj)) {
+          obj_to_char(new_obj, wearer);
+          try_equip(wearer, new_obj, positions, "");
+        } else {
+          obj_to_char(new_obj, wearer);
+        }
+      } else if(container != NULL) {
+        obj_to_obj(new_obj, container);
+      }
+      
+      // remove old object
+      extract_obj(obj);
+    }
+  } deleteListIterator(replace_i);
+  deleteList(to_replace);
+}
 
 //
 // trigger all of a specified zone's reset scripts and such. If no vnum is
@@ -467,6 +605,182 @@ COMMAND(cmd_zreset) {
     send_to_char(ch, "%s has been reset.\r\n", zoneGetName(zone));
     zoneForceReset(zone);
   }
+}
+
+//
+// reload a mobile prototype from disk and optionally replace live instances
+// usage: mreload <mobile> [room|all]
+COMMAND(cmd_mreload) {
+  PROTO_DATA *proto = NULL;
+  ZONE_DATA *zone = NULL;
+  char *key_arg = NULL;
+  char *option_arg = NULL;
+  bool replace_room = TRUE;  // default: replace in current room
+  bool replace_all = FALSE;
+  
+  // parse arguments
+  if(!arg || !*arg) {
+    send_to_char(ch, "What is the name of the mobile you want to reload?\r\n");
+    return;
+  }
+  
+  // split arguments
+  key_arg = strdup(arg);
+  option_arg = strchr(key_arg, ' ');
+  if(option_arg) {
+    *option_arg = '\0';
+    option_arg++;
+    while(isspace(*option_arg)) option_arg++;
+    
+    if(!strcasecmp(option_arg, "all")) {
+      replace_all = TRUE;
+      replace_room = FALSE;
+    } else if(!strcasecmp(option_arg, "room")) {
+      replace_room = TRUE;
+      replace_all = FALSE;
+    } else {
+      send_to_char(ch, "Invalid option. Use 'room' or 'all'.\r\n");
+      free(key_arg);
+      return;
+    }
+  }
+  
+  // validate key format
+  if(key_malformed(key_arg)) {
+    send_to_char(ch, "You entered a malformed content key.\r\n");
+    free(key_arg);
+    return;
+  }
+  
+  // parse key using medit-style resolution
+  char locale[SMALL_BUFFER];
+  char name[SMALL_BUFFER];
+  if(!parse_worldkey_relative(ch, key_arg, name, locale)) {
+    send_to_char(ch, "Which mobile are you trying to reload?\r\n");
+    free(key_arg);
+    return;
+  }
+  
+  // check zone permissions
+  if((zone = worldGetZone(gameworld, locale)) == NULL) {
+    send_to_char(ch, "That zone does not exist!\r\n");
+    free(key_arg);
+    return;
+  }
+  
+  if(!canEditZone(zone, ch)) {
+    send_to_char(ch, "You are not authorized to edit that zone.\r\n");
+    free(key_arg);
+    return;
+  }
+  
+  // check if prototype exists
+  const char *full_key = get_fullkey(name, locale);
+  if((proto = worldGetType(gameworld, "mproto", full_key)) == NULL) {
+    send_to_char(ch, "No prototype for that mobile exists.\r\n");
+    free(key_arg);
+    return;
+  }
+  
+  // perform the reload
+  reload_mobile(full_key, replace_room, replace_all, ch);
+  
+  if(replace_all)
+    send_to_char(ch, "Mobile prototype reloaded. All instances replaced.\r\n");
+  else if(replace_room)
+    send_to_char(ch, "Mobile prototype reloaded. Room instances replaced.\r\n");
+  else
+    send_to_char(ch, "Mobile prototype reloaded.\r\n");
+  
+  free(key_arg);
+}
+
+//
+// reload an object prototype from disk and optionally replace live instances
+// usage: oreload <object> [room|all]
+COMMAND(cmd_oreload) {
+  PROTO_DATA *proto = NULL;
+  ZONE_DATA *zone = NULL;
+  char *key_arg = NULL;
+  char *option_arg = NULL;
+  bool replace_room = TRUE;  // default: replace in current room
+  bool replace_all = FALSE;
+  
+  // parse arguments
+  if(!arg || !*arg) {
+    send_to_char(ch, "What is the name of the object you want to reload?\r\n");
+    return;
+  }
+  
+  // split arguments
+  key_arg = strdup(arg);
+  option_arg = strchr(key_arg, ' ');
+  if(option_arg) {
+    *option_arg = '\0';
+    option_arg++;
+    while(isspace(*option_arg)) option_arg++;
+    
+    if(!strcasecmp(option_arg, "all")) {
+      replace_all = TRUE;
+      replace_room = FALSE;
+    } else if(!strcasecmp(option_arg, "room")) {
+      replace_room = TRUE;
+      replace_all = FALSE;
+    } else {
+      send_to_char(ch, "Invalid option. Use 'room' or 'all'.\r\n");
+      free(key_arg);
+      return;
+    }
+  }
+  
+  // validate key format
+  if(key_malformed(key_arg)) {
+    send_to_char(ch, "You entered a malformed content key.\r\n");
+    free(key_arg);
+    return;
+  }
+  
+  // parse key using oedit-style resolution
+  char locale[SMALL_BUFFER];
+  char name[SMALL_BUFFER];
+  if(!parse_worldkey_relative(ch, key_arg, name, locale)) {
+    send_to_char(ch, "Which object are you trying to reload?\r\n");
+    free(key_arg);
+    return;
+  }
+  
+  // check zone permissions
+  if((zone = worldGetZone(gameworld, locale)) == NULL) {
+    send_to_char(ch, "That zone does not exist!\r\n");
+    free(key_arg);
+    return;
+  }
+  
+  if(!canEditZone(zone, ch)) {
+    send_to_char(ch, "You are not authorized to edit that zone.\r\n");
+    free(key_arg);
+    return;
+  }
+  
+  // check if prototype exists
+  const char *full_key = get_fullkey(name, locale);
+  if((proto = worldGetType(gameworld, "oproto", full_key)) == NULL) {
+    send_to_char(ch, "No prototype for that object exists.\r\n");
+    free(key_arg);
+    return;
+  }
+  
+  // perform the reload
+  reload_object(full_key, replace_room, replace_all, ch);
+  
+  if(replace_all)
+    send_to_char(ch, "Object prototype reloaded. All instances replaced.\r\n");
+  else if(replace_room)
+    send_to_char(ch, "Object prototype reloaded. Room instances replaced.\r\n");
+  else
+    send_to_char(ch, "Object prototype reloaded.\r\n");
+  
+  free(key_arg);
 }
 
 COMMAND(cmd_rdelete) {
@@ -673,6 +987,8 @@ void init_olc2() {
   add_cmd("odelete", NULL, cmd_odelete, "builder", FALSE);
   add_cmd("orename", NULL, cmd_orename, "builder", FALSE);
   add_cmd("rreload", NULL, cmd_rreload, "builder", FALSE);
+  add_cmd("mreload", NULL, cmd_mreload, "builder", FALSE);
+  add_cmd("oreload", NULL, cmd_oreload, "builder", FALSE);
   add_cmd("rlist",   NULL, cmd_rlist,   "builder", FALSE);
   add_cmd("rdelete", NULL, cmd_rdelete, "builder", FALSE);
   add_cmd("rrename", NULL, cmd_rrename, "builder", FALSE);

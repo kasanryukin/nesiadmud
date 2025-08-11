@@ -1,0 +1,68 @@
+keywords  : reload, rreload, mreload, oreload, hreload
+info      :~
+  Please see help OLC for all available commands.
+  
+  As a builder, you may need to reload prototypes and files from disk to update
+  their in-memory cache and optionally replace live instances. Reload commands
+  allow you to refresh content after it has been modified externally. This is
+  useful when files are edited outside the MUD or when you want to revert
+  changes made in editors.
+  
+  RELOAD COMMAND DETAILS:
+  
+  rreload <room>
+    Reloads a room prototype from disk and replaces the live room instance.
+    The room is immediately updated with new descriptions, exits, and settings.
+    Any players or objects in the room remain but see the updated environment.
+    
+    Syntax: rreload <room_key>
+    Example: rreload tavern
+    
+  mreload <mobile> [room|all]
+    Reloads a mobile prototype from disk and optionally replaces live instances.
+    Equipment and inventory are preserved during replacement.
+    
+    Options:
+      room (default) - Replace mobile instances in current room only
+      all           - Replace all mobile instances across the entire MUD
+    
+    Syntax: mreload <mobile_key> [room|all]
+    Examples:
+      mreload guard         - Reload guard mproto, replace instances in room
+      mreload guard room    - Same as above (explicit)
+      mreload guard all     - Reload guard mproto, replace all instances in MUD
+      mreload guard@zone    - Full zone specification
+    
+  oreload <object> [room|all]
+    Reloads an object prototype from disk and optionally replaces live instances.
+    Container contents and furniture items are preserved during replacement.
+    
+    Options:
+      room (default) - Replace object instances in current room only
+      all           - Replace all object instances across the entire MUD
+    
+    Syntax: oreload <object_key> [room|all]
+    Examples:
+      oreload sword         - Reload sword oproto, replace instances in room
+      oreload sword room    - Same as above (explicit)
+      oreload sword all     - Reload sword oproto, replace all instances in MUD
+      oreload bag@zone      - Full zone specification
+    
+  hreload <help>
+    Reloads a help file from disk, updating the in-memory help system.
+    No live instances to replace - help files are pure data.
+    
+    Syntax: hreload <help_keyword>
+    Examples:
+      hreload OLC           - Reload OLC help file from disk
+      hreload reload        - Reload this help file from disk
+      hreload edit          - Reload edit help file from disk
+  
+  IMPORTANT NOTES:
+  - rreload has no room/all options - it always replaces the single room instance
+  - mreload and oreload support room/all options for instance replacement control
+  - hreload has no options - it simply reloads the help file data
+  - All reload commands preserve existing relationships (equipment, contents, etc.)
+  - Reload commands require builder permissions and zone edit access
+user_group: builder
+-

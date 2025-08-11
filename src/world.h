@@ -36,6 +36,7 @@ void worldForceReset(WORLD_DATA *world);
 // new world interface
 void    *worldGetType(WORLD_DATA *world, const char *type, const char *key);
 void *worldRemoveType(WORLD_DATA *world, const char *type, const char *key);
+void *worldReloadType(WORLD_DATA *world, const char *type, const char *key);
 void    worldSaveType(WORLD_DATA *world, const char *type, const char *key);
 void     worldPutType(WORLD_DATA *world, const char *type, const char *key,
 		      void *data);
