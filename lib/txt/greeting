@@ -1,14 +1,14 @@
 {n
-                 NakedMud(tm) v4.1.2, content-less MUD engine.
-         {G _______          __              .___ _____            .___{n 
-         {G \      \ _____  |  | __ ____   __| _//     \  __ __  __| _/{n
-         {G /   |   \\__  \ |  |/ // __ \ / __ |/  \ /  \|  |  \/ __ |{n
-         {G/    |    \/ __ \|    <\  ___// /_/ /    Y    \  |  / /_/ |{n
-         {G\____|__  (____  /__|_ \\___  >____ \____|__  /____/\____ |{n
-         {G        \/     \/     \/    \/     \/       \/           \/{n
-                              Maintainer: Limping Ninja
-                                kevin@limpingninja.com
-                       https://github.com/limpingninja/nakedmud
+                 {CNakedMud{c({Wtm{c) v4.1.2, content-less MUD engine.{n
+         {R _______          __              .___ {Y_____            .___{n 
+         {R \      \ _____  |  | __ ____   __| _/{Y/     \  __ __  __| _/{n
+         {R /   |   \\__  \ |  |/ // __ \ / __ |{Y/  \ /  \|  |  \/ __ |{n
+         {R/    |    \/ __ \|    <\  ___// /_/ {Y/    Y    \  |  / /_/ |{n
+         {R\____|__  (____  /__|_ \\___  >____ {Y\____|__  /____/\____ |{n
+         {R        \/     \/     \/    \/     \/{Y       \/           \/{n
+                              {WMaintainer{n: {gLimping Ninja{n
+                                {ckevin@limpingninja.com{n
+                       {chttps://github.com/limpingninja/nakedmud{n
 
-               Originally by Geoff Hollis, and based on SocketMud(tm) by
-                               Brian Graversen
+               {wOriginally by Geoff Hollis, and based on SocketMud(tm) by{n
+                               {wBrian Graversen{n
