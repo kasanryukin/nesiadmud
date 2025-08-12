@@ -1,11 +1,18 @@
-Welcome to NakedMud(tm)
+{W-----------------------------------------------------------------------------{n
+{W                        Welcome to NakedMud v4.1.2!{n
+{W-----------------------------------------------------------------------------{n
+{YGreetings, Builder!{n Welcome to the most advanced content-less MUD engine.
+Whether you're a seasoned world architect or just starting your journey into
+MUD development, you've chosen the perfect platform for bringing your creative
+visions to life.
 
-Glad you could get it up and running! The examples zone is a proof of concept
-for the various building utilities, such as triggers and zone reset commands. 
-Look around, and try HELP OLC if you are wanting to look at anything in detail.
-
-Comments, questions, and concerns should be addressed to:
-Geoff Hollis
-hollisgf@email.uc.edu
-http://www.uc.edu/~hollisgf/
-
+{REXCITING NEW FEATURES:{n
+{G• Live Reload System{n - Update your world without reboots!
+  {c→ {wrreload <room>{n, {wmreload <mobile>{n, {woreload <object>{n, {whreload <help>{n
+{G• Advanced Trigger System{n - Create dynamic, interactive experiences
+  {c→ {wpre_command{n and {wheartbeat{n triggers for NPCs and objects
+{G• Enhanced Help System{n - Organized, role-based command reference
+  {c→ Try {whelp{n to explore the new categorized interface
+{W-----------------------------------------------------------------------------{n
+{wMaintained by Limping Ninja | kevin@limpingninja.com{n
+{whttps://github.com/limpingninja/nakedmud{n
