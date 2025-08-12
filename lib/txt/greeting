@@ -1,9 +1,14 @@
 {n
-                 NakedMud(tm) v3.8, content-less MUD engine.
+                 NakedMud(tm) v4.1.2, content-less MUD engine.
+         {G _______          __              .___ _____            .___{n 
+         {G \      \ _____  |  | __ ____   __| _//     \  __ __  __| _/{n
+         {G /   |   \\__  \ |  |/ // __ \ / __ |/  \ /  \|  |  \/ __ |{n
+         {G/    |    \/ __ \|    <\  ___// /_/ /    Y    \  |  / /_/ |{n
+         {G\____|__  (____  /__|_ \\___  >____ \____|__  /____/\____ |{n
+         {G        \/     \/     \/    \/     \/       \/           \/{n
+                              Maintainer: Limping Ninja
+                                kevin@limpingninja.com
+                       https://github.com/limpingninja/nakedmud
 
-                                  Created By
-                                 Geoff Hollis
-                            hollisgf@email.uc.edu
-
-                          Based on SocketMud(tm) by
+               Originally by Geoff Hollis, and based on SocketMud(tm) by
                                Brian Graversen
