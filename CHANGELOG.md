@@ -1,3 +1,17 @@
+# NakedMud v4.1.3
+**Git commits:** c3cf689..69fff5b
+Compiled and tested on multiple platforms
+### ADDED
+- **Character bodysize property** - new Python-accessible character attribute for size-based mechanics
+### FIXED
+- **Copyover mudlib path preservation** - custom mudlib paths now persist through server restarts
+### MODIFIED
+- Enhanced greeting screen and MOTD with improved visual formatting and updated content
+### UPGRADE NOTES
+- **Critical copyover fix:** Previous versions had a major bug where copyovers would fail for servers running with custom mudlib paths (using `--mudlib-path`). This has been resolved - custom mudlib paths now persist correctly through copyovers.
+
+---
+
 # NakedMud v4.1.2
 **Git commits:** e0d4174..c3cf689
 Compiled and tested on multiple platforms
