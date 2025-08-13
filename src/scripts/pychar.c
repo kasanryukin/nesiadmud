@@ -247,6 +247,17 @@ PyObject *PyChar_getposition(PyChar *self, void *closure) {
   else           return NULL;
 }
 
+PyObject *PyChar_getbodysize(PyChar *self, void *closure) {
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch == NULL)
+    return NULL;
+  BODY_DATA *body = charGetBody(ch);
+  if(body == NULL)
+    return Py_BuildValue("");
+  int sz = bodyGetSize(body);
+  return Py_BuildValue("s", bodysizeGetName(sz));
+}
+
 PyObject *PyChar_getroom(PyChar *self, void *closure) {
   CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
   if(ch == NULL)
@@ -436,6 +447,35 @@ PyObject *PyChar_getsocket(PyChar *self, void *closure) {
     return -1;                                                                 \
   }                                                                            
 
+
+int PyChar_setbodysize(PyChar *self, PyObject *value, void *closure) {
+  if (value == NULL) {
+    PyErr_Format(PyExc_TypeError, "Cannot delete character's body size");
+    return -1;
+  }
+
+  if (!PyUnicode_Check(value)) {
+    PyErr_Format(PyExc_TypeError, "Body size must be a string");
+    return -1;
+  }
+
+  const char *sz_name = PyUnicode_AsUTF8(value);
+  int sz_num = bodysizeGetNum(sz_name);
+  if (sz_num == BODYSIZE_NONE) {
+    PyErr_Format(PyExc_ValueError, "Invalid body size: %s", sz_name);
+    return -1;
+  }
+
+  CHAR_DATA *ch;
+  PYCHAR_CHECK_CHAR_EXISTS(self->uid, ch);
+  BODY_DATA *body = charGetBody(ch);
+  if(body == NULL) {
+    PyErr_Format(PyExc_RuntimeError, "Character has no body to set size on");
+    return -1;
+  }
+  bodySetSize(body, sz_num);
+  return 0;
+}
 
 int PyChar_setname(PyChar *self, PyObject *value, void *closure) {
   if (value == NULL) {
@@ -2154,6 +2194,8 @@ PyMODINIT_FUNC PyInit_PyChar(void) {
     "Integer value representing how hidden the character is. Default is 0.");
   PyChar_addGetSetter("weight", PyChar_getweight, PyChar_setweight,
     "Floating point value representing how heavy the character is.");
+  PyChar_addGetSetter("bodysize", PyChar_getbodysize, PyChar_setbodysize,
+    "The character body's size. One of: diminuitive, tiny, small, medium, large, huge, gargantuan, collosal.");
   PyChar_addGetSetter("age", PyChar_getage, NULL,
     "Value is the difference between the character's creation time and the\n"
     "current system time. Immutable.");

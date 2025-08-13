@@ -108,7 +108,7 @@ int main(int argc, char **argv)
   /************************************************************/
   /*                      PARSE OPTIONS                       */
   /************************************************************/
-  for(i = 1; i < argc-1; i++) {
+  for(i = 1; i < argc; i++) {
     if(!strcasecmp(argv[i], "-copyover")) {
       fCopyOver = TRUE;
       control = atoi(argv[++i]);
@@ -131,10 +131,8 @@ int main(int argc, char **argv)
       set_mudlib_path(mudlib_path);
     }
     else {
-      char buf[SMALL_BUFFER];
-      sprintf(buf, "Invalid argument, %s (#%d)\r\n", argv[i], i);
-      perror(buf);
-      return 1;
+      // Unrecognized argument - assume it's the port number and stop processing
+      break;
     }
   }
 
@@ -315,14 +313,10 @@ int main(int argc, char **argv)
   worldForceReset(gameworld);
 
   // port number not supplied... just use default
-  if(i > argc-1)
+  if(i >= argc)
     mudport = LISTENING_PORT;
-  else if(i == argc-1)
-    mudport = atoi(argv[argc-1]);
-  else {
-    perror("Arguments were not parsed properly. Could not start MUD.\r\n");
-    return 1;
-  }
+  else
+    mudport = atoi(argv[i]);
 
   /**********************************************************************/
   /*                  HANDLE THE SOCKET STARTUP STUFF                   */

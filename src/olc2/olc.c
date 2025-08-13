@@ -431,6 +431,13 @@ COMMAND(cmd_rreload) {
   else if(!worldRoomLoaded(gameworld, key))
     send_to_char(ch, "No room with that key is currently loaded.\r\n");
   else {
+    // reload the prototype from disk first
+    proto = worldReloadType(gameworld, "rproto", key);
+    if(proto == NULL) {
+      send_to_char(ch, "There was an error reloading the room prototype from disk.\r\n");
+      return;
+    }
+    
     // try running the proto to get our new room...
     old_room = worldGetRoom(gameworld, key);
     new_room = protoRoomRun(proto);

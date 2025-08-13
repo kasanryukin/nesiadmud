@@ -1088,7 +1088,16 @@ void do_copyover(void) {
   // exec - descriptors are inherited
   sprintf(control_buf, "%d", control);
   sprintf(port_buf, "%d", mudport);
-  execl(EXE_FILE, "NakedMud", "-copyover", control_buf, port_buf, NULL);
+  
+  // check if a custom mudlib path was set and preserve it
+  const char *current_mudlib = get_mudlib_path();
+  if(current_mudlib && strcmp(current_mudlib, "../lib") != 0) {
+    // custom mudlib path was set, preserve it in copyover
+    execl(EXE_FILE, "NakedMud", "-copyover", control_buf, "--mudlib-path", current_mudlib, port_buf, NULL);
+  } else {
+    // using default mudlib path
+    execl(EXE_FILE, "NakedMud", "-copyover", control_buf, port_buf, NULL);
+  }
 }
 
 

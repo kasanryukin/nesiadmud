@@ -188,5 +188,4 @@ def chk_conscious(ch, cmd):
         ch.send("You cannot do that while " + ch.pos + "!")
         return False
 
-attributes = dir(mud)
-print(attributes)
+
