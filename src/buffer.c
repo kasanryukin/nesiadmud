@@ -233,7 +233,14 @@ void bufferFormatFromPy(BUFFER *buf) {
 void bufferFormat(BUFFER *buf, int max_width, int indent) {
   char formatted[(buf->len * 3)/2];
   bool needs_capital = TRUE, needs_indent = FALSE;
+  bool preserve_formatting = FALSE;
   int fmt_i = 0, buf_i = 0, col = 0, next_space = 0;
+
+  // check for preserve formatting prefix @@@
+  if(buf->len >= 3 && strncmp(buf->data, "@@@", 3) == 0) {
+    preserve_formatting = TRUE;
+    buf_i = 3; // skip the @@@ prefix
+  }
 
   // put in our indent
   if(indent > 0) {
@@ -243,20 +250,25 @@ void bufferFormat(BUFFER *buf, int max_width, int indent) {
     fmt_i += indent;
     col   += indent;
 
-    // skip the leading spaces
-    while(isspace(buf->data[buf_i]) && buf->data[buf_i] != '\0')
-      buf_i++;
+    // skip the leading spaces (unless preserving formatting)
+    if(!preserve_formatting) {
+      while(isspace(buf->data[buf_i]) && buf->data[buf_i] != '\0')
+        buf_i++;
+    }
   }
 
   for(; buf->data[buf_i] != '\0'; buf_i++) {
     // we have to put a newline in because the word won't fit on the line
-    next_space = next_space_in(buf->data + buf_i);
-    if(next_space == -1)
-      next_space = buf->len - buf_i;
-    if(col + next_space > max_width-1) {
-      formatted[fmt_i] = '\r'; fmt_i++;
-      formatted[fmt_i] = '\n'; fmt_i++;
-      col = 0;
+    // (but only do word-wrapping if not preserving formatting)
+    if(!preserve_formatting) {
+      next_space = next_space_in(buf->data + buf_i);
+      if(next_space == -1)
+        next_space = buf->len - buf_i;
+      if(col + next_space > max_width-1) {
+        formatted[fmt_i] = '\r'; fmt_i++;
+        formatted[fmt_i] = '\n'; fmt_i++;
+        col = 0;
+      }
     }
 
     char ch = buf->data[buf_i];
@@ -272,34 +284,43 @@ void bufferFormat(BUFFER *buf, int max_width, int indent) {
       col = 0;
       continue;
     }
-    // no spaces on newlines or ends of lines
-    else if(isspace(ch) && (col == 0 || col == max_width-1))
+    // no spaces on newlines or ends of lines (unless preserving formatting)
+    else if(!preserve_formatting && isspace(ch) && (col == 0 || col == max_width-1))
       continue;
-    // we will do our own sentance formatting
-    else if(needs_capital && isspace(ch))
+    // we will do our own sentance formatting (unless preserving formatting)
+    else if(!preserve_formatting && needs_capital && isspace(ch))
       continue;
-    // delete multiple spaces
-    else if(isspace(ch) && fmt_i > 0 && isspace(formatted[fmt_i-1]))
+    // delete multiple spaces (unless preserving formatting)
+    else if(!preserve_formatting && isspace(ch) && fmt_i > 0 && isspace(formatted[fmt_i-1]))
       continue;
     // treat newlines as spaces (to separate words on different lines), 
     // since we are creating our own newlines
+    // UNLESS we're preserving formatting with @@@
     else if(ch == '\r' || ch == '\n') {
-      // we've already spaced
-      if(col == 0)
-	continue;
-      formatted[fmt_i] = ' ';
-      col++;
+      if(preserve_formatting) {
+        // preserve the newline character as-is
+        formatted[fmt_i] = ch;
+        if(ch == '\n') col = 0; // reset column on newline
+      } else {
+        // we've already spaced
+        if(col == 0)
+          continue;
+        formatted[fmt_i] = ' ';
+        col++;
+      }
     }
     // if someone is putting more than 1 sentence delimiter, we
     // need to catch it so we will still capitalize the next word
-    else if(strchr("?!.", ch) && isspace(buf->data[buf_i + 1])) {
+    // (but skip this if preserving formatting)
+    else if(!preserve_formatting && strchr("?!.", ch) && isspace(buf->data[buf_i + 1])) {
       needs_capital = TRUE;
       needs_indent  = TRUE;
       formatted[fmt_i] = ch;
       col++;
     }
     // see if we are the first letter after the end of a sentence
-    else if(needs_capital) {
+    // (but skip capitalization/indentation if preserving formatting)
+    else if(!preserve_formatting && needs_capital) {
       // check if indenting will make it so we don't
       // have enough room to print the word. If that's the
       // case, then skip down to a new line instead
