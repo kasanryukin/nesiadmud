@@ -312,6 +312,10 @@ int main(int argc, char **argv)
   log_string("Force-resetting world");
   worldForceReset(gameworld);
 
+  // run startup hooks for modules
+  log_string("Running startup hooks");
+  hookRun("startup", "");
+
   // port number not supplied... just use default
   if(i >= argc)
     mudport = LISTENING_PORT;

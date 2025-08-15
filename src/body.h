@@ -209,4 +209,13 @@ LIST *bodyGetAllEq(BODY_DATA *B);
  */
 int numBodyparts(const BODY_DATA *B);
 
+// Dynamic body size and position type management
+void init_body_dynamic();
+bool body_add_size(const char *size_name);
+bool body_remove_size(const char *size_name);
+bool body_add_position_type(const char *pos_name);
+bool body_remove_position_type(const char *pos_name);
+LIST *body_get_all_sizes();
+LIST *body_get_all_position_types();
+
 #endif // __BODY_H

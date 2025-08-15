@@ -311,6 +311,31 @@ void worn_add_type(const char *type, const char *required_positions) {
   hashPut(worn_table, type, newWornEntry(type, required_positions));
 }
 
+//*****************************************************************************
+// system-wide worn type management functions
+//*****************************************************************************
+
+LIST *worn_get_all_types(void) {
+  return hashCollect(worn_table);
+}
+
+bool worn_type_exists(const char *type) {
+  return hashIn(worn_table, type);
+}
+
+int worn_get_type_count(void) {
+  return hashSize(worn_table);
+}
+
+bool worn_remove_type(const char *type) {
+  WORN_ENTRY *entry = hashRemove(worn_table, type);
+  if(entry != NULL) {
+    deleteWornEntry(entry);
+    return TRUE;
+  }
+  return FALSE;
+}
+
 
 //
 // this will need to be called by init_items() in items/items.c

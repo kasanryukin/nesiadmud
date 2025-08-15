@@ -413,6 +413,123 @@ PyObject *PyChar_getbodyparts(PyChar *self, PyObject *args) {
   return list;
 }
 
+PyObject *PyChar_add_bodypart(PyChar *self, PyObject *args) {
+  char *name = NULL;
+  char *type_name = NULL;
+  int size = 0;
+  
+  if(!PyArg_ParseTuple(args, "ssi", &name, &type_name, &size)) {
+    PyErr_Format(PyExc_TypeError, "add_bodypart requires name, type, and size");
+    return NULL;
+  }
+  
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch == NULL) {
+    PyErr_Format(PyExc_RuntimeError, "Character does not exist");
+    return NULL;
+  }
+  
+  int type_num = bodyposGetNum(type_name);
+  if(type_num == BODYPOS_NONE) {
+    PyErr_Format(PyExc_ValueError, "Invalid body position type: %s", type_name);
+    return NULL;
+  }
+  
+  BODY_DATA *body = charGetBody(ch);
+  if(body == NULL) {
+    PyErr_Format(PyExc_RuntimeError, "Character has no body");
+    return NULL;
+  }
+  
+  bodyAddPosition(body, name, type_num, size);
+  return Py_BuildValue("i", 1);
+}
+
+PyObject *PyChar_remove_bodypart(PyChar *self, PyObject *args) {
+  char *name = NULL;
+  
+  if(!PyArg_ParseTuple(args, "s", &name)) {
+    PyErr_Format(PyExc_TypeError, "remove_bodypart requires body part name");
+    return NULL;
+  }
+  
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch == NULL) {
+    PyErr_Format(PyExc_RuntimeError, "Character does not exist");
+    return NULL;
+  }
+  
+  BODY_DATA *body = charGetBody(ch);
+  if(body == NULL) {
+    PyErr_Format(PyExc_RuntimeError, "Character has no body");
+    return NULL;
+  }
+  
+  bool success = bodyRemovePosition(body, name);
+  return Py_BuildValue("i", success);
+}
+
+PyObject *PyChar_get_bodypart_type(PyChar *self, PyObject *args) {
+  char *name = NULL;
+  
+  if(!PyArg_ParseTuple(args, "s", &name)) {
+    PyErr_Format(PyExc_TypeError, "get_bodypart_type requires body part name");
+    return NULL;
+  }
+  
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch == NULL) {
+    PyErr_Format(PyExc_RuntimeError, "Character does not exist");
+    return NULL;
+  }
+  
+  BODY_DATA *body = charGetBody(ch);
+  if(body == NULL) {
+    PyErr_Format(PyExc_RuntimeError, "Character has no body");
+    return NULL;
+  }
+  
+  int type_num = bodyGetPart(body, name);
+  if(type_num == BODYPOS_NONE) {
+    return Py_BuildValue("");
+  }
+  
+  const char *type_name = bodyposGetName(type_num);
+  return Py_BuildValue("s", type_name);
+}
+
+PyObject *PyChar_get_random_bodypart(PyChar *self, PyObject *args) {
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch == NULL) {
+    PyErr_Format(PyExc_RuntimeError, "Character does not exist");
+    return NULL;
+  }
+  
+  BODY_DATA *body = charGetBody(ch);
+  if(body == NULL) {
+    PyErr_Format(PyExc_RuntimeError, "Character has no body");
+    return NULL;
+  }
+  
+  const char *part = bodyRandPart(body, NULL);
+  if(part == NULL) {
+    return Py_BuildValue("");
+  }
+  
+  return Py_BuildValue("s", part);
+}
+
+PyObject *PyChar_reset_body(PyChar *self, PyObject *args) {
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch == NULL) {
+    PyErr_Format(PyExc_RuntimeError, "Character does not exist");
+    return NULL;
+  }
+  
+  charResetBody(ch);
+  return Py_BuildValue("i", 1);
+}
+
 PyObject *PyChar_getusergroups(PyChar *self, void *closure) {
   CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
   if(ch != NULL) 
@@ -2348,6 +2465,28 @@ PyMODINIT_FUNC PyInit_PyChar(void) {
     "copy()\n"
     "\n"
     "Returns a copy of the character.");
+  PyChar_addMethod("add_bodypart", PyChar_add_bodypart, METH_VARARGS,
+    "add_bodypart(name, type, size)\n"
+    "\n"
+    "Add a new body part to the character's body with the specified name,\n"
+    "type, and size.");
+  PyChar_addMethod("remove_bodypart", PyChar_remove_bodypart, METH_VARARGS,
+    "remove_bodypart(name)\n"
+    "\n"
+    "Remove a body part from the character's body. Returns True if successful,\n"
+    "False if the body part doesn't exist.");
+  PyChar_addMethod("get_bodypart_type", PyChar_get_bodypart_type, METH_VARARGS,
+    "get_bodypart_type(name)\n"
+    "\n"
+    "Return the type of the specified body part, or None if it doesn't exist.");
+  PyChar_addMethod("get_random_bodypart", PyChar_get_random_bodypart, METH_NOARGS,
+    "get_random_bodypart()\n"
+    "\n"
+    "Return a random body part name, weighted by the part's size.");
+  PyChar_addMethod("reset_body", PyChar_reset_body, METH_NOARGS,
+    "reset_body()\n"
+    "\n"
+    "Reset the character's body to their race's default body template.");
   PyChar_addMethod("do_trigs", py_gen_do_trigs, METH_VARARGS | METH_KEYWORDS,
     "do_trigs(type, ch=None, obj=None, room=None, exit=None, cmd=None,\n"
     "         arg=None, opts=None)\n\n"

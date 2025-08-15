@@ -120,7 +120,7 @@ def write_muddata(muddata_path, settings):
             'start_room', 'paragraph_indent', 'pulses_per_second', 'world_path',
             'listening_port', 'screen_width', 'message_somewhere', 'message_something',
             'message_someone', 'message_nothing_special', 'message_what',
-            'mud_name', 'puid'
+            'mud_name', 'required_pymodules', 'puid'
         ]
         
         # Calculate the maximum key length for alignment
@@ -236,6 +236,12 @@ def main():
         settings.get('start_room', 'tavern_entrance@examples')
     )
     
+    # Set required Python modules
+    settings['required_pymodules'] = get_input_with_default(
+        "Which Python modules are required for your MUD to function?",
+        settings.get('required_pymodules', 'account_handler,char_gen,display,utils,inform,colour')
+    )
+    
     # Reset PUID to 0 for fresh installation
     settings['puid'] = '0'
     
@@ -245,6 +251,7 @@ def main():
     print(f"{Colors.OKBLUE}Listening Port:{Colors.ENDC} {settings['listening_port']}")
     print(f"{Colors.OKBLUE}World Path:{Colors.ENDC} {settings['world_path']}")
     print(f"{Colors.OKBLUE}Start Room:{Colors.ENDC} {settings['start_room']}")
+    print(f"{Colors.OKBLUE}Required Python Modules:{Colors.ENDC} {settings['required_pymodules']}")
     
     # Confirm before writing
     print(f"\n{Colors.WARNING}Save this configuration?{Colors.ENDC}", end=" ")

@@ -12,12 +12,13 @@
 #include <Python.h>
 #include <structmember.h>
 #include <compile.h>
-#include <dirent.h> 
+#include <dirent.h>
 // #include <node.h>
 
 #include "../mud.h"
 #include "../utils.h"
 #include "../character.h"
+#include "../strings.h"
 #include "pyplugs.h"
 
 
@@ -197,7 +198,17 @@ void init_py_modules() {
   char fname[SMALL_BUFFER]; // the name of the file
   DIR *dir = opendir(PYMOD_LIB);
   struct dirent *entry;
-
+  
+  // Parse required modules list using STRLib
+  string required_str = str_new(mudsettingGetString("required_pymodules"));
+  int required_count;
+  string *required_tokens = str_split_len(required_str, str_length(required_str), ",", 1, &required_count);
+  
+  // Trim whitespace from each token
+  for (int i = 0; i < required_count; i++) {
+    required_tokens[i] = str_trim_chars(required_tokens[i], " \t\r\n");
+  }
+  
   // add our PYMOD_LIB directory to the sys path, 
   // so the modules can access each other
   PyObject *sys  = PyImport_ImportModule("sys");
@@ -233,19 +244,55 @@ void init_py_modules() {
 
     // Load the module if it hasn't been loaded yet
     PyObject *mod = PyImport_ImportModule(mname);
-    if(mod != NULL)
-      log_string("loading python module, %s", mname);
+    if(mod != NULL) {
+      // Check if this is a required module using exact string matching
+      bool is_required = FALSE;
+      string mname_str = str_new(mname);
+      for (int j = 0; j < required_count; j++) {
+        if (str_compare(mname_str, required_tokens[j]) == 0) {
+          is_required = TRUE;
+          break;
+        }
+      }
+      str_free(mname_str);
+      
+      log_string("Loaded %s module: %s", 
+                 is_required ? "required" : "optional", mname);
+      Py_DECREF(mod);
+    }
     // oops... something went wrong. Let's get the traceback
     else {
-      // we now abandon bootup if we fail to load a Python module, because it
-      // can have potentially dangerous affects on the loading of other modules
-      // Thanks to Thirsteh for pointing this out.
       log_pyerr("Error loading module, %s:", mname);
-      log_string("Bootup aborted. MUD shutting down.");
-      closedir(dir);
-      exit(1);
+      
+      // Check if this module is in the required list using exact matching
+      bool is_required = FALSE;
+      string mname_str = str_new(mname);
+      for (int j = 0; j < required_count; j++) {
+        if (str_compare(mname_str, required_tokens[j]) == 0) {
+          is_required = TRUE;
+          break;
+        }
+      }
+      str_free(mname_str);
+      
+      if (is_required) {
+        log_string("CRITICAL: Required module '%s' failed to load. MUD shutting down.", mname);
+        // Cleanup before exit
+        str_free_splitres(required_tokens, required_count);
+        str_free(required_str);
+        closedir(dir);
+        exit(1);
+      } else {
+        log_string("WARNING: Optional module '%s' failed to load. Continuing startup.", mname);
+        // Clear Python error state to prevent issues
+        PyErr_Clear();
+      }
     }
   }
+  
+  // Cleanup STRLib resources
+  str_free_splitres(required_tokens, required_count);
+  str_free(required_str);
   closedir(dir);
 }
 

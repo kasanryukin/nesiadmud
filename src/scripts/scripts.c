@@ -39,6 +39,7 @@
 #include "pyevent.h"
 #include "pystorage.h"
 #include "pyauxiliary.h"
+#include "pyworld.h"
 #include "trighooks.h"
 #include "pyolc.h"
 
@@ -75,6 +76,7 @@ ModuleInfo modules[] = {
     {"mud",       &PyInit_PyMud},
     {"hooks",     &PyInit_PyHooks},
     {"olc",       &PyInit_PyOLC},
+    {"world",     &PyInit_PyWorld},
     {NULL, NULL}  
 };
 

@@ -33,6 +33,11 @@ struct body_data {
 // opposed to their container, the body.
 //
 //*****************************************************************************
+
+// Dynamic lists for custom body sizes and position types
+LIST *custom_bodysizes = NULL;
+LIST *custom_bodypos_types = NULL;
+
 const char *bodypos_list[NUM_BODYPOS] = {
   "floating about head",
   "head",
@@ -517,4 +522,133 @@ LIST *bodyUnequipAll(BODY_DATA *B) {
 
 int numBodyparts(const BODY_DATA *B) {
   return listSize(B->parts);
+}
+
+//*****************************************************************************
+// Dynamic body size and position type management
+//*****************************************************************************
+
+void init_body_dynamic() {
+  if(custom_bodysizes == NULL)
+    custom_bodysizes = newList();
+  if(custom_bodypos_types == NULL)
+    custom_bodypos_types = newList();
+}
+
+bool body_add_size(const char *size_name) {
+  init_body_dynamic();
+  
+  // Check if already exists in hardcoded list
+  for(int i = 0; i < NUM_BODYSIZES; i++) {
+    if(!strcasecmp(bodysize_list[i], size_name))
+      return FALSE; // Already exists
+  }
+  
+  // Check if already exists in custom list
+  LIST_ITERATOR *size_i = newListIterator(custom_bodysizes);
+  char *existing = NULL;
+  ITERATE_LIST(existing, size_i) {
+    if(!strcasecmp(existing, size_name)) {
+      deleteListIterator(size_i);
+      return FALSE; // Already exists
+    }
+  } deleteListIterator(size_i);
+  
+  listPut(custom_bodysizes, strdup(size_name));
+  return TRUE;
+}
+
+bool body_remove_size(const char *size_name) {
+  init_body_dynamic();
+  
+  LIST_ITERATOR *size_i = newListIterator(custom_bodysizes);
+  char *existing = NULL;
+  ITERATE_LIST(existing, size_i) {
+    if(!strcasecmp(existing, size_name)) {
+      listRemove(custom_bodysizes, existing);
+      free(existing);
+      deleteListIterator(size_i);
+      return TRUE;
+    }
+  } deleteListIterator(size_i);
+  
+  return FALSE; // Not found in custom list
+}
+
+bool body_add_position_type(const char *pos_name) {
+  init_body_dynamic();
+  
+  // Check if already exists in hardcoded list
+  for(int i = 0; i < NUM_BODYPOS; i++) {
+    if(!strcasecmp(bodypos_list[i], pos_name))
+      return FALSE; // Already exists
+  }
+  
+  // Check if already exists in custom list
+  LIST_ITERATOR *pos_i = newListIterator(custom_bodypos_types);
+  char *existing = NULL;
+  ITERATE_LIST(existing, pos_i) {
+    if(!strcasecmp(existing, pos_name)) {
+      deleteListIterator(pos_i);
+      return FALSE; // Already exists
+    }
+  } deleteListIterator(pos_i);
+  
+  listPut(custom_bodypos_types, strdup(pos_name));
+  return TRUE;
+}
+
+bool body_remove_position_type(const char *pos_name) {
+  init_body_dynamic();
+  
+  LIST_ITERATOR *pos_i = newListIterator(custom_bodypos_types);
+  char *existing = NULL;
+  ITERATE_LIST(existing, pos_i) {
+    if(!strcasecmp(existing, pos_name)) {
+      listRemove(custom_bodypos_types, existing);
+      free(existing);
+      deleteListIterator(pos_i);
+      return TRUE;
+    }
+  } deleteListIterator(pos_i);
+  
+  return FALSE; // Not found in custom list
+}
+
+LIST *body_get_all_sizes() {
+  init_body_dynamic();
+  LIST *all_sizes = newList();
+  
+  // Add hardcoded sizes
+  for(int i = 0; i < NUM_BODYSIZES; i++) {
+    listPut(all_sizes, strdup(bodysize_list[i]));
+  }
+  
+  // Add custom sizes
+  LIST_ITERATOR *size_i = newListIterator(custom_bodysizes);
+  char *custom_size = NULL;
+  ITERATE_LIST(custom_size, size_i) {
+    listPut(all_sizes, strdup(custom_size));
+  } deleteListIterator(size_i);
+  
+  return all_sizes;
+}
+
+LIST *body_get_all_position_types() {
+  init_body_dynamic();
+  LIST *all_types = newList();
+  
+  // Add hardcoded position types
+  for(int i = 0; i < NUM_BODYPOS; i++) {
+    listPut(all_types, strdup(bodypos_list[i]));
+  }
+  
+  // Add custom position types
+  LIST_ITERATOR *pos_i = newListIterator(custom_bodypos_types);
+  char *custom_pos = NULL;
+  ITERATE_LIST(custom_pos, pos_i) {
+    listPut(all_types, strdup(custom_pos));
+  } deleteListIterator(pos_i);
+  
+  return all_types;
 }

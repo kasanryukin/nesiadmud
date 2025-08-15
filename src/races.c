@@ -101,6 +101,18 @@ void add_race(const char *name, const char *abbrev, BODY_DATA *body, int pc_ok){
   hashPut(race_table, name, newRace(name, abbrev, body, pc_ok));
 }
 
+bool remove_race(const char *name) {
+  RACE_DATA *race = hashRemove(race_table, name);
+  if(race != NULL) {
+    if(race->name) free(race->name);
+    if(race->abbrev) free(race->abbrev);
+    if(race->body) deleteBody(race->body);
+    free(race);
+    return TRUE;
+  }
+  return FALSE;
+}
+
 int raceCount() {
   return hashSize(race_table);
 }

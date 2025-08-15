@@ -12,6 +12,7 @@
 
 void init_races();
 void add_race(const char *name, const char *abbrev, BODY_DATA *body, int pc_ok);
+bool remove_race(const char *name);
 int raceCount();
 bool isRace(const char *name);
 BODY_DATA *raceCreateBody(const char *name);

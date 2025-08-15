@@ -25,11 +25,19 @@
 // what type of a worn item is this object? 
 const char *wornGetType(OBJ_DATA *obj);
 const char *wornGetPositions(OBJ_DATA *obj);
+const char *wornTypeGetPositions(const char *type);
 void wornSetType(OBJ_DATA *obj, const char *type);
 
 //
 // add a new worn type to our list of possible worn types. A type name and
 // a list of open positions for equipping the item are required.
 void worn_add_type(const char *type, const char *required_positions);
+
+//
+// system-wide worn type management functions
+LIST *worn_get_all_types(void);
+bool worn_type_exists(const char *type);
+int worn_get_type_count(void);
+bool worn_remove_type(const char *type);
 
 #endif // WORN_H
