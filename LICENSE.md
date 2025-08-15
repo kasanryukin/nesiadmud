@@ -6,13 +6,9 @@ NakedMud is free to use for any purpose without restriction. By using NakedMud o
 
 This software is provided "as is" without warranty of any kind, express or implied.
 
-## History
-
-NakedMud was originally created by **Geoff Hollis** (1979-2021) beginning around 2003-2004 as a content-less MUD engine built upon SocketMud by Brian Graversen. Geoff developed NakedMud during his graduate studies, creating an innovative Python-integrated MUD server that emphasized modularity and extensibility.
-
-After Geoff's passing in November 2021, development was continued by **Kevin Morgan (LimpingNinja)** to honor his work and vision, focusing on modernizing the codebase for Python 3+ compatibility while preserving the original design philosophy.
-
 ## Attribution
+
+Attribution is required in any public distribution of the software or its derivatives. This can be in the form of a credit in the game, a credit in the documentation, or a credit in the source code. This applies to the core engine, but does not apply to modules or plugins created by third parties or not included in the base distribution.
 
 Please give appropriate credit to:
 
@@ -21,7 +17,7 @@ Please give appropriate credit to:
 - **Erwin Andreasen** - For code snippets incorporated into SocketMud
 - **Kevin Morgan (LimpingNinja)** - Current maintainer and Python 3+ modernization
 
-For complete credits and acknowledgments, see the in-game `credits` command or the `credits.md` file.
+For complete credits and acknowledgments, see the in-game `credits` command or the `credits.md` file. 
 
 ---
 
