@@ -1,0 +1,3 @@
+[submodule "lib/pymodules/socials"]
+	path = lib/pymodules/socials
+	url = https://github.com/NakedMud/socials.git
