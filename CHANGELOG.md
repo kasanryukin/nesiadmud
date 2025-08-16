@@ -1,3 +1,35 @@
+# NakedMud v4.2.0
+**Git commits:** a1332c9..bc9ae0f
+Compiled and tested on multiple platforms
+### MAJOR CHANGES
+- **Python module management system** - enhanced Python integration with startup hooks and module management
+- **Socials Module Conversion from C to Python** - **BREAKING CHANGE** socials system rewritten in Python and removed from C codebase, see upgrade notes for details
+- **Race and body system Python exposure** - comprehensive Python API for character races and body mechanics
+- **Git Submodules for Python modules** - started using git submodules to expose extensibility beyond the core codebase
+### ADDED
+- cmd_exists function to check command existence in Python
+- @@@ prefix for preserving original text formatting in buffer output
+- Python startup hooks and module management infrastructure
+- Enhanced race and body system Python bindings
+### MODIFIED
+- Refactored socials system to use git submodule architecture for p
+- Updated README.md with improved documentation
+- Clarified attribution requirements and reorganized license content
+### REMOVED
+- Legacy socials module dependencies in favor of Python implementation
+### UPGRADE NOTES
+- **New Python APIs available:**
+  - `mudsys.cmd_exists(cmd_name)` - check if command exists in master table
+  - `world` module with 15+ functions for body/race/worn system management
+  - Body functions: `add_bodysize()`, `remove_bodysize()`, `get_bodysizes()`, `add_bodypos_type()`, `remove_bodypos_type()`, `get_bodypos_types()`
+  - Race functions: `add_race()`, `remove_race()`, `get_races()`, `get_race_info()`
+  - Worn functions: `get_worn_types()`, `get_worn_type_positions()`, `remove_worn_type()`, `worn_type_exists()`, `get_worn_type_count()`
+- **Socials system migration:** C socials module completely removed - now uses Python submodule at `lib/pymodules/socials/`
+- **Git submodules:** Run `git submodule update --init lib/pymodules/socials` to initialize just the socials submodule, or `git submodule update --init --recursive` if you want all modules
+- **BREAKING CHANGE - Build changes:** Socials no longer compiled from C source - ensure Python socials submodule is properly initialized by running `git submodule update --init lib/pymodules/socials` (for socials only) or `git submodule update --init --recursive` (for all modules) OR manually download and unarchive https://github.com/NakedMud/socials into `lib/pymodules/socials/`. Upgrading from previous versions will lose the socials system until this step is completed.
+
+---
+
 # NakedMud v4.1.3
 **Git commits:** c3cf689..69fff5b
 Compiled and tested on multiple platforms
