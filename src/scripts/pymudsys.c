@@ -562,6 +562,21 @@ PyObject *mudsys_set_password(PyObject *self, PyObject *args) {
   return Py_BuildValue("i", 1);
 }
 
+// checks if a command exists, via a python script or module. Takes in a
+// command name and returns true if it exists, false otherwise.
+PyObject *mudsys_cmd_exists(PyObject *self, PyObject *args) {
+  char *cmd = NULL;
+
+  if (!PyArg_ParseTuple(args, "s", &cmd)) {
+      PyErr_Format(PyExc_TypeError, "cmd_exists requires a command name.");
+      return NULL;
+  }
+
+  if (cmd_exists(cmd)) {
+      return Py_BuildValue("i", 1);
+  }
+  return Py_BuildValue("i", 0);
+}
 
 //
 // add a new command to the mud, via a python script or module. Takes in a
@@ -1260,6 +1275,11 @@ PyInit_PyMudSys(void) {
 		     "set_password(acct, passwd)\n"
 		     "\n"
 		     "Set an account's password.");
+  PyMudSys_addMethod("cmd_exists", mudsys_cmd_exists, METH_VARARGS,
+         "cmd_exists(cmd_name)\n"
+         "\n"
+         "Checks to see if a command exists in the master command table. If\n"
+         "a command exist it will return True, otherwise False.");
   PyMudSys_addMethod("add_cmd", mudsys_add_cmd, METH_VARARGS,
     "add_cmd(name, shorthand, cmd_func, user_group, interrupts_action)\n"
     "\n"
