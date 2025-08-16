@@ -2,6 +2,11 @@
 
 Welcome to NakedMud 4.1! This documentation contains everything you need to understand, compile, run, and extend your MUD server. Whether you're a complete newcomer or an experienced developer, we've got you covered.
 
+**Git and Submodules**
+NakedMud is "contentless", any additional modules I add will be initialized as git submodules. If you are using git then once you receive all files you can use 'git submodule update --init --recursive' to grab them all, or use 'git submodule init <specific-submodule-path> && git submodule update' to grab specific ones (like the socials).
+
+Or, you can download the latest release on the right, then go to https://github.com/NakedMud/ and download the submodules you want and place them into lib/PyModules as a subdirectory, they will auto-detect and load. Failures will show in the log.
+
 ## Quick Start
 
 New to NakedMud? Start here:
