@@ -1,5 +1,5 @@
 # NakedMud v4.2.0
-**Git commits:** a1332c9..bc9ae0f
+**Git commits:** a1332c9..3dabceb
 Compiled and tested on multiple platforms
 ### MAJOR CHANGES
 - **Python module management system** - enhanced Python integration with startup hooks and module management
