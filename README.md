@@ -1,5 +1,5 @@
 # NakedMud Documentation
-
+<img align=left width="256" height="256" alt="nmud-logo" src="https://github.com/user-attachments/assets/f5ca5dd3-fb8b-4378-b39c-7c44066dc859" />
 Welcome to NakedMud 4.1! This documentation contains everything you need to understand, compile, run, and extend your MUD server. Whether you're a complete newcomer or an experienced developer, we've got you covered.
 
 **Git and Submodules**
