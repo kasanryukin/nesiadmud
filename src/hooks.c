@@ -119,6 +119,13 @@ const char *hookBuildInfo(const char *format, ...) {
       bprintf(info_buf, "sk.%d", socketGetUID(va_arg(vargs, SOCKET_DATA *)));
     else if(!strcasecmp(token, "str"))
       bprintf(info_buf, "%c%s%c", HOOK_STR_MARKER, va_arg(vargs, char *), HOOK_STR_MARKER);
+    else if(!strcasecmp(token, "bytes")) {
+      char *data = va_arg(vargs, char *);
+      int len = va_arg(vargs, int);
+      bprintf(info_buf, "bytes:");
+      for(int i = 0; i < len; i++)
+        bprintf(info_buf, "%02x", (unsigned char)data[i]);
+    }
     else if(!strcasecmp(token, "int"))
       bprintf(info_buf, "%d", va_arg(vargs, int));
     else if(!strcasecmp(token, "dbl"))

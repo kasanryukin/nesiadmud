@@ -10,12 +10,20 @@
 #include "../mud.h"
 #include "../utils.h"
 #include "../socket.h"
+#include "../hooks.h"
+#include "../storage.h"
+#include "../auxiliary.h"
+#include "../account.h"
 #include "../character.h"
 
 #include "scripts.h"
-#include "pyplugs.h"
+#include "pystorage.h"
 #include "pyauxiliary.h"
+#include "pyaccount.h"
+#include "pychar.h"
 #include "pysocket.h"
+
+#include <unistd.h>
 
 
 
@@ -335,6 +343,43 @@ PyObject *PySocket_send_raw(PySocket *self, PyObject *value) {
   }
 }
 
+PyObject *PySocket_send_binary(PySocket *self, PyObject *args) {
+  char *mssg = NULL;
+  Py_ssize_t length = 0;
+  
+  if (PyTuple_Size(args) != 1) {
+    PyErr_Format(PyExc_TypeError, "send_binary() takes exactly one argument");
+    return NULL;
+  }
+  
+  PyObject *bytes_obj = PyTuple_GetItem(args, 0);
+  if (!PyBytes_Check(bytes_obj)) {
+    PyErr_Format(PyExc_TypeError, "send_binary() requires bytes object");
+    return NULL;
+  }
+  
+  // Extract bytes data manually
+  mssg = PyBytes_AsString(bytes_obj);
+  length = PyBytes_Size(bytes_obj);
+  
+  if (mssg == NULL) {
+    PyErr_Format(PyExc_TypeError, "Failed to extract bytes data");
+    return NULL;
+  }
+
+  SOCKET_DATA *sock = PySocket_AsSocket((PyObject *)self);
+  if(sock != NULL) {
+    bool success = binary_to_socket(sock, mssg, (int)length);
+    return Py_BuildValue("i", success ? 1 : 0);
+  }
+  else {
+    PyErr_Format(PyExc_TypeError, 
+		 "Tried to send message to nonexistant socket, %d.", 
+		 self->uid);
+    return NULL;
+  }
+}
+
 //
 // Send a message with Python statements potentially embedded in it. For 
 //evaluating 
@@ -637,6 +682,9 @@ PyInit_PySocket(void) {
     PySocket_addMethod("send_raw", PySocket_send_raw, METH_VARARGS,
       "send_raw(mssg)\n\n"
       "Sends text to the socket. No appended newline.");
+    PySocket_addMethod("send_binary", PySocket_send_binary, METH_VARARGS,
+      "send_binary(mssg)\n\n"
+      "Sends binary data to the socket without UTF-8 encoding.");
     PySocket_addMethod("pop_ih", PySocket_pop_ih, METH_NOARGS,
       "pop_ih()\n\n"
       "Pops the socket's current input handler from its input handler stack.");

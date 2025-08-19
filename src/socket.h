@@ -17,6 +17,7 @@ void  do_copyover           ( void );
 
 /* sends the output directly */
 bool  text_to_socket        ( SOCKET_DATA *dsock, const char *txt );
+bool  binary_to_socket      ( SOCKET_DATA *dsock, const char *data, int length );
 void  send_to_socket        ( SOCKET_DATA *dsock, const char *format, ...) __attribute__ ((format (printf, 2, 3)));
 
 /* buffers the output        */

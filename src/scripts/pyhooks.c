@@ -5,7 +5,6 @@
 // The wrapper around hooks for Python to interact with them.
 //
 //*****************************************************************************
-
 #include "../mud.h"
 #include "../utils.h"
 #include "../hooks.h"
@@ -20,17 +19,14 @@
 #include "pyhooks.h"
 
 
-
 //*****************************************************************************
 // local variables and functions
 //*****************************************************************************
-
 // a list of methods to add to the hooks module
 LIST *pyhooks_methods = NULL;
 
 // a table of python hooks we have installed
 HASHTABLE *pyhook_table = NULL;
-
 
 
 //*****************************************************************************
@@ -218,6 +214,33 @@ PyObject *PyHooks_ParseInfo(PyObject *self, PyObject *args) {
       str[strlen(str)-1] = '\0';
       PyTuple_SetItem(list,i, Py_BuildValue("s", str));
       free(str);
+    }
+    else if(startswith(token, "bytes:")) {
+      char *hex_data = token + 6; // skip "bytes:"
+      int hex_len = strlen(hex_data);
+      int byte_len = hex_len / 2;
+      if(byte_len > 0) {
+        unsigned char *bytes = malloc(byte_len);
+        if(bytes != NULL) {
+          for(int j = 0; j < byte_len; j++) {
+            unsigned int byte_val;
+            if(sscanf(hex_data + j*2, "%2x", &byte_val) == 1) {
+              bytes[j] = (unsigned char)byte_val;
+            } else {
+              bytes[j] = 0;
+            }
+          }
+          PyObject *bytes_obj = PyBytes_FromStringAndSize((char*)bytes, byte_len);
+          PyTuple_SetItem(list, i, bytes_obj);
+          free(bytes);
+        } else {
+          Py_INCREF(Py_None);
+          PyTuple_SetItem(list, i, Py_None);
+        }
+      } else {
+        PyObject *empty_bytes = PyBytes_FromStringAndSize("", 0);
+        PyTuple_SetItem(list, i, empty_bytes);
+      }
     }
     else if(isdigit(*token)) {
       // integer or double?

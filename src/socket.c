@@ -412,6 +412,71 @@ bool text_to_socket(SOCKET_DATA *dsock, const char *txt)
   return TRUE;
 }
 
+/*
+ * Sends binary data directly to the socket with specified length,
+ * will compress the data if needed. Handles embedded null bytes.
+ */
+bool binary_to_socket(SOCKET_DATA *dsock, const char *data, int length)
+{
+  int iBlck, iPtr, iWrt = 0, control = dsock->control;
+
+  /* write compressed */
+  if (dsock && dsock->out_compress)
+  {
+    dsock->out_compress->next_in  = (unsigned char *) data;
+    dsock->out_compress->avail_in = length;
+
+    while (dsock->out_compress->avail_in)
+    {
+      dsock->out_compress->avail_out = COMPRESS_BUF_SIZE - (dsock->out_compress->next_out - dsock->out_compress_buf);
+
+      if (dsock->out_compress->avail_out)
+      {
+        int status = deflate(dsock->out_compress, Z_SYNC_FLUSH);
+
+        if (status != Z_OK)
+        return FALSE;
+      }
+
+      length = dsock->out_compress->next_out - dsock->out_compress_buf;
+      if (length > 0)
+      {
+        for (iPtr = 0; iPtr < length; iPtr += iWrt)
+        {
+          iBlck = UMIN(length - iPtr, 4096);
+          if ((iWrt = write(control, dsock->out_compress_buf + iPtr, iBlck)) < 0)
+          {
+            perror("Binary_to_socket (compressed):");
+            return FALSE;
+          }
+        }
+        if (iWrt <= 0) break;
+        if (iPtr > 0)
+        {
+          if (iPtr < length)
+            memmove(dsock->out_compress_buf, dsock->out_compress_buf + iPtr, length - iPtr);
+
+          dsock->out_compress->next_out = dsock->out_compress_buf + length - iPtr;
+        }
+      }
+    }
+    return TRUE;
+  }
+
+  /* write uncompressed */
+  for (iPtr = 0; iPtr < length; iPtr += iWrt)
+  {
+    iBlck = UMIN(length - iPtr, 4096);
+    if ((iWrt = write(control, data + iPtr, iBlck)) < 0)
+    {
+      perror("Binary_to_socket:");
+      return FALSE;
+    }
+  }
+
+  return TRUE;
+}
+
 
 void  send_to_socket( SOCKET_DATA *dsock, const char *format, ...) {
   if(format && *format) {
@@ -512,7 +577,7 @@ int read_iac_sequence(SOCKET_DATA *dsock, int start) {
   // broadcast the message we parsed, and prepare for the next sequence
   if(done == TRUE) {
     hookRun("receive_iac", 
-	    hookBuildInfo("sk str", dsock,bufferString(dsock->iac_sequence)));
+	    hookBuildInfo("sk bytes", dsock, bufferString(dsock->iac_sequence), bufferLength(dsock->iac_sequence)));
     bufferClear(dsock->iac_sequence);
   }
   return len;
