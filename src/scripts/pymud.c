@@ -272,7 +272,7 @@ PyObject *mud_generic_find(PyObject *self, PyObject *args) {
   }
 
   // nothing was found...
-  return Py_BuildValue("Os", Py_None, Py_None);
+  return Py_BuildValue("OO", Py_None, Py_None);
 }
 
 
