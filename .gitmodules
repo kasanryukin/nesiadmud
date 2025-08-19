@@ -1,3 +1,6 @@
 [submodule "lib/pymodules/socials"]
 	path = lib/pymodules/socials
 	url = https://github.com/NakedMud/socials.git
+[submodule "lib/pymodules/mssp"]
+	path = lib/pymodules/mssp
+	url = https://github.com/NakedMud/mssp.git
