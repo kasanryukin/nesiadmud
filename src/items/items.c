@@ -18,6 +18,7 @@
 #include "../object.h"
 #include "../auxiliary.h"
 #include "../storage.h"
+#include "../hooks.h"
 
 #include "items.h"
 #include "iedit.h"
@@ -465,6 +466,9 @@ void init_items(void) {
   extern void init_portal();    init_portal();
   extern void init_furniture(); init_furniture();
   extern void init_worn();      init_worn();
+
+  // run hook for Python item type initialization
+  hookRun("init_item_types", hookBuildInfo(""));
 }
 
 void item_add_type(const char *type, 
