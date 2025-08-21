@@ -22,6 +22,7 @@
 #include "pyaccount.h"
 #include "pychar.h"
 #include "pysocket.h"
+#include "pyplugs.h"
 
 #include <unistd.h>
 
