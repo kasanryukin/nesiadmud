@@ -4,3 +4,6 @@
 [submodule "lib/pymodules/mssp"]
 	path = lib/pymodules/mssp
 	url = https://github.com/NakedMud/mssp.git
+[submodule "lib/pymodules/gear"]
+	path = lib/pymodules/gear
+	url = https://github.com/NakedMud/gear.git
