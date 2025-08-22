@@ -43,6 +43,7 @@ sudo apt-get install -y \
     python3-dev \
     python3-pip \
     zlib1g-dev \
+    lzma-dev \
     libssl-dev
 
 # That's it! Easy, right?
@@ -58,6 +59,7 @@ sudo dnf install \
     python3-devel \
     python3-pip \
     zlib-devel \
+    lzma-devel \
     openssl-devel
 ```
 
@@ -71,7 +73,7 @@ xcode-select --install
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # Now get our dependencies
-brew install python@3.12 scons openssl zlib
+brew install python@3.12 scons openssl zlib liblzma
 ```
 
 ## Building Your MUD
