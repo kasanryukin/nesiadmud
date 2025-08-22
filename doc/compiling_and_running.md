@@ -101,6 +101,9 @@ cd /path/to/nakedmud
 # Set the local Python version (this creates a .python-version file)
 pyenv local 3.12.11
 
+# This may not be necessary, but likely will (if you get an error with distutils runnign scons, then do this)
+pip install --upgrade setuptools
+
 # Install SCons (our build system)
 pip install scons
 
