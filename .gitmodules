@@ -7,3 +7,6 @@
 [submodule "lib/pymodules/gear"]
 	path = lib/pymodules/gear
 	url = https://github.com/NakedMud/gear.git
+[submodule "lib/world/zones/ardne"]
+	path = lib/world/zones/ardne
+	url = https://github.com/NakedMud/ardne-zone.git
