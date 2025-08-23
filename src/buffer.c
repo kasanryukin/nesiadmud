@@ -113,6 +113,11 @@ int bufferReplace(BUFFER *buf, const char *a, const char *b, int all) {
   int len_needed = buf->maxlen;
   int replaced = 0;
 
+  // Handle edge case: if search string is empty, do nothing
+  if (a_len == 0) {
+    return 0;
+  }
+
   if(b_len - a_len > 0) {
     int to_replace = (all ? 
 		      count_occurences(buf->data, a) : 
@@ -126,6 +131,9 @@ int bufferReplace(BUFFER *buf, const char *a, const char *b, int all) {
     if(to_replace * (b_len - a_len) + buf->len > buf->maxlen)
       len_needed = ((buf->maxlen + to_replace*(b_len-a_len))*5)/4 + 20;
   }
+
+  // Ensure minimum buffer size to prevent zero-length array
+  if (len_needed < 100) len_needed = 100;
 
   int buf_i, tmp_i;
   char buftmp[len_needed];
