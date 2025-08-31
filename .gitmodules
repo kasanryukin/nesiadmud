@@ -7,3 +7,6 @@
 [submodule "lib/pymodules/gear"]
 	path = lib/pymodules/gear
 	url = https://github.com/NakedMud/gear.git
+[submodule "lib/pymodules/entities"]
+	path = lib/pymodules/entities
+	url = https://github.com/NakedMud/entities
