@@ -10,3 +10,6 @@
 [submodule "lib/pymodules/entities"]
 	path = lib/pymodules/entities
 	url = https://github.com/NakedMud/entities
+[submodule "lib/world/zones/ardne"]
+	path = lib/world/zones/ardne
+	url = https://github.com/NakedMud/ardne-zone.git

@@ -55,6 +55,47 @@ cardinal_dirs = ["north", "south", "east", "west"]
 compass_dirs  = ["north", "south", "east", "west",
                  "northwest", "northeast", "southwest", "southeast"]
 
+def short_room_exits(ch, room, filter_compass=False):
+    """Display a formatted list of visible exits from the current room.
+    
+    Args:
+        ch: The character viewing the exits
+        room: The room to check for exits
+        filter_compass: If True, only show non-compass direction exits
+    """
+    exits = []
+    
+    # Helper function to add valid exits
+    def add_valid_exit(exit_dir):
+        ex = room.exit(exit_dir)
+        if ex and ex.dest is not None and ch.cansee(ex):
+            exits.append(exit_dir)
+        elif ex and ex.dest is None:
+            mud.log_string(
+                "ERROR: room %s headed %s to destination %s which does not exist.",
+                room.proto, exit_dir, ex.destproto
+            )
+    
+    # Check compass directions if not filtered
+    if not filter_compass:
+        for direction in compass_dirs:
+            add_valid_exit(direction)
+    
+    # Check custom exit names
+    for direction in room.exnames:
+        if direction not in compass_dirs:
+            add_valid_exit(direction)
+    
+    # Send appropriate message based on number of exits
+    if not exits:
+        ch.send("There doesn't seem to be any obvious exits!")
+    elif len(exits) == 1:
+        ch.send("\n    {WThe only obvious exit is %s.{n" % exits[0])
+    elif len(exits) == 2:
+        ch.send("\n    {WThere are two obvious exits: %s and %s.{n" % (exits[0], exits[1]))
+    else:
+        ch.send("\n    {WObvious exits are: %s and %s.{n" % (", ".join(exits[:-1]), exits[-1]))
+
 def list_one_exit(ch, ex, dir):
     builder_info = ""
     if ch.isInGroup("builder"):
@@ -63,26 +104,7 @@ def list_one_exit(ch, ex, dir):
     # display the direction we can go
     ch.send("  {n- %-10s :: %s%s" % (dir, ch.see_as(ex), builder_info))
                   
-def list_room_exits(ch, room, filter_compass = False):
-
-    '''if not filter_compass:
-        for dir in compass_dirs:
-            ex = room.exit(dir)
-            if ex == None:
-                continue
-            if ex.dest == None:
-                ch.send("ex.dest is none?")
-            if ex:
-                if ch.cansee(ex):
-                    list_one_exit(ch, ex, dir)
-
-    for dir in room.exnames:
-
-        if not dir in compass_dirs:
-            ch.send("Looking at special exit " + dir)
-            ex = room.exit(dir)
-            list_one_exit(ch, ex, dir)'''
-
+def long_room_exits(ch, room, filter_compass = False):
     # first, go through our standard exits
     if not filter_compass:
         for dir in compass_dirs:
@@ -107,6 +129,14 @@ def list_room_exits(ch, room, filter_compass = False):
             elif ch.cansee(ex):
                 ch.send("Found exit " + dir)
                 list_one_exit(ch, ex, dir)
+
+def list_room_exits(ch, room, filter_compass = False, style = "short"):
+    if style == "short":
+        short_room_exits(ch, room, filter_compass)
+    elif style == "long":
+        long_room_exits(ch, room, filter_compass)
+    else:
+        ch.send("Invalid style: " + style)
 
 def list_one_furniture(ch, obj):
     '''list the contents of a piece of furniture to the character.'''
@@ -196,7 +226,7 @@ def room_look_hook(info):
         mud.log_string("ch is " + ch.name)
         mud.log_string("room is " + room.name)'''
 
-    list_room_exits(ch, room)
+    list_room_exits(ch, room, style="short")
     list_room_contents(ch, room)
 
 def exit_look_hook(info):

@@ -113,6 +113,11 @@ int bufferReplace(BUFFER *buf, const char *a, const char *b, int all) {
   int len_needed = buf->maxlen;
   int replaced = 0;
 
+  // Handle edge case: if search string is empty, do nothing
+  if (a_len == 0) {
+    return 0;
+  }
+
   if(b_len - a_len > 0) {
     int to_replace = (all ? 
 		      count_occurences(buf->data, a) : 
@@ -126,6 +131,9 @@ int bufferReplace(BUFFER *buf, const char *a, const char *b, int all) {
     if(to_replace * (b_len - a_len) + buf->len > buf->maxlen)
       len_needed = ((buf->maxlen + to_replace*(b_len-a_len))*5)/4 + 20;
   }
+
+  // Ensure minimum buffer size to prevent zero-length array
+  if (len_needed < 100) len_needed = 100;
 
   int buf_i, tmp_i;
   char buftmp[len_needed];
@@ -231,7 +239,11 @@ void bufferFormatFromPy(BUFFER *buf) {
 }
 
 void bufferFormat(BUFFER *buf, int max_width, int indent) {
-  char formatted[(buf->len * 3)/2];
+  // Ensure minimum buffer size to prevent zero-length array
+  // Account for potential indent space and formatting overhead
+  int formatted_size = (buf->len * 3) / 2 + indent + 100;
+  if (formatted_size < 100) formatted_size = 100;
+  char formatted[formatted_size];
   bool needs_capital = TRUE, needs_indent = FALSE;
   bool preserve_formatting = FALSE;
   int fmt_i = 0, buf_i = 0, col = 0, next_space = 0;

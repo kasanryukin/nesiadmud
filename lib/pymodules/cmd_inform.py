@@ -58,6 +58,18 @@ def cmd_test(ch, cmd, arg):
 
     hooks.run("look_at_room", hooks.build_info("ch rm", (ch.room, ch)))
 
+def cmd_exits(ch, cmd, arg):
+    '''Examine all exits from the current room in detail.'''
+    # Send header to the character
+    ch.send("{WExamining exits from this area...{n")
+    ch.send("=" * 40)
+    
+    # Use the long_room_exits function to show detailed exit information
+    inform.long_room_exits(ch, ch.room)
+    
+    # Send message to room that character is looking around
+    mud.message(ch, None, None, None, True, "to_room", "$n looks around with interest, examining the exits.")
+
 ################################################################################
 # add our commands
 ################################################################################
@@ -67,6 +79,7 @@ mudsys.add_cmd("worn",      None,  cmd_equipment, "player", False)
 mudsys.add_cmd("who",       None,  cmd_who,       "player", False)
 
 mudsys.add_cmd("test",      None,  cmd_test,      "player", False)
+mudsys.add_cmd("exits",     None,  cmd_exits,     "player", False)
 '''
 mudsys.add_cmd("look",      "l",   cmd_look,      "player", False)
 '''
