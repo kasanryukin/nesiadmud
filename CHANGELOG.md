@@ -1,3 +1,31 @@
+# NakedMud v4.3.0
+**Git commits:** 3dabceb..a576f0d
+Compiled and tested on multiple platforms
+### MAJOR CHANGES
+- **New git submodules baseline** - entities, gear, MSSP, and Ardne zone modules establish the new standard for NakedMud modularity
+- **Dynamic body system enhancement** - body position types and sizes now use dynamic lists instead of hardcoded arrays
+### ADDED
+- **Entities submodule** - comprehensive race and body management system
+- **Gear submodule** - equipment and item management system
+- **MSSP submodule** - MUD Server Status Protocol with binary data support
+- **Ardne zone submodule** - example zone content and world data
+- **Python hook support** - item type initialization hooks for enhanced extensibility
+- **Short-look option** - quality of life improvement for room descriptions
+### FIXED
+- **Buffer overflow and formatting** - resolved critical crash and edge cases in character descriptions
+- **Generic find return value** - corrected Py_BuildValue format from "Os" to "OO" (closes #7)
+- **Socket compilation** - added missing pyplugs.h include in pysocket.c
+### MODIFIED
+- Updated zone structure and organization
+- Improved documentation in compiling_and_running.md
+- Updated README.md with logo
+### UPGRADE NOTES
+- **Git submodules:** Run `git submodule update --init --recursive` to initialize all new submodules
+- **New Python APIs:** Enhanced body system with dynamic position types and sizes
+- **MSSP Protocol:** Binary data support added for telnet protocol compliance
+
+---
+
 # NakedMud v4.2.0
 **Git commits:** a1332c9..3dabceb
 Compiled and tested on multiple platforms
