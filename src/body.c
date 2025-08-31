@@ -34,11 +34,12 @@ struct body_data {
 //
 //*****************************************************************************
 
-// Dynamic lists for custom body sizes and position types
-LIST *custom_bodysizes = NULL;
-LIST *custom_bodypos_types = NULL;
+// Dynamic lists for body sizes and position types
+LIST *bodypos_list = NULL;
+LIST *bodysize_list = NULL;
 
-const char *bodypos_list[NUM_BODYPOS] = {
+// Original hardcoded values for initialization
+static const char *default_bodypos[NUM_BODYPOS] = {
   "floating about head",
   "head",
   "face",
@@ -62,7 +63,7 @@ const char *bodypos_list[NUM_BODYPOS] = {
   "held"
 };
 
-const char *bodysize_list[NUM_BODYSIZES] = {
+static const char *default_bodysize[NUM_BODYSIZES] = {
   "diminuitive",
   "tiny",
   "small",
@@ -141,26 +142,54 @@ char *list_postypes(const BODY_DATA *B, const char *posnames) {
 }
 
 const char *bodysizeGetName(int size) {
-  return bodysize_list[size];
+  init_body_dynamic();
+  
+  if(size < 0 || size >= listSize(bodysize_list))
+    return NULL;
+    
+  return (const char*)listGet(bodysize_list, size);
 }
 
 int bodysizeGetNum(const char *size) {
-  int i;
-  for(i = 0; i < NUM_BODYSIZES; i++)
-    if(!strcasecmp(size, bodysize_list[i]))
-      return i;
+  init_body_dynamic();
+  
+  int index = 0;
+  LIST_ITERATOR *size_i = newListIterator(bodysize_list);
+  char *size_name = NULL;
+  ITERATE_LIST(size_name, size_i) {
+    if(!strcasecmp(size, size_name)) {
+      deleteListIterator(size_i);
+      return index;
+    }
+    index++;
+  } deleteListIterator(size_i);
+  
   return BODYSIZE_NONE;
 }
 
 const char *bodyposGetName(int bodypos) {
-  return bodypos_list[bodypos];
+  init_body_dynamic();
+  
+  if(bodypos < 0 || bodypos >= listSize(bodypos_list))
+    return NULL;
+    
+  return (const char*)listGet(bodypos_list, bodypos);
 }
 
 int bodyposGetNum(const char *bodypos) {
-  int i;
-  for(i = 0; i < NUM_BODYPOS; i++)
-    if(!strcasecmp(bodypos, bodypos_list[i]))
-      return i;
+  init_body_dynamic();
+  
+  int index = 0;
+  LIST_ITERATOR *pos_i = newListIterator(bodypos_list);
+  char *pos_type = NULL;
+  ITERATE_LIST(pos_type, pos_i) {
+    if(!strcasecmp(bodypos, pos_type)) {
+      deleteListIterator(pos_i);
+      return index;
+    }
+    index++;
+  } deleteListIterator(pos_i);
+  
   return BODYPOS_NONE;
 }
 
@@ -529,23 +558,27 @@ int numBodyparts(const BODY_DATA *B) {
 //*****************************************************************************
 
 void init_body_dynamic() {
-  if(custom_bodysizes == NULL)
-    custom_bodysizes = newList();
-  if(custom_bodypos_types == NULL)
-    custom_bodypos_types = newList();
+  if(bodysize_list == NULL) {
+    bodysize_list = newList();
+    // Initialize with default hardcoded values
+    for(int i = 0; i < NUM_BODYSIZES; i++) {
+      listPut(bodysize_list, strdup(default_bodysize[i]));
+    }
+  }
+  if(bodypos_list == NULL) {
+    bodypos_list = newList();
+    // Initialize with default hardcoded values
+    for(int i = 0; i < NUM_BODYPOS; i++) {
+      listPut(bodypos_list, strdup(default_bodypos[i]));
+    }
+  }
 }
 
 bool body_add_size(const char *size_name) {
   init_body_dynamic();
   
-  // Check if already exists in hardcoded list
-  for(int i = 0; i < NUM_BODYSIZES; i++) {
-    if(!strcasecmp(bodysize_list[i], size_name))
-      return FALSE; // Already exists
-  }
-  
-  // Check if already exists in custom list
-  LIST_ITERATOR *size_i = newListIterator(custom_bodysizes);
+  // Check if already exists in dynamic list
+  LIST_ITERATOR *size_i = newListIterator(bodysize_list);
   char *existing = NULL;
   ITERATE_LIST(existing, size_i) {
     if(!strcasecmp(existing, size_name)) {
@@ -554,38 +587,32 @@ bool body_add_size(const char *size_name) {
     }
   } deleteListIterator(size_i);
   
-  listPut(custom_bodysizes, strdup(size_name));
+  listPut(bodysize_list, strdup(size_name));
   return TRUE;
 }
 
 bool body_remove_size(const char *size_name) {
   init_body_dynamic();
   
-  LIST_ITERATOR *size_i = newListIterator(custom_bodysizes);
+  LIST_ITERATOR *size_i = newListIterator(bodysize_list);
   char *existing = NULL;
   ITERATE_LIST(existing, size_i) {
     if(!strcasecmp(existing, size_name)) {
-      listRemove(custom_bodysizes, existing);
+      listRemove(bodysize_list, existing);
       free(existing);
       deleteListIterator(size_i);
       return TRUE;
     }
   } deleteListIterator(size_i);
   
-  return FALSE; // Not found in custom list
+  return FALSE; // Not found
 }
 
 bool body_add_position_type(const char *pos_name) {
   init_body_dynamic();
   
-  // Check if already exists in hardcoded list
-  for(int i = 0; i < NUM_BODYPOS; i++) {
-    if(!strcasecmp(bodypos_list[i], pos_name))
-      return FALSE; // Already exists
-  }
-  
-  // Check if already exists in custom list
-  LIST_ITERATOR *pos_i = newListIterator(custom_bodypos_types);
+  // Check if already exists in dynamic list
+  LIST_ITERATOR *pos_i = newListIterator(bodypos_list);
   char *existing = NULL;
   ITERATE_LIST(existing, pos_i) {
     if(!strcasecmp(existing, pos_name)) {
@@ -594,41 +621,36 @@ bool body_add_position_type(const char *pos_name) {
     }
   } deleteListIterator(pos_i);
   
-  listPut(custom_bodypos_types, strdup(pos_name));
+  listPut(bodypos_list, strdup(pos_name));
   return TRUE;
 }
 
 bool body_remove_position_type(const char *pos_name) {
   init_body_dynamic();
   
-  LIST_ITERATOR *pos_i = newListIterator(custom_bodypos_types);
+  LIST_ITERATOR *pos_i = newListIterator(bodypos_list);
   char *existing = NULL;
   ITERATE_LIST(existing, pos_i) {
     if(!strcasecmp(existing, pos_name)) {
-      listRemove(custom_bodypos_types, existing);
+      listRemove(bodypos_list, existing);
       free(existing);
       deleteListIterator(pos_i);
       return TRUE;
     }
   } deleteListIterator(pos_i);
   
-  return FALSE; // Not found in custom list
+  return FALSE; // Not found
 }
 
 LIST *body_get_all_sizes() {
   init_body_dynamic();
   LIST *all_sizes = newList();
   
-  // Add hardcoded sizes
-  for(int i = 0; i < NUM_BODYSIZES; i++) {
-    listPut(all_sizes, strdup(bodysize_list[i]));
-  }
-  
-  // Add custom sizes
-  LIST_ITERATOR *size_i = newListIterator(custom_bodysizes);
-  char *custom_size = NULL;
-  ITERATE_LIST(custom_size, size_i) {
-    listPut(all_sizes, strdup(custom_size));
+  // Copy all sizes from dynamic list
+  LIST_ITERATOR *size_i = newListIterator(bodysize_list);
+  char *size = NULL;
+  ITERATE_LIST(size, size_i) {
+    listPut(all_sizes, strdup(size));
   } deleteListIterator(size_i);
   
   return all_sizes;
@@ -638,16 +660,11 @@ LIST *body_get_all_position_types() {
   init_body_dynamic();
   LIST *all_types = newList();
   
-  // Add hardcoded position types
-  for(int i = 0; i < NUM_BODYPOS; i++) {
-    listPut(all_types, strdup(bodypos_list[i]));
-  }
-  
-  // Add custom position types
-  LIST_ITERATOR *pos_i = newListIterator(custom_bodypos_types);
-  char *custom_pos = NULL;
-  ITERATE_LIST(custom_pos, pos_i) {
-    listPut(all_types, strdup(custom_pos));
+  // Copy all position types from dynamic list
+  LIST_ITERATOR *pos_i = newListIterator(bodypos_list);
+  char *pos_type = NULL;
+  ITERATE_LIST(pos_type, pos_i) {
+    listPut(all_types, strdup(pos_type));
   } deleteListIterator(pos_i);
   
   return all_types;

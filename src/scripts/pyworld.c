@@ -140,6 +140,95 @@ PyObject *pyworld_get_bodypos_types(PyObject *self, PyObject *args) {
 }
 
 //*****************************************************************************
+// Body Template Creation Functions
+//*****************************************************************************
+
+PyObject *pyworld_new_body(PyObject *self, PyObject *args) {
+  BODY_DATA *body = newBody();
+  if(body == NULL) {
+    PyErr_Format(PyExc_RuntimeError, "Failed to create new body");
+    return NULL;
+  }
+  
+  // Return the body as a capsule so Python can reference it
+  return PyCapsule_New(body, "BODY_DATA", NULL);
+}
+
+PyObject *pyworld_body_add_position(PyObject *self, PyObject *args) {
+  PyObject *body_capsule = NULL;
+  char *pos_name = NULL;
+  char *pos_type = NULL;
+  int weight = 0;
+  
+  if(!PyArg_ParseTuple(args, "Ossi", &body_capsule, &pos_name, &pos_type, &weight)) {
+    PyErr_Format(PyExc_TypeError, 
+                 "body_add_position requires body, position name, type, and weight");
+    return NULL;
+  }
+  
+  BODY_DATA *body = (BODY_DATA*)PyCapsule_GetPointer(body_capsule, "BODY_DATA");
+  if(body == NULL) {
+    PyErr_Format(PyExc_TypeError, "Invalid body object");
+    return NULL;
+  }
+  
+  // Convert position type name to number
+  int type_num = bodyposGetNum(pos_type);
+  if(type_num == BODYPOS_NONE) {
+    PyErr_Format(PyExc_ValueError, "Unknown body position type: %s", pos_type);
+    return NULL;
+  }
+  
+  bodyAddPosition(body, pos_name, type_num, weight);
+  return Py_BuildValue("i", 1);
+}
+
+PyObject *pyworld_body_remove_position(PyObject *self, PyObject *args) {
+  PyObject *body_capsule = NULL;
+  char *pos_name = NULL;
+  
+  if(!PyArg_ParseTuple(args, "Os", &body_capsule, &pos_name)) {
+    PyErr_Format(PyExc_TypeError, "body_remove_position requires body and position name");
+    return NULL;
+  }
+  
+  BODY_DATA *body = (BODY_DATA*)PyCapsule_GetPointer(body_capsule, "BODY_DATA");
+  if(body == NULL) {
+    PyErr_Format(PyExc_TypeError, "Invalid body object");
+    return NULL;
+  }
+  
+  bool success = bodyRemovePosition(body, pos_name);
+  return Py_BuildValue("i", success);
+}
+
+PyObject *pyworld_body_set_size(PyObject *self, PyObject *args) {
+  PyObject *body_capsule = NULL;
+  char *size_name = NULL;
+  
+  if(!PyArg_ParseTuple(args, "Os", &body_capsule, &size_name)) {
+    PyErr_Format(PyExc_TypeError, "body_set_size requires body and size name");
+    return NULL;
+  }
+  
+  BODY_DATA *body = (BODY_DATA*)PyCapsule_GetPointer(body_capsule, "BODY_DATA");
+  if(body == NULL) {
+    PyErr_Format(PyExc_TypeError, "Invalid body object");
+    return NULL;
+  }
+  
+  // Convert size name to number
+  int size_num = bodysizeGetNum(size_name);
+  if(size_num == BODYSIZE_NONE) {
+    PyErr_Format(PyExc_ValueError, "Unknown body size: %s", size_name);
+    return NULL;
+  }
+  
+  bodySetSize(body, size_num);
+  return Py_BuildValue("i", 1);
+}
+
+//*****************************************************************************
 // Race System Functions
 //*****************************************************************************
 
@@ -155,11 +244,73 @@ PyObject *pyworld_add_race(PyObject *self, PyObject *args) {
     return NULL;
   }
   
-  // For now, we'll create a basic human-like body template
-  // TODO: Parse body_template parameter to create custom body
-  BODY_DATA *body = raceCreateBody("human");
-  if(body == NULL) {
-    PyErr_Format(PyExc_RuntimeError, "Failed to create body template");
+  BODY_DATA *body = NULL;
+  
+  // Parse body_template parameter
+  if(PyCapsule_CheckExact(body_template)) {
+    // Body template is a body capsule - use it directly
+    body = (BODY_DATA*)PyCapsule_GetPointer(body_template, "BODY_DATA");
+    if(body == NULL) {
+      PyErr_Format(PyExc_TypeError, "Invalid body template capsule");
+      return NULL;
+    }
+    // Make a copy since add_race will take ownership
+    body = bodyCopy(body);
+  }
+  else if(PyList_Check(body_template)) {
+    // Body template is a list of position dictionaries
+    body = newBody();
+    if(body == NULL) {
+      PyErr_Format(PyExc_RuntimeError, "Failed to create new body");
+      return NULL;
+    }
+    
+    // Parse each position in the list
+    Py_ssize_t list_size = PyList_Size(body_template);
+    for(Py_ssize_t i = 0; i < list_size; i++) {
+      PyObject *pos_dict = PyList_GetItem(body_template, i);
+      if(!PyDict_Check(pos_dict)) {
+        deleteBody(body);
+        PyErr_Format(PyExc_TypeError, "Body template positions must be dictionaries");
+        return NULL;
+      }
+      
+      // Extract position data
+      PyObject *name_obj = PyDict_GetItemString(pos_dict, "name");
+      PyObject *type_obj = PyDict_GetItemString(pos_dict, "type");
+      PyObject *weight_obj = PyDict_GetItemString(pos_dict, "weight");
+      
+      if(!name_obj || !type_obj || !weight_obj) {
+        deleteBody(body);
+        PyErr_Format(PyExc_ValueError, 
+                     "Body position must have 'name', 'type', and 'weight' keys");
+        return NULL;
+      }
+      
+      const char *pos_name = PyUnicode_AsUTF8(name_obj);
+      const char *pos_type = PyUnicode_AsUTF8(type_obj);
+      long weight = PyLong_AsLong(weight_obj);
+      
+      if(!pos_name || !pos_type || PyErr_Occurred()) {
+        deleteBody(body);
+        PyErr_Format(PyExc_ValueError, "Invalid position data types");
+        return NULL;
+      }
+      
+      // Convert position type name to number
+      int type_num = bodyposGetNum(pos_type);
+      if(type_num == BODYPOS_NONE) {
+        deleteBody(body);
+        PyErr_Format(PyExc_ValueError, "Unknown body position type: %s", pos_type);
+        return NULL;
+      }
+      
+      bodyAddPosition(body, pos_name, type_num, (int)weight);
+    }
+  }
+  else {
+    PyErr_Format(PyExc_TypeError, 
+                 "Body template must be a body capsule or list of position dictionaries");
     return NULL;
   }
   
@@ -339,6 +490,20 @@ PyMODINIT_FUNC PyInit_PyWorld(void) {
   PyWorld_addMethod("get_bodypos_types", pyworld_get_bodypos_types, METH_NOARGS,
     "get_bodypos_types()\n\n"
     "Return a list of all available body position types (hardcoded + custom).");
+
+  // Body template creation methods
+  PyWorld_addMethod("new_body", pyworld_new_body, METH_NOARGS,
+    "new_body()\n\n"
+    "Create a new empty body template. Returns a body object for use with other functions.");
+  PyWorld_addMethod("body_add_position", pyworld_body_add_position, METH_VARARGS,
+    "body_add_position(body, name, type, weight)\n\n"
+    "Add a position to a body template. Type must be a valid body position type.");
+  PyWorld_addMethod("body_remove_position", pyworld_body_remove_position, METH_VARARGS,
+    "body_remove_position(body, name)\n\n"
+    "Remove a position from a body template.");
+  PyWorld_addMethod("body_set_size", pyworld_body_set_size, METH_VARARGS,
+    "body_set_size(body, size)\n\n"
+    "Set the size of a body template. Size must be a valid body size.");
 
   // Race system methods
   PyWorld_addMethod("add_race", pyworld_add_race, METH_VARARGS,
