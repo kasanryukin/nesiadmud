@@ -23,6 +23,11 @@ Compiled and tested on multiple platforms
 - **Git submodules:** Run `git submodule update --init --recursive` to initialize all new submodules
 - **New Python APIs:** Enhanced body system with dynamic position types and sizes
 - **MSSP Protocol:** Binary data support added for telnet protocol compliance
+- **New commands:**
+  - `entityconfig` (admin) - comprehensive entities configuration editor for body position types, body sizes, and races
+  - `gearconfig` (admin) - equipment and item management configuration editor
+  - `msspedit` (admin) - MSSP protocol configuration editor
+  - `mssp` (admin) - display current MSSP status and information
 
 ---
 
