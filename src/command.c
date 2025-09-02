@@ -310,14 +310,18 @@ int charTryCmd(CHAR_DATA *ch, CMD_DATA *cmd, char *arg) {
       PyObject *arglist = Py_BuildValue("Oss", charGetPyFormBorrowed(ch), 
 					cmd->name, arg);
       PyObject *retval  = PyEval_CallObject(cmd->pyfunc, arglist);
+      int result = TRUE;
+      
       // check for an error:
       if(retval == NULL)
 	log_pyerr("Error running Python command, %s:", cmd->name);
+      else if(PyLong_Check(retval) && PyLong_AsLong(retval) == -1)
+	result = -1;
 
       // garbage collection
       Py_XDECREF(retval);
       Py_XDECREF(arglist);
-      return TRUE;
+      return result;
     }
     // command is null (but there might have been checks)
     else
