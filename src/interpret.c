@@ -207,13 +207,34 @@ CMD_DATA *find_cmd(CHAR_DATA *ch, NEAR_MAP *table, const char *name,
     if(cmdname_list != NULL) {
       LIST_ITERATOR *cmdname_i = newListIterator(cmdname_list);
       const char      *cmdname = NULL;
+      
+      // First pass: look for exact matches
       ITERATE_LIST(cmdname, cmdname_i) {
-	cmd = nearMapGet(table, cmdname, FALSE);
-	if(is_usable_cmd(ch, cmd))
-	  break;
-	else
-	  cmd = NULL;
-      } deleteListIterator(cmdname_i);
+        if(strcasecmp(cmdname, name) == 0) {  // exact match
+          cmd = nearMapGet(table, cmdname, FALSE);
+          if(is_usable_cmd(ch, cmd))
+            break;
+          else
+            cmd = NULL;
+        }
+      }
+      
+      // Second pass: if no exact match found, use partial matches
+      if(cmd == NULL) {
+        deleteListIterator(cmdname_i);
+        cmdname_i = newListIterator(cmdname_list);
+        ITERATE_LIST(cmdname, cmdname_i) {
+          if(strcasecmp(cmdname, name) != 0) {  // partial match only
+            cmd = nearMapGet(table, cmdname, FALSE);
+            if(is_usable_cmd(ch, cmd))
+              break;
+            else
+              cmd = NULL;
+          }
+        }
+      }
+      
+      deleteListIterator(cmdname_i);
       deleteListWith(cmdname_list, free);
     }
     return cmd;

@@ -187,12 +187,69 @@ def cmd_remove(ch, cmd, arg):
         for obj in found:
             do_remove(ch, obj)
 
+def expand_where_to_posnames(ch, obj, where):
+    '''Expand body position types to specific position names using built-in C APIs'''
+    if not where:
+        # Use the object's default wear locations and continue processing
+        if obj.istype("worn"):
+            where = obj.worn_locs
+        else:
+            return None
+    
+    # Build type-to-parts mapping from character's actual body configuration
+    type_to_parts = {}
+    for part in ch.bodyparts:
+        part_type = ch.get_bodypart_type(part)
+        if part_type:
+            if part_type not in type_to_parts:
+                type_to_parts[part_type] = []
+            type_to_parts[part_type].append(part)
+    
+    # Parse comma-separated position list
+    positions = [pos.strip() for pos in where.split(',')]
+    resolved_positions = []
+    used_parts = set()  # Track which parts have already been selected
+    
+    for pos in positions:
+        # If it's already a specific position name, use it directly
+        if pos in ch.bodyparts:
+            if pos not in used_parts:
+                resolved_positions.append(pos)
+                used_parts.add(pos)
+        # If it's a type, find the first free position of that type
+        elif pos in type_to_parts:
+            found_free = False
+            for part_name in type_to_parts[pos]:
+                if part_name not in used_parts and not ch.get_equip(part_name):  # Check if slot is free and not already used
+                    resolved_positions.append(part_name)
+                    used_parts.add(part_name)
+                    found_free = True
+                    break
+            if not found_free:
+                # Try to find any unused part of this type, even if occupied
+                for part_name in type_to_parts[pos]:
+                    if part_name not in used_parts:
+                        resolved_positions.append(part_name)
+                        used_parts.add(part_name)
+                        break
+        else:
+            # Unknown position type, pass through as-is
+            if pos not in used_parts:
+                resolved_positions.append(pos)
+                used_parts.add(pos)
+    
+    return ', '.join(resolved_positions)
+
 def do_wear(ch, obj, where):
     '''handles object wearing'''
     if not obj.istype("worn"):
-        ch.send("But " + ch.see_as(obj) + " is not equippable.")
-        
-    elif ch.equip(obj, where):
+        ch.send("But " + ch.see_as(obj) + " is not wearable.")
+        return
+    
+    # Expand body position types to specific position names
+    expanded_where = expand_where_to_posnames(ch, obj, where)
+    
+    if ch.equip(obj, expanded_where):
         mud.message(ch, None, obj, None, True, "to_char", "You wear $o.")
         mud.message(ch, None, obj, None, True, "to_room", "$n wears $o.")
 
@@ -202,15 +259,15 @@ def do_wear(ch, obj, where):
 def cmd_wear(ch, cmd, arg):
     '''Usage: wear <item> [where]
 
-       Attempts to equip an item from your inventory. If you would like to
-       equip it to a non-default location, you can supply where on your body
-       you would like to wear it. For example, if you would like to equip a
+       Attempts to wear an item from your inventory. If you would like to
+       wear it to a non-default location, you can supply where on your body
+       you would like to wear it. For example, if you would like to wear a
        torch, but in your offhand instead of your mainhand:
 
        > wear torch offhand
 
        If an item covers multiple locations on your body, you can specify where
-       all you would like to equip the item as a comma-separated list:
+       all you would like to wear the item as a comma-separated list:
 
        > wear gloves left hand, right hand'''
     try:

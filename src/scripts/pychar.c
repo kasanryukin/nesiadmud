@@ -429,19 +429,13 @@ PyObject *PyChar_add_bodypart(PyChar *self, PyObject *args) {
     return NULL;
   }
   
-  int type_num = bodyposGetNum(type_name);
-  if(type_num == BODYPOS_NONE) {
-    PyErr_Format(PyExc_ValueError, "Invalid body position type: %s", type_name);
-    return NULL;
-  }
-  
   BODY_DATA *body = charGetBody(ch);
   if(body == NULL) {
     PyErr_Format(PyExc_RuntimeError, "Character has no body");
     return NULL;
   }
   
-  bodyAddPosition(body, name, type_num, size);
+  bodyAddPositionByName(body, name, type_name, size);
   return Py_BuildValue("i", 1);
 }
 
@@ -489,12 +483,11 @@ PyObject *PyChar_get_bodypart_type(PyChar *self, PyObject *args) {
     return NULL;
   }
   
-  int type_num = bodyGetPart(body, name);
-  if(type_num == BODYPOS_NONE) {
+  const char *type_name = bodyGetPart(body, name);
+  if(type_name == NULL) {
     return Py_BuildValue("");
   }
   
-  const char *type_name = bodyposGetName(type_num);
   return Py_BuildValue("s", type_name);
 }
 
@@ -1338,6 +1331,7 @@ PyObject *PyChar_equip(PyChar *self, PyObject *args) {
   char          *pos = NULL;
   const char *needed = NULL;
   bool        forced = FALSE;
+  char *equipment_type = NULL;
 
   // incase the equip fails, keep item in the original place.. here's the vars
   CHAR_DATA *old_carrier = NULL;
@@ -1346,10 +1340,15 @@ PyObject *PyChar_equip(PyChar *self, PyObject *args) {
   ROOM_DATA    *old_room = NULL;
   OBJ_DATA     *old_cont = NULL;
 
-  if (!PyArg_ParseTuple(args, "O|zb", &pobj, &pos, &forced)) {
+  if (!PyArg_ParseTuple(args, "O|zbs", &pobj, &pos, &forced, &equipment_type)) {
     PyErr_Format(PyExc_TypeError, 
 		 "Character equip must be supplied with an item to equip!");
     return NULL;
+  }
+  
+  // Default equipment_type to "worn" if not provided
+  if (equipment_type == NULL) {
+    equipment_type = "worn";
   }
 
   if(!PyObj_Check(pobj)) {
@@ -1388,7 +1387,11 @@ PyObject *PyChar_equip(PyChar *self, PyObject *args) {
     needed = wornGetPositions(obj);
 
   // try equipping the object. If we fail, put it back wherever it came from
-  if((!forced && !objIsType(obj, "worn")) || !try_equip(ch,obj,pos,needed)) {
+  // Allow equipping if: forced=True OR object is "worn" OR object matches equipment_type
+  bool can_equip_type = (equipment_type && objIsType(obj, equipment_type));
+  bool should_try_equip = forced || objIsType(obj, "worn") || can_equip_type;
+  
+  if(!should_try_equip || !try_equip_ex(ch,obj,pos,needed,equipment_type,forced)) {
     if(old_room != NULL)
       obj_to_room(obj, old_room);
     else if(old_cont != NULL)
@@ -1396,7 +1399,7 @@ PyObject *PyChar_equip(PyChar *self, PyObject *args) {
     else if(old_carrier != NULL)
       obj_to_char(obj, old_carrier);
     else if(old_wearer != NULL)
-      try_equip(ch, obj, old_pos, NULL);
+      try_equip_ex(ch, obj, old_pos, NULL, equipment_type, forced);
     if(pos == NULL)
       message(ch, NULL, obj, NULL, TRUE, TO_CHAR, "You are already equipped in all possible positions for $o.");
     else
@@ -1415,6 +1418,7 @@ PyObject *PyChar_equip(PyChar *self, PyObject *args) {
 
 PyObject *PyChar_getequip(PyChar *self, PyObject *args) {  
   CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  LIST *equipment_list = NULL;
   OBJ_DATA *obj = NULL;
   char     *pos = NULL;
   if(ch == NULL) {
@@ -1427,11 +1431,14 @@ PyObject *PyChar_getequip(PyChar *self, PyObject *args) {
     return NULL;
   }
   
-  obj = bodyGetEquipment(charGetBody(ch), pos);
-  if(obj == NULL)
+  equipment_list = bodyGetEquipment(charGetBody(ch), pos);
+  if(equipment_list == NULL || listSize(equipment_list) == 0)
     return Py_BuildValue("");
-  else
+  else {
+    // Return the first item for backward compatibility
+    obj = listGet(equipment_list, 0);
     return Py_BuildValue("O", objGetPyFormBorrowed(obj));
+  }
 }
 
 PyObject *PyChar_getslots(PyChar *self, PyObject *args) {  
@@ -1492,7 +1499,8 @@ PyObject *PyChar_getslottypes(PyChar *self, PyObject *args) {
     LIST_ITERATOR *where_i = newListIterator(where);
     const char        *pos = NULL;
     ITERATE_LIST(pos, where_i) {
-      PyObject *str = Py_BuildValue("s", bodyposGetName(bodyGetPart(charGetBody(ch), pos)));
+      const char *type_name = bodyGetPart(charGetBody(ch), pos);
+      PyObject *str = Py_BuildValue("s", type_name ? type_name : "");
       PyList_Append(ret, str);
       Py_DECREF(str);
     } deleteListIterator(where_i);
@@ -2371,14 +2379,15 @@ PyMODINIT_FUNC PyInit_PyChar(void) {
   PyChar_addMethod("delvar", PyChar_deletevar, METH_VARARGS,
     "Alias for char.Char.deletevar(name)");
   PyChar_addMethod("equip", PyChar_equip, METH_VARARGS,
-    "equip(obj, positions=None, forced=False)\n"
+    "equip(obj, positions=None, forced=False, equipment_type='worn')\n"
     "\n"
     "Attempts to equip an object to the character's body. Positions can be a\n"
     "comma-separated list of position names or position types. If positions\n"
     "is None and object is of type 'worn', attempt to equip the object to\n"
     "its default positions. Setting forced to True allows non-worn objects\n"
     "to be equipped, or worn objects to be equipped to their non-default\n"
-    "positions. Returns success of attempt.");
+    "positions. equipment_type controls layering - items only conflict with\n"
+    "other items of the same type. Returns success of attempt.");
   PyChar_addMethod("get_equip", PyChar_getequip, METH_VARARGS,
     "get_equip(bodypart)\n"
     "\n"

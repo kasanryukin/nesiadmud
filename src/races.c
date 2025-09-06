@@ -59,29 +59,29 @@ void init_races() {
   // make the default human body
   BODY_DATA *body = newBody();
   bodySetSize(body, BODYSIZE_MEDIUM);
-  bodyAddPosition(body, "right grip",              BODYPOS_HELD,          0);
-  bodyAddPosition(body, "left grip",               BODYPOS_HELD,          0);
-  bodyAddPosition(body, "right foot",              BODYPOS_RIGHT_FOOT,    2);
-  bodyAddPosition(body, "left foot",               BODYPOS_LEFT_FOOT,     2);
-  bodyAddPosition(body, "right leg",               BODYPOS_LEG,           9);
-  bodyAddPosition(body, "left leg",                BODYPOS_LEG,           9);
-  bodyAddPosition(body, "waist",                   BODYPOS_WAIST,         1);
-  bodyAddPosition(body, "right finger",            BODYPOS_FINGER,        1);
-  bodyAddPosition(body, "left finger",             BODYPOS_FINGER,        1);
-  bodyAddPosition(body, "right hand",              BODYPOS_RIGHT_HAND,    2);
-  bodyAddPosition(body, "left hand",               BODYPOS_LEFT_HAND,     2);
-  bodyAddPosition(body, "right wrist",             BODYPOS_WRIST,         1);
-  bodyAddPosition(body, "left wrist",              BODYPOS_WRIST,         1);
-  bodyAddPosition(body, "right arm",               BODYPOS_ARM,           7);
-  bodyAddPosition(body, "left arm",                BODYPOS_ARM,           7);
-  bodyAddPosition(body, "about body",              BODYPOS_ABOUT,         0);
-  bodyAddPosition(body, "torso",                   BODYPOS_TORSO,        50);
-  bodyAddPosition(body, "neck",                    BODYPOS_NECK,          1);
-  bodyAddPosition(body, "right ear",               BODYPOS_EAR,           0);
-  bodyAddPosition(body, "left ear",                BODYPOS_EAR,           0);
-  bodyAddPosition(body, "face",                    BODYPOS_FACE,          2);
-  bodyAddPosition(body, "head",                    BODYPOS_HEAD,          2);
-  bodyAddPosition(body, "floating about head",     BODYPOS_FLOAT,         0);
+  bodyAddPositionByName(body, "right grip",              "held",                0);
+  bodyAddPositionByName(body, "left grip",               "held",                0);
+  bodyAddPositionByName(body, "right foot",              "right foot",          2);
+  bodyAddPositionByName(body, "left foot",               "left foot",           2);
+  bodyAddPositionByName(body, "right leg",               "leg",                 9);
+  bodyAddPositionByName(body, "left leg",                "leg",                 9);
+  bodyAddPositionByName(body, "waist",                   "waist",               1);
+  bodyAddPositionByName(body, "right finger",            "finger",              1);
+  bodyAddPositionByName(body, "left finger",             "finger",              1);
+  bodyAddPositionByName(body, "right hand",              "right hand",          2);
+  bodyAddPositionByName(body, "left hand",               "left hand",           2);
+  bodyAddPositionByName(body, "right wrist",             "wrist",               1);
+  bodyAddPositionByName(body, "left wrist",              "wrist",               1);
+  bodyAddPositionByName(body, "right arm",               "arm",                 7);
+  bodyAddPositionByName(body, "left arm",                "arm",                 7);
+  bodyAddPositionByName(body, "about body",              "about body",          0);
+  bodyAddPositionByName(body, "torso",                   "torso",              50);
+  bodyAddPositionByName(body, "neck",                    "neck",                1);
+  bodyAddPositionByName(body, "right ear",               "ear",                 0);
+  bodyAddPositionByName(body, "left ear",                "ear",                 0);
+  bodyAddPositionByName(body, "face",                    "face",                2);
+  bodyAddPositionByName(body, "head",                    "head",                2);
+  bodyAddPositionByName(body, "floating about head",     "floating about head", 0);
   //                                                                  ------
   //                                                                    100
 

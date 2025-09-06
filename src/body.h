@@ -12,31 +12,7 @@
 
 
 
-#define BODYPOS_NONE             -1
-
-#define BODYPOS_FLOAT             0
-#define BODYPOS_HEAD              1
-#define BODYPOS_FACE              2
-#define BODYPOS_EAR               3
-#define BODYPOS_NECK              4
-#define BODYPOS_ABOUT             5
-#define BODYPOS_TORSO             6
-#define BODYPOS_ARM               7
-#define BODYPOS_WING              8
-#define BODYPOS_WRIST             9
-#define BODYPOS_LEFT_HAND        10
-#define BODYPOS_RIGHT_HAND       11
-#define BODYPOS_FINGER           12
-#define BODYPOS_WAIST            13
-#define BODYPOS_LEG              14
-#define BODYPOS_LEFT_FOOT        15
-#define BODYPOS_RIGHT_FOOT       16
-#define BODYPOS_HOOF             17
-#define BODYPOS_CLAW             18
-#define BODYPOS_TAIL             19
-#define BODYPOS_HELD             20
-
-#define NUM_BODYPOS              21
+// Body position constants removed - now using dynamic string-based system
 
 #define BODYSIZE_NONE            -1
 #define BODYSIZE_DIMINUITIVE      0
@@ -56,9 +32,10 @@ char *list_postypes(const BODY_DATA *B, const char *posnames);
 
 
 /**
- * return the name of the body position type 
+ * Get the type of position the bodypart is. Return NULL if
+ * no such bodypart exists on the body
  */
-const char *bodyposGetName(int bodypos);
+const char *bodyGetPart(const BODY_DATA *B, const char *pos);
 
 
 /**
@@ -71,12 +48,6 @@ const char *bodysizeGetName(int size);
  * return the number assocciated with the bodysize
  */
 int bodysizeGetNum(const char *size);
-
-
-/**
- * returns the number of the bodyposition
- */
-int bodyposGetNum(const char *bodypos);
 
 
 /**
@@ -109,14 +80,18 @@ int bodyGetSize(const BODY_DATA *B);
 void bodySetSize(BODY_DATA *B, int size);
 
 /**
- * Add a new position to the body. <type> is one of the basic
- * position types listed at the start of this header, and
- * <weight> is how much of the body's mass the piece takes up,
- * relative to the rest of the body. If the position already exists
- * on the body, just change its type and size.
+ * Add a position to a body. If the position already exists, it will be
+ * modified to have the new type and size. Otherwise, a new position will
+ * be created.
  */
-void bodyAddPosition(BODY_DATA *B, const char *pos, int type, int size);
+void bodyAddPosition(BODY_DATA *B, const char *pos, const char *type, int size);
 
+/**
+ * Add a position to a body using string type name instead of integer.
+ * If the position already exists, it will be modified to have the new type and size.
+ * Otherwise, a new position will be created.
+ */
+void bodyAddPositionByName(BODY_DATA *B, const char *pos, const char *type_name, int size);
 
 /**
  * Remove a position from the body. Return true if the
@@ -125,11 +100,7 @@ void bodyAddPosition(BODY_DATA *B, const char *pos, int type, int size);
 bool bodyRemovePosition(BODY_DATA *B, const char *pos);
 
 
-/**
- * Return the type of position the bodypart is. Return NONE if
- * no such bodypart exists on the body
- */
-int bodyGetPart(const BODY_DATA *B, const char *pos);
+// Removed duplicate bodyGetPart declaration - using string-based version above
 
 
 /**
@@ -167,6 +138,13 @@ bool bodyEquipPostypes(BODY_DATA *B, OBJ_DATA *obj, const char *types);
  */
 bool bodyEquipPosnames(BODY_DATA *B, OBJ_DATA *obj, const char *positions);
 
+/**
+ * Extended version of bodyEquipPosnames with type filtering and force override.
+ * equipment_type: only conflicts with equipment of this type (NULL = all types)
+ * force: if true, ignores all existing equipment and forces equipping
+ */
+bool bodyEquipPosnamesEx(BODY_DATA *B, OBJ_DATA *obj, const char *positions, 
+                         const char *equipment_type, bool force);
 
 /**
  * Returns a list of places the piece of equipment is equipped on
@@ -176,10 +154,10 @@ const char *bodyEquippedWhere(BODY_DATA *B, OBJ_DATA *obj);
 
 
 /**
- * Return a pointer to the object that is equipped at the given bodypart.
+ * Return a list of objects that are equipped at the given bodypart.
  * If nothing is equipped, or the bodypart does not exist, return null.
  */
-OBJ_DATA *bodyGetEquipment(BODY_DATA *B, const char *pos);
+LIST *bodyGetEquipment(BODY_DATA *B, const char *pos);
 
 
 /**

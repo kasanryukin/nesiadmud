@@ -71,8 +71,13 @@ void      char_to_furniture   (CHAR_DATA *ch, OBJ_DATA *furniture);
 
 bool      do_equip          (CHAR_DATA *ch, OBJ_DATA *obj, const char *pos, 
 			     bool by_name);
+bool      do_equip_ex       (CHAR_DATA *ch, OBJ_DATA *obj, const char *pos, 
+			     bool by_name, const char *equipment_type, bool force);
 bool      try_equip         (CHAR_DATA *ch, OBJ_DATA *obj, 
 			     const char *wanted_pos, const char *required_pos);
+bool      try_equip_ex      (CHAR_DATA *ch, OBJ_DATA *obj, 
+			     const char *wanted_pos, const char *required_pos,
+			     const char *equipment_type, bool force);
 bool      try_unequip       (CHAR_DATA *ch, OBJ_DATA *obj);
 bool      do_unequip        (CHAR_DATA *ch, OBJ_DATA *obj);
 void      unequip_all       (CHAR_DATA *ch);

@@ -494,7 +494,14 @@ void char_to_furniture(CHAR_DATA *ch, OBJ_DATA *furniture) {
 // if we're equipping by the specific name of positions, by_name should be TRUE.
 // If instead we are equipping by the TYPE of position, by_name should be FALSE
 bool do_equip(CHAR_DATA *ch, OBJ_DATA *obj, const char *pos, bool by_name) {
-  if((by_name  && bodyEquipPosnames(charGetBody(ch), obj, pos)) ||
+  return do_equip_ex(ch, obj, pos, by_name, "worn", FALSE);
+}
+
+//
+// Extended version with equipment type filtering and force override
+bool do_equip_ex(CHAR_DATA *ch, OBJ_DATA *obj, const char *pos, bool by_name, 
+                 const char *equipment_type, bool force) {
+  if((by_name  && bodyEquipPosnamesEx(charGetBody(ch), obj, pos, equipment_type, force)) ||
      (!by_name && bodyEquipPostypes(charGetBody(ch), obj, pos))) {
     objSetWearer(obj, ch);
     return TRUE;
@@ -504,15 +511,20 @@ bool do_equip(CHAR_DATA *ch, OBJ_DATA *obj, const char *pos, bool by_name) {
 
 bool try_equip(CHAR_DATA *ch, OBJ_DATA *obj, const char *wanted_pos,
 	       const char *required_pos) {
+  return try_equip_ex(ch, obj, wanted_pos, required_pos, "worn", FALSE);
+}
+
+bool try_equip_ex(CHAR_DATA *ch, OBJ_DATA *obj, const char *wanted_pos,
+	          const char *required_pos, const char *equipment_type, bool force) {
   bool success = FALSE;
 
   // if we don't need any specific places, try equipping to our wanted spots
   if(!required_pos || !*required_pos)
-    success = do_equip(ch, obj, wanted_pos, TRUE);
+    success = do_equip_ex(ch, obj, wanted_pos, TRUE, equipment_type, force);
 
   // if we don't want any specific places, equip to whatever is open
   else if(!wanted_pos || !*wanted_pos)
-    success = do_equip(ch, obj, required_pos, FALSE);
+    success = do_equip_ex(ch, obj, required_pos, FALSE, equipment_type, force);
 
   // otherwise, see if the places we want to equip to match what we need,
   // and also make sure we're not trying to equip the same position twice
@@ -552,7 +564,7 @@ bool try_equip(CHAR_DATA *ch, OBJ_DATA *obj, const char *wanted_pos,
 
     // if we didn't run into problems, try equipping
     if(match == TRUE)
-      success = do_equip(ch, obj, wanted_pos, TRUE);
+      success = do_equip_ex(ch, obj, wanted_pos, TRUE, equipment_type, force);
   }
 
   if(success == TRUE)

@@ -10,13 +10,14 @@
 #include "mud.h"
 #include "utils.h"
 #include "body.h"
+#include "items/items.h"
 
 
 struct bodypart_data {
   char          *name;       // the name of the position
-  int            type;       // what kind of position type is this?
+  char          *type;       // what kind of position type is this?
   int            size;       // how big is it, relative to other positions?
-  OBJ_DATA *equipment;       // what is being worn here?
+  LIST     *equipment;       // list of objects being worn here (for layering)
 };
 
 typedef struct bodypart_data   BODYPART;
@@ -38,30 +39,7 @@ struct body_data {
 LIST *bodypos_list = NULL;
 LIST *bodysize_list = NULL;
 
-// Original hardcoded values for initialization
-static const char *default_bodypos[NUM_BODYPOS] = {
-  "floating about head",
-  "head",
-  "face",
-  "ear",
-  "neck",
-  "about body",
-  "torso",
-  "arm",
-  "wing",
-  "wrist",
-  "left hand",
-  "right hand",
-  "finger",
-  "waist",
-  "leg",
-  "left foot",
-  "right foot",
-  "hoof",
-  "claw",
-  "tail",
-  "held"
-};
+// Removed duplicate body_get_all_position_types - using the one below
 
 static const char *default_bodysize[NUM_BODYSIZES] = {
   "diminuitive",
@@ -74,17 +52,23 @@ static const char *default_bodysize[NUM_BODYSIZES] = {
   "collosal"
 };
 
+static const char *default_bodypos[] = {
+  "floating about head", "about body", "head", "face", "ear", "neck", 
+  "torso", "arm", "wing", "wrist", "left hand", "right hand", "finger", 
+  "waist", "leg", "left foot", "right foot", "hoof", "claw", 
+  "tail", "held", "hands", "legs", "feet", "wings", "hooves"
+};
+
 
 /**
  * Create a new bodypart_data
  */
-BODYPART *newBodypart(const char *name, int type, int size) {
+BODYPART *newBodypart(const char *name, const char *type, int size) {
   BODYPART *P = malloc(sizeof(BODYPART));
-  P->equipment = NULL;
-  P->type = type;
+  P->equipment = newList();
+  P->type = strdupsafe(type);
   P->size = MAX(0, size); // parts of size 0 cannot be hit
   P->name = strdup((name ? name : "nothing"));
-
   return P;
 };
 
@@ -94,6 +78,8 @@ BODYPART *newBodypart(const char *name, int type, int size) {
  */
 void deleteBodypart(BODYPART *P) {
   if(P->name) free(P->name);
+  if(P->type) free(P->type);
+  if(P->equipment) deleteList(P->equipment);
   free(P);
 };
 
@@ -102,8 +88,8 @@ void deleteBodypart(BODYPART *P) {
  */
 BODYPART *bodypartCopy(BODYPART *P) {
   BODYPART *p_new = malloc(sizeof(BODYPART));
-  p_new->equipment = NULL;
-  p_new->type      = P->type;
+  p_new->equipment = newList();
+  p_new->type      = strdupsafe(P->type);
   p_new->size      = P->size;
   p_new->name      = strdup(P->name);
   return p_new;
@@ -126,12 +112,12 @@ char *list_postypes(const BODY_DATA *B, const char *posnames) {
   int             found = 0;
 
   ITERATE_LIST(name, name_i) {
-    int part = bodyGetPart(B, name);
-    if(part != BODYPOS_NONE) {
+    const char *part_type = bodyGetPart(B, name);
+    if(part_type != NULL) {
       found++;
       if(found != 1)
 	bufferCat(buf, ", ");
-      bufferCat(buf, bodyposGetName(part));
+      bufferCat(buf, part_type);
     }
   } deleteListIterator(name_i);
   deleteListWith(names, free);
@@ -167,31 +153,7 @@ int bodysizeGetNum(const char *size) {
   return BODYSIZE_NONE;
 }
 
-const char *bodyposGetName(int bodypos) {
-  init_body_dynamic();
-  
-  if(bodypos < 0 || bodypos >= listSize(bodypos_list))
-    return NULL;
-    
-  return (const char*)listGet(bodypos_list, bodypos);
-}
-
-int bodyposGetNum(const char *bodypos) {
-  init_body_dynamic();
-  
-  int index = 0;
-  LIST_ITERATOR *pos_i = newListIterator(bodypos_list);
-  char *pos_type = NULL;
-  ITERATE_LIST(pos_type, pos_i) {
-    if(!strcasecmp(bodypos, pos_type)) {
-      deleteListIterator(pos_i);
-      return index;
-    }
-    index++;
-  } deleteListIterator(pos_i);
-  
-  return BODYPOS_NONE;
-}
+// Removed bodyposGetName() and bodyposGetNum() - using direct string storage now
 
 BODY_DATA *newBody() {
   struct body_data*B = malloc(sizeof(BODY_DATA));
@@ -244,30 +206,34 @@ BODYPART *findBodypart(const BODY_DATA *B, const char *pos) {
 // is not yet equipped with an item
 //
 BODYPART *findFreeBodypart(BODY_DATA *B, const char *type) {
-  int typenum = bodyposGetNum(type);
-  if(typenum == BODYPOS_NONE) return NULL;
-
   LIST_ITERATOR *part_i = newListIterator(B->parts);
   BODYPART *part = NULL;
   ITERATE_LIST(part, part_i)
-    if(part->type == typenum && part->equipment == NULL)
+    if(part->type && !strcasecmp(part->type, type) && listSize(part->equipment) == 0)
       break;
   deleteListIterator(part_i);
 
   return part;
 }
 
-void bodyAddPosition(BODY_DATA *B, const char *pos, int type, int size) {
+void bodyAddPosition(BODY_DATA *B, const char *pos, const char *type, int size) {
   BODYPART *part = findBodypart(B, pos);
 
   // if we've already found the part, just modify it
   if(part) {
-    part->type = type;
+    if(part->type) free(part->type);
+    part->type = strdupsafe(type);
     part->size = size;
   }
-  // otherwise, add a new part
-  else
-    listPut(B->parts, newBodypart(pos, type, size));
+  // otherwise, create a new one
+  else {
+    part = newBodypart(pos, type, size);
+    listPut(B->parts, part);
+  }
+}
+
+void bodyAddPositionByName(BODY_DATA *B, const char *pos, const char *type_name, int size) {
+  bodyAddPosition(B, pos, type_name, size);
 }
 
 bool bodyRemovePosition(BODY_DATA *B, const char *pos) {
@@ -281,10 +247,10 @@ bool bodyRemovePosition(BODY_DATA *B, const char *pos) {
   return TRUE;
 }
 
-int bodyGetPart(const BODY_DATA *B, const char *pos) {
+const char *bodyGetPart(const BODY_DATA *B, const char *pos) {
   BODYPART *part = findBodypart(B, pos);
   if(part) return part->type;
-  else     return BODYPOS_NONE;
+  else     return NULL;
 }
 
 
@@ -354,47 +320,13 @@ const char **bodyGetParts(const BODY_DATA *B, bool sort, int *num_pos) {
   BODYPART *part = NULL;
   int i = 0;
 
-  // if we don't need to sort, this should be fine ...
-  if(!sort) {
-    ITERATE_LIST(part, part_i)
-      parts[i] = part->name;
-    deleteListIterator(part_i);
-  }
-  // take some extra steps to make sure everything is sorted
-  else {
-    int pos[*num_pos];
+  // Simple implementation - just return part names without complex sorting
+  // since we no longer have integer-based position ordering
+  ITERATE_LIST(part, part_i) {
+    parts[i] = part->name;
+    i++;
+  } deleteListIterator(part_i);
 
-    i = 0;
-    ITERATE_LIST(part, part_i) {
-      parts[i] = part->name;
-      pos[i]   = part->type;
-      i++;
-    } deleteListIterator(part_i);
-
-    // now sort everything in the array
-    for(i = 0; i < *num_pos; i++) {
-      // max_pos in this context is not the position in the array with the
-      // highest value. Rather, it is the position in the array whose value
-      // corresponds to the highest position on a body, which is negatively
-      // related to the value of the position.
-      int j, max_pos = i;
-      for(j = i+1; j < *num_pos; j++) {
-	if(pos[j] < pos[max_pos])
-	  max_pos = j;
-      }
-
-      // do a shuffle
-      if(max_pos != i) {
-	const char *tmp_ptr = parts[i];
-	parts[i] = parts[max_pos];
-	parts[max_pos] = tmp_ptr;
-
-	int tmp_val = pos[i];
-	pos[i] = pos[max_pos];
-	pos[max_pos] = tmp_val;
-      }
-    }
-  }
   return parts;
 }
 
@@ -423,8 +355,8 @@ bool bodyEquipPostypes(BODY_DATA *B, OBJ_DATA *obj, const char *types) {
 
   ITERATE_LIST(pos, pos_i) {
     part = findFreeBodypart(B, pos);
-    if(part && !part->equipment) {
-      part->equipment = obj;
+    if(part && listSize(part->equipment) == 0) {
+      listPut(part->equipment, obj);
       listPut(parts, part);
     }
   } deleteListIterator(pos_i);
@@ -433,7 +365,7 @@ bool bodyEquipPostypes(BODY_DATA *B, OBJ_DATA *obj, const char *types) {
   if(listSize(pos_list) != listSize(parts)) {
     // remove equipment for every part we put it on
     while((part = listPop(parts)) != NULL)
-      part->equipment = NULL;
+      listRemove(part->equipment, obj);
     success = FALSE;
   }
 
@@ -465,7 +397,7 @@ bool bodyEquipPosnames(BODY_DATA *B, OBJ_DATA *obj, const char *positions) {
   char            *pos = NULL;
   ITERATE_LIST(pos, pos_i) {
     part = findBodypart(B, pos);
-    if(part && !part->equipment && !listIn(parts, part))
+    if(part && listSize(part->equipment) == 0 && !listIn(parts, part))
       listPut(parts, part);
   } deleteListIterator(pos_i);
 
@@ -475,7 +407,85 @@ bool bodyEquipPosnames(BODY_DATA *B, OBJ_DATA *obj, const char *positions) {
 
   // fill in all of the parts that need to be filled
   while( (part = listPop(parts)) != NULL)
-    part->equipment = obj;
+    listPut(part->equipment, obj);
+
+  // clean up our garbage
+  deleteListWith(pos_list, free);
+  deleteList(parts);
+
+  return success;
+}
+
+bool bodyEquipPosnamesEx(BODY_DATA *B, OBJ_DATA *obj, const char *positions, 
+                         const char *equipment_type, bool force) {
+  LIST *pos_list = parse_keywords(positions);
+  LIST    *parts = NULL;
+  BODYPART *part = NULL;
+  bool   success = TRUE;
+
+
+  // make sure we have more than zero positions
+  if(listSize(pos_list) == 0) {
+    deleteList(pos_list);
+    return FALSE;
+  }
+
+  // create our list of parts
+  parts = newList();
+
+  // get a list of all open slots in the list provided
+  LIST_ITERATOR *pos_i = newListIterator(pos_list);
+  char            *pos = NULL;
+  ITERATE_LIST(pos, pos_i) {
+    part = findBodypart(B, pos);
+    if(!part) {
+      continue;
+    }
+    if(listIn(parts, part)) {
+      continue;
+    }
+    
+    bool can_equip = FALSE;
+    
+    if(force) {
+      // Force mode: always allow equipping
+      can_equip = TRUE;
+    } else if(listSize(part->equipment) == 0) {
+      // No equipment: always allow
+      can_equip = TRUE;
+    } else if(equipment_type) {
+      // Type filtering: check if existing equipment matches our type
+      // If no existing equipment of this type, we can layer over it
+      bool has_same_type = FALSE;
+      LIST_ITERATOR *eq_i = newListIterator(part->equipment);
+      OBJ_DATA *existing_obj = NULL;
+      ITERATE_LIST(existing_obj, eq_i) {
+        if(objIsType(existing_obj, equipment_type)) {
+          has_same_type = TRUE;
+          break;
+        }
+      } deleteListIterator(eq_i);
+      
+      if(!has_same_type) {
+        can_equip = TRUE;
+      }
+    } else {
+      // No equipment type specified: use old behavior (allow layering)
+      can_equip = TRUE;
+    }
+    
+    if(can_equip) {
+      listPut(parts, part);
+    }
+  } deleteListIterator(pos_i);
+
+  // make sure we found the right amount of parts
+  if(listSize(parts) != listSize(pos_list) || listSize(parts) == 0)
+    success = FALSE;
+
+  // fill in all of the parts that need to be filled
+  while( (part = listPop(parts)) != NULL)
+    listPut(part->equipment, obj);
 
   // clean up our garbage
   deleteListWith(pos_list, free);
@@ -493,7 +503,7 @@ const char *bodyEquippedWhere(BODY_DATA *B, OBJ_DATA *obj) {
   // go through the list of all parts, and print the name of any one
   // with the piece of equipment on it, onto the buf
   ITERATE_LIST(part, part_i) {
-    if(part->equipment == obj) {
+    if(listIn(part->equipment, obj)) {
       // if we've already printed something, add a comma
       if(*buf)
 	strcat(buf, ", ");
@@ -503,7 +513,7 @@ const char *bodyEquippedWhere(BODY_DATA *B, OBJ_DATA *obj) {
   return buf;
 }
 
-OBJ_DATA *bodyGetEquipment(BODY_DATA *B, const char *pos) {
+LIST *bodyGetEquipment(BODY_DATA *B, const char *pos) {
   BODYPART *part = findBodypart(B, pos);
   return (part ? part->equipment : NULL);
 }
@@ -514,12 +524,11 @@ bool bodyUnequip(BODY_DATA *B, const OBJ_DATA *obj) {
   bool           found  = FALSE;
 
   ITERATE_LIST(part, part_i) {
-    if(part->equipment == obj) {
-      part->equipment = NULL;
+    if(listIn(part->equipment, obj)) {
+      listRemove(part->equipment, obj);
       found = TRUE;
     }
   } deleteListIterator(part_i);
-
   return found;
 }
 
@@ -529,8 +538,14 @@ LIST *bodyGetAllEq(BODY_DATA *B) {
   BODYPART *part = NULL;
 
   ITERATE_LIST(part, part_i) {
-    if(part->equipment && !listIn(equipment, part->equipment))
-      listPut(equipment, part->equipment);
+    if(listSize(part->equipment) > 0) {
+      LIST_ITERATOR *eq_i = newListIterator(part->equipment);
+      OBJ_DATA *obj = NULL;
+      ITERATE_LIST(obj, eq_i) {
+        if(!listIn(equipment, obj))
+          listPut(equipment, obj);
+      } deleteListIterator(eq_i);
+    }
   } deleteListIterator(part_i);
   return equipment;
 }
@@ -541,9 +556,16 @@ LIST *bodyUnequipAll(BODY_DATA *B) {
   BODYPART *part = NULL;
 
   ITERATE_LIST(part, part_i) {
-    if(part->equipment && !listIn(equipment, part->equipment)) {
-      listPut(equipment, part->equipment);
-      part->equipment = NULL;
+    if(listSize(part->equipment) > 0) {
+      LIST_ITERATOR *eq_i = newListIterator(part->equipment);
+      OBJ_DATA *obj = NULL;
+      ITERATE_LIST(obj, eq_i) {
+        if(!listIn(equipment, obj))
+          listPut(equipment, obj);
+      } deleteListIterator(eq_i);
+      // Clear the equipment list for this part
+      deleteList(part->equipment);
+      part->equipment = newList();
     }
   } deleteListIterator(part_i);
   return equipment;
@@ -567,8 +589,9 @@ void init_body_dynamic() {
   }
   if(bodypos_list == NULL) {
     bodypos_list = newList();
-    // Initialize with default hardcoded values
-    for(int i = 0; i < NUM_BODYPOS; i++) {
+    // Initialize with standard body position types
+    int num_types = sizeof(default_bodypos) / sizeof(default_bodypos[0]);
+    for(int i = 0; i < num_types; i++) {
       listPut(bodypos_list, strdup(default_bodypos[i]));
     }
   }
@@ -608,6 +631,34 @@ bool body_remove_size(const char *size_name) {
   return FALSE; // Not found
 }
 
+LIST *body_get_all_sizes() {
+  init_body_dynamic();
+  LIST *all_sizes = newList();
+  
+  // Copy all sizes from dynamic list
+  LIST_ITERATOR *size_i = newListIterator(bodysize_list);
+  char *size = NULL;
+  ITERATE_LIST(size, size_i) {
+    listPut(all_sizes, strdup(size));
+  } deleteListIterator(size_i);
+  
+  return all_sizes;
+}
+
+LIST *body_get_all_position_types() {
+  init_body_dynamic();
+  LIST *all_types = newList();
+  
+  // Copy all position types from dynamic list
+  LIST_ITERATOR *pos_i = newListIterator(bodypos_list);
+  char *pos = NULL;
+  ITERATE_LIST(pos, pos_i) {
+    listPut(all_types, strdup(pos));
+  } deleteListIterator(pos_i);
+  
+  return all_types;
+}
+
 bool body_add_position_type(const char *pos_name) {
   init_body_dynamic();
   
@@ -632,40 +683,11 @@ bool body_remove_position_type(const char *pos_name) {
   char *existing = NULL;
   ITERATE_LIST(existing, pos_i) {
     if(!strcasecmp(existing, pos_name)) {
+      deleteListIterator(pos_i);
       listRemove(bodypos_list, existing);
       free(existing);
-      deleteListIterator(pos_i);
       return TRUE;
     }
   } deleteListIterator(pos_i);
-  
-  return FALSE; // Not found
-}
-
-LIST *body_get_all_sizes() {
-  init_body_dynamic();
-  LIST *all_sizes = newList();
-  
-  // Copy all sizes from dynamic list
-  LIST_ITERATOR *size_i = newListIterator(bodysize_list);
-  char *size = NULL;
-  ITERATE_LIST(size, size_i) {
-    listPut(all_sizes, strdup(size));
-  } deleteListIterator(size_i);
-  
-  return all_sizes;
-}
-
-LIST *body_get_all_position_types() {
-  init_body_dynamic();
-  LIST *all_types = newList();
-  
-  // Copy all position types from dynamic list
-  LIST_ITERATOR *pos_i = newListIterator(bodypos_list);
-  char *pos_type = NULL;
-  ITERATE_LIST(pos_type, pos_i) {
-    listPut(all_types, strdup(pos_type));
-  } deleteListIterator(pos_i);
-  
-  return all_types;
+  return FALSE;
 }

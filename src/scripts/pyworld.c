@@ -172,14 +172,7 @@ PyObject *pyworld_body_add_position(PyObject *self, PyObject *args) {
     return NULL;
   }
   
-  // Convert position type name to number
-  int type_num = bodyposGetNum(pos_type);
-  if(type_num == BODYPOS_NONE) {
-    PyErr_Format(PyExc_ValueError, "Unknown body position type: %s", pos_type);
-    return NULL;
-  }
-  
-  bodyAddPosition(body, pos_name, type_num, weight);
+  bodyAddPositionByName(body, pos_name, pos_type, weight);
   return Py_BuildValue("i", 1);
 }
 
@@ -297,15 +290,7 @@ PyObject *pyworld_add_race(PyObject *self, PyObject *args) {
         return NULL;
       }
       
-      // Convert position type name to number
-      int type_num = bodyposGetNum(pos_type);
-      if(type_num == BODYPOS_NONE) {
-        deleteBody(body);
-        PyErr_Format(PyExc_ValueError, "Unknown body position type: %s", pos_type);
-        return NULL;
-      }
-      
-      bodyAddPosition(body, pos_name, type_num, (int)weight);
+      bodyAddPositionByName(body, pos_name, pos_type, (int)weight);
     }
   }
   else {

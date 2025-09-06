@@ -283,6 +283,87 @@ int PyObj_setworntype(PyObject *self, PyObject *value, void *closure) {
   return 0;
 }
 
+PyObject *PyMudSys_GetWornTypes(PyObject *self, PyObject *args) {
+  LIST *types = worn_get_all_types();
+  PyObject *py_list = PyList_New(0);
+  LIST_ITERATOR *type_i = newListIterator(types);
+  char *type = NULL;
+  
+  ITERATE_LIST(type, type_i) {
+    PyList_Append(py_list, PyUnicode_FromString(type));
+  } deleteListIterator(type_i);
+  deleteList(types);
+  
+  return py_list;
+}
+
+PyObject *PyMudSys_RemoveWornType(PyObject *self, PyObject *args) {
+  char *type = NULL;
+
+  if(!PyArg_ParseTuple(args, "s", &type)) {
+    PyErr_Format(PyExc_TypeError, "remove_worn_type requires worn type name.");
+    return NULL;
+  }
+
+  bool success = worn_remove_type(type);
+  return PyBool_FromLong(success);
+}
+
+PyObject *PyMudSys_WornTypeExists(PyObject *self, PyObject *args) {
+  char *type = NULL;
+
+  if(!PyArg_ParseTuple(args, "s", &type)) {
+    PyErr_Format(PyExc_TypeError, "worn_type_exists requires worn type name.");
+    return NULL;
+  }
+
+  bool exists = worn_type_exists(type);
+  return PyBool_FromLong(exists);
+}
+
+PyObject *PyMudSys_GetWornTypeCount(PyObject *self, PyObject *args) {
+  int count = worn_get_type_count();
+  return PyLong_FromLong(count);
+}
+
+PyObject *PyMudSys_GetWornTypePositions(PyObject *self, PyObject *args) {
+  char *type = NULL;
+
+  if(!PyArg_ParseTuple(args, "s", &type)) {
+    PyErr_Format(PyExc_TypeError, "get_worn_type_positions requires worn type name.");
+    return NULL;
+  }
+
+  if(!worn_type_exists(type)) {
+    PyErr_Format(PyExc_ValueError, "Worn type '%s' does not exist.", type);
+    return NULL;
+  }
+
+  // Get positions as comma-separated string and convert to list
+  const char *positions_str = wornTypeGetPositions(type);
+  if(positions_str == NULL) {
+    return PyList_New(0); // Return empty list if no positions
+  }
+
+  // Parse comma-separated positions into Python list
+  PyObject *py_list = PyList_New(0);
+  char *positions_copy = strdup(positions_str);
+  char *token = strtok(positions_copy, ",");
+  
+  while(token != NULL) {
+    // Trim whitespace
+    while(*token == ' ') token++;
+    char *end = token + strlen(token) - 1;
+    while(end > token && *end == ' ') *end-- = '\0';
+    
+    PyList_Append(py_list, PyUnicode_FromString(token));
+    token = strtok(NULL, ",");
+  }
+  
+  free(positions_copy);
+  return py_list;
+}
+
 PyObject *PyMudSys_AddWornType(PyObject *self, PyObject *args) {
   char *type = NULL;
   char  *pos = NULL;
@@ -364,6 +445,31 @@ void init_worn(void) {
     "Register a new type of worn item. Postypes is a comma-separated list of\n"
     "body position types this object must be equipped to e.g., \n"
     "shirt : torso, arm, arm.");
+  
+  PyMudSys_addMethod("get_worn_types", PyMudSys_GetWornTypes, METH_VARARGS,
+    "get_worn_types()\n"
+    "\n"
+    "Returns a list of all registered worn types.");
+  
+  PyMudSys_addMethod("remove_worn_type", PyMudSys_RemoveWornType, METH_VARARGS,
+    "remove_worn_type(type)\n"
+    "\n"
+    "Remove a worn type. Returns True if successful, False if type not found.");
+  
+  PyMudSys_addMethod("worn_type_exists", PyMudSys_WornTypeExists, METH_VARARGS,
+    "worn_type_exists(type)\n"
+    "\n"
+    "Check if a worn type exists. Returns True or False.");
+  
+  PyMudSys_addMethod("get_worn_type_count", PyMudSys_GetWornTypeCount, METH_VARARGS,
+    "get_worn_type_count()\n"
+    "\n"
+    "Returns the number of registered worn types.");
+  
+  PyMudSys_addMethod("get_worn_type_positions", PyMudSys_GetWornTypePositions, METH_VARARGS,
+    "get_worn_type_positions(type)\n"
+    "\n"
+    "Returns the required body positions for a worn type as a list.");
   
   // add in our basic worn types
   worn_add_type("shirt",              "torso, arm, arm");
