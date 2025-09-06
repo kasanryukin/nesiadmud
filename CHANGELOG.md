@@ -1,14 +1,42 @@
-# NakedMud v4.3.0
+# NakedMud v4.3.5
+**Git commits:** a576f0d..463850b
+Compiled and tested on multiple platforms
+
+⚠️ **CRITICAL FIX RELEASE** - This version fixes critical issues in v4.3.0. **DO NOT USE v4.3.0** - upgrade immediately to v4.3.5.
+### MAJOR CHANGES
+- **Body system overhaul** - removed hardcoded NUM_BODYPOS system, body position types now fully dynamic with string-based identification instead of integer constants
+- **Layered equipment system** - equipment positions now support multiple items per body part using lists instead of single object slots
+### ADDED
+- **Vitality module** with health management and commands: hp, damage (admin), heal (admin), pray
+- **Equipment system** with wielded/equipped item types and commands: wield, unwield, equip, gear
+- **Python command fallthrough** support (return -1 to pass control to C implementation)
+- **Admin configuration commands:** entityconfig, gearconfig, msspedit, mssp
+### FIXED
+- Broken gear and entities submodule integration from v4.3.0
+- Body position type expansion and equipment layering functionality
+- Submodule stability across entities, gear, MSSP, and Ardne modules
+### MODIFIED
+- Body part data structure changed from single equipment slot to equipment list
+- Position types changed from integer constants to dynamic string identifiers
+- Enhanced cmd_manip.py with expanded equipment handling
+### UPGRADE NOTES
+- **CRITICAL:** v4.3.0 was broken - upgrade immediately to v4.3.5
+- Run `git submodule update --init --recursive` to get fixed submodule versions
+- **New commands available:**
+  - Vitality: hp, damage (admin), heal (admin), pray
+  - Equipment: wield, unwield, equip, gear
+- Body system now fully dynamic with layered equipment support
+
+---
+
+# NakedMud v4.3.0 [BROKEN - DO NOT USE]
 **Git commits:** 3dabceb..a576f0d
 Compiled and tested on multiple platforms
 ### MAJOR CHANGES
 - **New git submodules baseline** - entities, gear, MSSP, and Ardne zone modules establish the new standard for NakedMud modularity
 - **Dynamic body system enhancement** - body position types and sizes now use dynamic lists instead of hardcoded arrays
 ### ADDED
-- **Entities submodule** - comprehensive race and body management system
-- **Gear submodule** - equipment and item management system
-- **MSSP submodule** - MUD Server Status Protocol with binary data support
-- **Ardne zone submodule** - example zone content and world data
+- **Git submodules:** entities, gear, MSSP, and Ardne zone modules
 - **Python hook support** - item type initialization hooks for enhanced extensibility
 - **Short-look option** - quality of life improvement for room descriptions
 ### FIXED
