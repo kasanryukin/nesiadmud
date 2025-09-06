@@ -1,5 +1,5 @@
 # NakedMud v4.3.5
-**Git commits:** a576f0d..463850b
+**Git commits:** a576f0d..463850bsc
 Compiled and tested on multiple platforms
 
 ⚠️ **CRITICAL FIX RELEASE** - This version fixes critical issues in v4.3.0. **DO NOT USE v4.3.0** - upgrade immediately to v4.3.5.
@@ -11,6 +11,8 @@ Compiled and tested on multiple platforms
 - **Equipment system** with wielded/equipped item types and commands: wield, unwield, equip, gear
 - **Python command fallthrough** support (return -1 to pass control to C implementation)
 - **Admin configuration commands:** entityconfig, gearconfig, msspedit, mssp
+- **Python look command implementation** with full C parity including nested searches and EDESC support
+- **Enhanced Python bindings** for look functions and extra descriptions: mud.look_at_*(), room.get_edesc(), obj.get_edesc()
 ### FIXED
 - Broken gear and entities submodule integration from v4.3.0
 - Body position type expansion and equipment layering functionality
