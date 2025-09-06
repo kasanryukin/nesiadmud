@@ -683,6 +683,31 @@ PyObject *PyObj_attach(PyObj *self, PyObject *args) {
   }
 }
 
+//
+// retrieve an extra description from the object by keyword
+PyObject *PyObj_get_edesc(PyObj *self, PyObject *value) {
+  char *keyword = NULL;
+
+  if (!PyArg_ParseTuple(value, "s", &keyword)) {
+    PyErr_Format(PyExc_TypeError, "Keyword must be a string.");
+    return NULL;
+  }
+
+  OBJ_DATA *obj = PyObj_AsObj((PyObject *)self);
+  if(obj != NULL) {
+    const char *desc = objGetEdesc(obj, keyword);
+    if(desc != NULL)
+      return Py_BuildValue("s", desc);
+    else
+      Py_RETURN_NONE;
+  }
+  else {
+    PyErr_Format(PyExc_TypeError,
+                 "Tried to get edesc for nonexistent obj, %d.", self->uid);
+    return NULL;
+  }
+}
+
 PyObject *PyObj_detach(PyObj *self, PyObject *args) {  
   char *key = NULL;
 
@@ -1434,6 +1459,10 @@ PyInit_PyObj(void) {
       "\n"
       "Create an extra description for the object, accessible via a comma-\n"
       "separated list of keywords.");
+    PyObj_addMethod("get_edesc", PyObj_get_edesc, METH_VARARGS,
+      "get_edesc(keyword)\n"
+      "\n"
+      "Return the text of an extra description for the object by keyword, or None.");
     PyObj_addMethod("getAuxiliary", PyObj_get_auxiliary, METH_VARARGS,
       "getAuxiliary(name)\n"
       "\n"

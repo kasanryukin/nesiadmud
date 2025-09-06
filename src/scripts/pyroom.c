@@ -517,6 +517,31 @@ PyObject *PyRoom_send(PyRoom *self, PyObject *value) {
   }
 }
 
+//
+// retrieve an extra description from the room by keyword
+PyObject *PyRoom_get_edesc(PyRoom *self, PyObject *value) {
+  char *keyword = NULL;
+
+  if (!PyArg_ParseTuple(value, "s", &keyword)) {
+    PyErr_Format(PyExc_TypeError, "Keyword must be a string.");
+    return NULL;
+  }
+
+  ROOM_DATA *room = PyRoom_AsRoom((PyObject *)self);
+  if(room != NULL) {
+    const char *desc = roomGetEdesc(room, keyword);
+    if(desc != NULL)
+      return Py_BuildValue("s", desc);
+    else
+      Py_RETURN_NONE;
+  }
+  else {
+    PyErr_Format(PyExc_TypeError,
+                 "Tried to get edesc for nonexistent room, %d.", self->uid);
+    return NULL;
+  }
+}
+
 
 //
 // create a new extra description for the room
@@ -1255,6 +1280,10 @@ PyInit_PyRoom(void) {
       "\n"
       "Create an extra description for the room, accessible via a comma-\n"
       "separated list of keywords.");
+    PyRoom_addMethod("get_edesc", PyRoom_get_edesc, METH_VARARGS,
+      "get_edesc(keyword)\n"
+      "\n"
+      "Return the text of an extra description for the room by keyword, or None.");
     PyRoom_addMethod("add_cmd", PyRoom_add_cmd, METH_VARARGS,
       "add_cmd(name, shorthand, cmd_func, user_group, interrupts = False)\n"
       "\n"

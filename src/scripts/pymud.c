@@ -161,6 +161,85 @@ PyObject *mud_parse_args(PyObject *self, PyObject *args) {
 
 
 //
+// expose C look functions to Python for consistent output and hooks
+PyObject *mud_look_at_room(PyObject *self, PyObject *args) {
+  PyObject *pych = NULL, *pyroom = NULL;
+  if (!PyArg_ParseTuple(args, "OO", &pych, &pyroom)) {
+    PyErr_Format(PyExc_TypeError, "look_at_room(ch, room)");
+    return NULL;
+  }
+  CHAR_DATA *ch = NULL; ROOM_DATA *room = NULL;
+  if(!PyChar_Check(pych) || (ch = PyChar_AsChar(pych)) == NULL) {
+    PyErr_SetString(PyExc_TypeError, "First argument must be a character");
+    return NULL;
+  }
+  if(!PyRoom_Check(pyroom) || (room = PyRoom_AsRoom(pyroom)) == NULL) {
+    PyErr_SetString(PyExc_TypeError, "Second argument must be a room");
+    return NULL;
+  }
+  look_at_room(ch, room);
+  Py_RETURN_NONE;
+}
+
+PyObject *mud_look_at_obj(PyObject *self, PyObject *args) {
+  PyObject *pych = NULL, *pyobj = NULL;
+  if (!PyArg_ParseTuple(args, "OO", &pych, &pyobj)) {
+    PyErr_Format(PyExc_TypeError, "look_at_obj(ch, obj)");
+    return NULL;
+  }
+  CHAR_DATA *ch = NULL; OBJ_DATA *obj = NULL;
+  if(!PyChar_Check(pych) || (ch = PyChar_AsChar(pych)) == NULL) {
+    PyErr_SetString(PyExc_TypeError, "First argument must be a character");
+    return NULL;
+  }
+  if(!PyObj_Check(pyobj) || (obj = PyObj_AsObj(pyobj)) == NULL) {
+    PyErr_SetString(PyExc_TypeError, "Second argument must be an object");
+    return NULL;
+  }
+  look_at_obj(ch, obj);
+  Py_RETURN_NONE;
+}
+
+PyObject *mud_look_at_char(PyObject *self, PyObject *args) {
+  PyObject *pych = NULL, *pyvict = NULL;
+  if (!PyArg_ParseTuple(args, "OO", &pych, &pyvict)) {
+    PyErr_Format(PyExc_TypeError, "look_at_char(ch, vict)");
+    return NULL;
+  }
+  CHAR_DATA *ch = NULL; CHAR_DATA *vict = NULL;
+  if(!PyChar_Check(pych) || (ch = PyChar_AsChar(pych)) == NULL) {
+    PyErr_SetString(PyExc_TypeError, "First argument must be a character");
+    return NULL;
+  }
+  if(!PyChar_Check(pyvict) || (vict = PyChar_AsChar(pyvict)) == NULL) {
+    PyErr_SetString(PyExc_TypeError, "Second argument must be a character");
+    return NULL;
+  }
+  look_at_char(ch, vict);
+  Py_RETURN_NONE;
+}
+
+PyObject *mud_look_at_exit(PyObject *self, PyObject *args) {
+  PyObject *pych = NULL, *pyex = NULL;
+  if (!PyArg_ParseTuple(args, "OO", &pych, &pyex)) {
+    PyErr_Format(PyExc_TypeError, "look_at_exit(ch, exit)");
+    return NULL;
+  }
+  CHAR_DATA *ch = NULL; EXIT_DATA *ex = NULL;
+  if(!PyChar_Check(pych) || (ch = PyChar_AsChar(pych)) == NULL) {
+    PyErr_SetString(PyExc_TypeError, "First argument must be a character");
+    return NULL;
+  }
+  if(!PyExit_Check(pyex) || (ex = PyExit_AsExit(pyex)) == NULL) {
+    PyErr_SetString(PyExc_TypeError, "Second argument must be an exit");
+    return NULL;
+  }
+  look_at_exit(ch, ex);
+  Py_RETURN_NONE;
+}
+
+
+//
 // a wrapper around NakedMud's generic_find() function
 PyObject *mud_generic_find(PyObject *self, PyObject *args) {
   PyObject *py_looker = Py_None;     CHAR_DATA *looker = NULL;
@@ -623,6 +702,18 @@ PyInit_PyMud(void) {
     "format_string(text, indent=True, width=80)\n\n"
     "Format a block of text to be of the specified width, possibly indenting\n"
     "paragraphs.");
+  PyMud_addMethod("look_at_room", mud_look_at_room, METH_VARARGS,
+    "look_at_room(ch, room)\n\n"
+    "Show the room description to the character with standard formatting and hooks.");
+  PyMud_addMethod("look_at_obj", mud_look_at_obj, METH_VARARGS,
+    "look_at_obj(ch, obj)\n\n"
+    "Show the object description to the character with standard formatting and hooks.");
+  PyMud_addMethod("look_at_char", mud_look_at_char, METH_VARARGS,
+    "look_at_char(ch, vict)\n\n"
+    "Show the character's description to the viewer with standard formatting and hooks.");
+  PyMud_addMethod("look_at_exit", mud_look_at_exit, METH_VARARGS,
+    "look_at_exit(ch, exit)\n\n"
+    "Show the exit description to the character with standard formatting and hooks.");
   PyMud_addMethod("generic_find",  mud_generic_find, METH_VARARGS,
     "Deprecated. Use mud.parse_args instead.");
   PyMud_addMethod("extract", mud_extract, METH_VARARGS,
