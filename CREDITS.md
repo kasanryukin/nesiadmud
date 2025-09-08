@@ -1,6 +1,6 @@
-# NakedMud 4.1 - Credits and Acknowledgments
+# NakedMud 4 - Credits and Acknowledgments
 
-NakedMud was originally created by **Geoff Hollis** (1983-2021) beginning around 2003-2004 as an innovative Python-integrated MUD server. Development continues under **Kevin Morgan (LimpingNinja)** to honor Geoff's work and vision.
+NakedMud was originally created by **Geoff Hollis** (1983-2021) beginning around 2003-2004 as an innovative Python-integrated MUD server. Development continues under **Kevin Morgan (LimpingNinja)** to honor Geoff's work and vision. Many thanks to **David Marquardt (Axiom of Ender's Keep)** for the critical support in CPython 2->3 Migration!
 
 ## In Memory of Geoff Hollis
 
