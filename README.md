@@ -114,6 +114,12 @@ NakedMud thrives on community contributions! Whether you're:
 
 Your contributions help keep Geoff's vision alive and make NakedMud better for everyone.
 
+## Direct Contributors
+
+**David Marquardt (Axiom of Ender's Keep)** For the heavy-lift work and support on migrating from Python 2.x to 3+ and continued support in tracking down critical bugs.
+
+**Phil B. Garner** For scaffolding out the combat code which will be released soon as an official module.
+
 ## Original Foundations
 
 NakedMud builds upon the excellent work of:
