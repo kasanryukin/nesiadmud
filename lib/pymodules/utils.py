@@ -188,4 +188,18 @@ def chk_conscious(ch, cmd):
         ch.send("You cannot do that while " + ch.pos + "!")
         return False
 
+def has_more_user_groups(ch1, ch2):
+    """Python equivalent of charHasMoreUserGroups() from C code.
+    Returns True if ch1 has more privileges than ch2."""
+    # Get user groups as sets for easier comparison
+    ch1_groups = set(ch1.user_groups.split(',')) if ch1.user_groups else set()
+    ch2_groups = set(ch2.user_groups.split(',')) if ch2.user_groups else set()
+    
+    # Remove empty strings from splitting
+    ch1_groups.discard('')
+    ch2_groups.discard('')
+    
+    # ch1 has more groups if ch2's groups are a subset of ch1's, but not equal
+    return ch2_groups.issubset(ch1_groups) and ch1_groups != ch2_groups
+
 

@@ -3,7 +3,7 @@ cmd_admin.py
 
 commands available only to admins.
 '''
-import mudsys, inform, string, mudsock, mud, hooks, display
+import mudsys, inform, string, mudsock, mud, hooks, display, utils
 import room as mudroom
 import char as mudchar
 import obj  as mudobj
@@ -352,6 +352,151 @@ def cmd_disconnect(ch, cmd, arg):
             sock.close()
             break
 
+def cmd_clone(ch, cmd, arg):
+    """Usage: clone <prototype_key>
+    
+       Creates a copy of the specified prototype. Automatically detects whether
+       the prototype is a mobile or object. The key should be in the format
+       name@zone or just name (uses current zone).
+       
+       Examples:
+         > clone guard@castle
+         > clone sword@weapons
+         > clone beer (uses current zone)
+    """
+    if not arg or not arg.strip():
+        ch.send("What did you want to clone?")
+        return
+        
+    # Parse the key - handle both full keys (name@zone) and relative keys (name)
+    key = arg.strip()
+    
+    # If no @ symbol, use the current room's zone
+    if '@' not in key:
+        current_zone = ch.room.proto.split('@')[-1] if '@' in ch.room.proto else 'default'
+        key = key + '@' + current_zone
+    
+    # Split into name and zone
+    try:
+        name, zone = key.split('@', 1)
+    except ValueError:
+        ch.send("Invalid prototype key format. Use 'name@zone' or just 'name'.")
+        return
+    
+    # Check if it's a malformed key (basic validation)
+    if not name or not zone:
+        ch.send("You entered a malformed content key.")
+        return
+    
+    # Check what types exist for this key
+    try:
+        mob_list = mudsys.list_zone_contents(zone, "mproto")
+        obj_list = mudsys.list_zone_contents(zone, "oproto")
+    except:
+        ch.send("Could not access zone '%s'." % zone)
+        return
+    
+    is_mob = name in mob_list
+    is_obj = name in obj_list
+    
+    if is_mob and is_obj:
+        ch.send("Ambiguous prototype key '%s' - exists as both mobile and object. Please use 'load mob %s' or 'load obj %s' instead." % (key, key, key))
+        return
+    elif is_mob:
+        # Load mobile
+        try:
+            mob = mudchar.load_mob(key, ch.room)
+            if mob:
+                ch.send("You clone %s." % mob.name)
+            else:
+                ch.send("Failed to create mobile from prototype '%s'." % key)
+        except Exception as e:
+            ch.send("Error creating mobile: %s" % str(e))
+    elif is_obj:
+        # Load object
+        try:
+            obj = mudobj.load_obj(key, ch)
+            if obj:
+                ch.send("You clone %s." % obj.name)
+            else:
+                ch.send("Failed to create object from prototype '%s'." % key)
+        except Exception as e:
+            ch.send("Error creating object: %s" % str(e))
+    else:
+        ch.send("No prototype exists with key '%s'. Checked both mobile and object prototypes in zone '%s'." % (key, zone))
+
+def cmd_purge(ch, cmd, arg):
+    """Usage: purge [target]
+           zap [target]
+    
+       Removes objects or characters from the game. If no target is specified,
+       purges all objects and non-player characters from the current room.
+       
+       Safety: Cannot purge players or characters with equal/higher privileges.
+       
+       Examples:
+         > purge           # Purge entire room
+         > purge guard     # Purge specific character
+         > zap sword       # Purge specific object
+    """
+    if not arg or not arg.strip():
+        # Purge everything in the current room
+        room = ch.room
+        
+        ch.send("You purge the room.")
+        mud.message(ch, None, None, None, True, "to_room",
+                   "$n raises $s arms, and white flames engulf the entire room.")
+        
+        # Purge all objects in the room - create copy to avoid iteration issues
+        objects_to_purge = list(room.objs)
+        for obj in objects_to_purge:
+            mud.extract(obj)
+        
+        # Purge all NPCs in the room (but not players or the purger)
+        chars_to_purge = []
+        for target in room.chars:
+            if target != ch and not target.is_pc:
+                chars_to_purge.append(target)
+        
+        for target in chars_to_purge:
+            mud.extract(target)
+            
+    else:
+        # Try to find the target
+        try:
+            found, found_type = mud.parse_args(ch, True, cmd, arg, "{ ch.room.noself obj.room }")
+        except:
+            return
+        
+        if found_type == "char":
+            # Purging a character - check privileges
+            target = found
+            
+            # Safety check: cannot purge players
+            if target.is_pc:
+                ch.send("You cannot purge player characters.")
+                return
+                
+            # Check if target has equal or higher privileges using our helper function
+            if not utils.has_more_user_groups(ch, target):
+                pronoun = "He" if target.sex == "male" else ("She" if target.sex == "female" else "It")
+                ch.send("Erm, you better not try that on %s. %s has just as much privileges as you." % 
+                       (target.name, pronoun))
+                return
+                
+            ch.send("You purge %s." % target.name)
+            mud.message(ch, target, None, None, True, "to_room",
+                       "$n raises $s arms, and white flames engulf $N.")
+            mud.extract(target)
+            
+        elif found_type == "obj":
+            # Purging an object
+            obj = found
+            ch.send("You purge %s." % obj.name)
+            mud.message(ch, None, obj, None, True, "to_room",
+                       "$n raises $s arms, and white flames engulf $o.")
+            mud.extract(obj)
+
 
 
 ################################################################################
@@ -374,3 +519,7 @@ mudsys.add_cmd("connections", None, cmd_connections,  "admin",   False)
 mudsys.add_cmd("disconnect",  None, cmd_disconnect,   "admin",   False)
 mudsys.add_cmd("instance",    None, cmd_instance,     "admin",   False)
 mudsys.add_cmd("zinstance",   None, cmd_zinstance,    "admin",   False)
+mudsys.add_cmd("clone",       None, cmd_clone,        "wizard",  False)
+mudsys.add_cmd("load",        None, cmd_clone,        "wizard",  False)
+mudsys.add_cmd("purge",       None, cmd_purge,        "wizard",  False)
+mudsys.add_cmd("zap",         None, cmd_purge,        "wizard",  False)
