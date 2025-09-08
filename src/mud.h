@@ -255,6 +255,7 @@ extern  PROPERTY_TABLE    *exit_table; // a mapping between uid and exit
 extern  PROPERTY_TABLE    *sock_table; // a mapping between uid and socket
 
 extern  bool                shut_down; // used for shutdown
+extern  bool              silent_mode; // used for silent mode (no terminal output)
 extern  int                   mudport; // What port are we running on?
 extern  BUFFER              *greeting; // the welcome greeting
 extern  BUFFER                  *motd; // the MOTD message

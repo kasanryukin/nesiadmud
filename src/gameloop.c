@@ -67,6 +67,9 @@ bool gameloop_end = FALSE;
 bool shut_down    = FALSE;
 int  control;
 
+// silent mode flag - when TRUE, suppress terminal output
+bool silent_mode  = FALSE;
+
 // Signal handling to allow graceful shutdown on Ctrl-C or SIGTERM
 static void handle_signal(int signo) {
   (void)signo; // unused
@@ -132,6 +135,9 @@ int main(int argc, char **argv)
     if(!strcasecmp(argv[i], "-copyover")) {
       fCopyOver = TRUE;
       control = atoi(argv[++i]);
+    }
+    else if(!strcasecmp(argv[i], "--silent") || !strcasecmp(argv[i], "-s")) {
+      silent_mode = TRUE;
     }
     else if(!strcasecmp(argv[i], "--mudlib-path")) {
       char *mudlib_path = argv[++i];

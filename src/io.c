@@ -48,6 +48,12 @@ void log_string(const char *txt, ...)
   fprintf(fp, "%s: %s\n", strtime, buf);
   fclose(fp);
 
+  /* output to terminal unless in silent mode */
+  if (!silent_mode) {
+    printf("%s: %s\n", strtime, buf);
+    fflush(stdout);
+  }
+
   communicate(NULL, buf, COMM_LOG);
 }
 
@@ -77,6 +83,12 @@ void bug(const char *txt, ...)
 
   fprintf(fp, "%s: %s\n", strtime, buf);
   fclose(fp);
+
+  /* output to terminal unless in silent mode */
+  if (!silent_mode) {
+    fprintf(stderr, "BUG %s: %s\n", strtime, buf);
+    fflush(stderr);
+  }
 
   communicate(NULL, buf, COMM_LOG);
 }
