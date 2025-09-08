@@ -8,6 +8,42 @@ import room as mudroom
 import char as mudchar
 import obj  as mudobj
 
+def search_containers_for_object(ch, target_name):
+    """
+    Manually search for objects inside containers.
+    Search order: room containers first, then inventory containers.
+    Only searches one level deep.
+    Returns (found_object, "obj") or (None, None) if not found.
+    """
+    # First search containers in the room
+    room = ch.room
+    for container in room.objs:
+        # Check if this object is a container type
+        try:
+            if container.istype("container"):
+                # Search inside this container
+                for obj in container.contents:
+                    if utils.is_keyword(obj.keywords, target_name, True):
+                        return obj, "obj"
+        except:
+            # Skip if not a valid object or container check fails
+            continue
+    
+    # Then search containers in inventory
+    for container in ch.inv:
+        # Check if this object is a container type
+        try:
+            if container.istype("container"):
+                # Search inside this container
+                for obj in container.contents:
+                    if utils.is_keyword(obj.keywords, target_name, True):
+                        return obj, "obj"
+        except:
+            # Skip if not a valid object or container check fails
+            continue
+    
+    return None, None
+
 
 
 ################################################################################
@@ -310,7 +346,8 @@ def cmd_zinstance(ch, cmd, arg):
     elif len(mudsys.list_zone_contents(arg, "rproto")):
         ch.send("Source zone contained no rooms to instance.")
     else:
-        ch.send("Zone instance failed for unknown reason.")
+        ch.send("Socket %d was not found." % uid)
+
 
 def cmd_connections(ch, cmd, arg):
     '''lists all of the currently connected sockets, their status, and where
@@ -462,23 +499,72 @@ def cmd_purge(ch, cmd, arg):
             mud.extract(target)
             
     else:
-        # Try to find the target
+        # Try to find the target - now searches inventory, room, and equipped
+        found = None
+        found_type = None
+        
+        # First try parse_args for direct searches (inventory, room, equipped)
         try:
-            found, found_type = mud.parse_args(ch, True, cmd, arg, "{ ch.room.noself obj.room }")
+            found, found_type = mud.parse_args(ch, True, cmd, arg, "{ ch.room.noself obj.room.inv.eq }")
         except:
-            return
+            # parse_args failed, will try container search below
+            pass
+        
+        # If parse_args didn't find anything, manually search containers
+        if found is None:
+            found, found_type = search_containers_for_object(ch, arg)
         
         if found_type == "char":
             # Purging a character - check privileges
             target = found
             
-            # Safety check: cannot purge players
+            # Handle player characters (zap functionality)
             if target.is_pc:
-                ch.send("You cannot purge player characters.")
+                # Cannot zap yourself
+                if target == ch:
+                    ch.send("You cannot zap yourself.")
+                    return
+                
+                # Check privileges - can only zap players with lower privileges
+                if not utils.has_more_user_groups(ch, target):
+                    pronoun = "He" if target.sex == "male" else ("She" if target.sex == "female" else "They")
+                    ch.send("You cannot zap %s. %s has equal or higher privileges than you." % 
+                           (target.name, pronoun))
+                    return
+                
+                # Get the target's socket
+                target_sock = None
+                for sock in mudsock.socket_list():
+                    if sock.ch == target:
+                        target_sock = sock
+                        break
+                
+                if target_sock is None:
+                    ch.send("%s is not connected." % target.name)
+                    return
+                
+                # Send dramatic zap messages
+                admin_pronoun = "his" if ch.sex == "male" else ("her" if ch.sex == "female" else "their")
+                
+                # Message to the target being zapped
+                target.send("{R%s raises %s hands and you feel yourself engulfed in white flames!{n" % 
+                           (ch.name, admin_pronoun))
+                
+                # Message to the admin
+                ch.send("You raise your hands and engulf %s in white flames, disconnecting them." % target.name)
+                
+                # Message to the room (excluding admin and target)
+                mud.message(ch, target, None, None, True, "to_room",
+                           "$n raises $s hands and white flames engulf $N before $E vanishes!")
+                
+                # Save and disconnect the target properly
+                mudsys.do_save(target)
+                mudsys.do_disconnect(target)
                 return
                 
-            # Check if target has equal or higher privileges using our helper function
-            if not utils.has_more_user_groups(ch, target):
+            # Handle NPCs (original purge functionality)
+            # Check if target has equal or higher privileges (only for PCs, not NPCs)
+            if not target.is_npc and not utils.has_more_user_groups(ch, target):
                 pronoun = "He" if target.sex == "male" else ("She" if target.sex == "female" else "It")
                 ch.send("Erm, you better not try that on %s. %s has just as much privileges as you." % 
                        (target.name, pronoun))
@@ -490,11 +576,39 @@ def cmd_purge(ch, cmd, arg):
             mud.extract(target)
             
         elif found_type == "obj":
-            # Purging an object
+            # Purging an object - detect location for appropriate messaging
             obj = found
-            ch.send("You purge %s." % obj.name)
-            mud.message(ch, None, obj, None, True, "to_room",
-                       "$n raises $s arms, and white flames engulf $o.")
+            
+            # Determine where the object is located for messaging
+            if obj.wearer == ch:
+                # Object is equipped/worn by the character
+                ch.send("You remove %s from your body and hold it up as white flames engulf it." % obj.name)
+                mud.message(ch, None, obj, None, True, "to_room",
+                           "$n removes $o from $s body and raises it as white flames engulf it.")
+            elif obj.container:
+                # Object is inside a container - check where the container is
+                container = obj.container
+                if container.carrier == ch:
+                    # Container is in character's inventory
+                    ch.send("You take %s out of %s and hold it up as white flames engulf it." % (obj.name, container.name))
+                    mud.message(ch, None, obj, container, True, "to_room",
+                               "$n takes $o out of a $O and white flames engulf it.")
+                else:
+                    # Container is in the room
+                    ch.send("You take %s out of %s and hold it up as white flames engulf it." % (obj.name, container.name))
+                    mud.message(ch, None, obj, container, True, "to_room",
+                               "$n takes $o out of the $O and white flames engulf it.")
+            elif obj.carrier == ch:
+                # Object is directly in character's inventory
+                ch.send("You hold up %s as white flames engulf it." % obj.name)
+                mud.message(ch, None, obj, None, True, "to_room",
+                           "$n holds up $o as white flames engulf it.")
+            else:
+                # Object is in the room
+                ch.send("You raise %s in the air as white flames engulf it." % obj.name)
+                mud.message(ch, None, obj, None, True, "to_room",
+                           "$n raises $o in the air as white flames engulf it.")
+            
             mud.extract(obj)
 
 

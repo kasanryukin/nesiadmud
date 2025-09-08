@@ -189,17 +189,29 @@ def chk_conscious(ch, cmd):
         return False
 
 def has_more_user_groups(ch1, ch2):
-    """Python equivalent of charHasMoreUserGroups() from C code.
-    Returns True if ch1 has more privileges than ch2."""
+    """Check if ch1 can zap ch2 based on privilege hierarchy.
+    Admin can zap anyone except other admins.
+    Wizard can zap anyone except admins and wizards.
+    Returns True if ch1 can zap ch2."""
     # Get user groups as sets for easier comparison
     ch1_groups = set(ch1.user_groups.split(',')) if ch1.user_groups else set()
     ch2_groups = set(ch2.user_groups.split(',')) if ch2.user_groups else set()
     
-    # Remove empty strings from splitting
-    ch1_groups.discard('')
-    ch2_groups.discard('')
+    # Remove empty strings and strip whitespace from splitting
+    ch1_groups = {group.strip() for group in ch1_groups if group.strip()}
+    ch2_groups = {group.strip() for group in ch2_groups if group.strip()}
     
-    # ch1 has more groups if ch2's groups are a subset of ch1's, but not equal
-    return ch2_groups.issubset(ch1_groups) and ch1_groups != ch2_groups
+    # Admin privilege check
+    if 'admin' in ch1_groups:
+        # Admin can zap anyone except other admins
+        return 'admin' not in ch2_groups
+    
+    # Wizard privilege check  
+    if 'wizard' in ch1_groups:
+        # Wizard can zap anyone except admins and wizards
+        return 'admin' not in ch2_groups and 'wizard' not in ch2_groups
+    
+    # Other groups cannot zap anyone
+    return False
 
 
