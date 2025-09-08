@@ -504,6 +504,7 @@ PyObject *mudsys_do_disconnect(PyObject *self, PyObject *args) {
 
   if(charGetSocket(ch)) {
     SOCKET_DATA *sock = charGetSocket(ch);
+    flush_output(sock);
     charSetSocket(ch, NULL);
     socketSetChar(sock, NULL);
     close_socket(sock, FALSE);
