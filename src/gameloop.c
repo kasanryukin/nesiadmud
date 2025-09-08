@@ -67,6 +67,25 @@ bool gameloop_end = FALSE;
 bool shut_down    = FALSE;
 int  control;
 
+// Signal handling to allow graceful shutdown on Ctrl-C or SIGTERM
+static void handle_signal(int signo) {
+  (void)signo; // unused
+  shut_down = TRUE;
+}
+
+static void setup_signal_handlers(void) {
+  struct sigaction sa;
+  memset(&sa, 0, sizeof(sa));
+  sa.sa_handler = handle_signal;
+  sigemptyset(&sa.sa_mask);
+  sa.sa_flags = 0; // do not use SA_RESTART; we want syscalls to break where applicable
+  sigaction(SIGINT, &sa, NULL);
+  sigaction(SIGTERM, &sa, NULL);
+
+  // Avoid crashes on broken pipe when writing to disconnected sockets
+  signal(SIGPIPE, SIG_IGN);
+}
+
 // what port are we running on?
 int mudport       = -1;
 
@@ -95,7 +114,8 @@ PROPERTY_TABLE *sock_table = NULL; // a table of socks by UID, for quick lookup
 BUFFER           *greeting = NULL; // message seen when a socket connects
 BUFFER               *motd = NULL; // what characters see when they log on
 
-
+// Forward declaration so we can call this before its definition
+static void setup_signal_handlers(void);
 
 //
 // This is where it all starts, nothing special.
@@ -199,7 +219,10 @@ int main(int argc, char **argv)
 
   // change to the lib directory
   log_string("Changing to lib directory.");
-  chdir(get_mudlib_path());
+  if (chdir(get_mudlib_path()) != 0) {
+    perror("chdir");
+    return 1;
+  }
 
   log_string("Initializing hooks.");
   init_hooks();
@@ -346,6 +369,9 @@ int main(int argc, char **argv)
   /**********************************************************************/
   /*             START THE GAME UP, AND HANDLE ITS SHUTDOWN             */
   /**********************************************************************/
+  // Ensure Ctrl-C and SIGTERM initiate a graceful shutdown
+  setup_signal_handlers();
+
   // main game loop
   log_string("Entering game loop");
   game_loop(control);
