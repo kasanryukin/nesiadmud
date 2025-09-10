@@ -1,3 +1,26 @@
+# NakedMud v4.3.6
+**Git commits:** 4404c83..f17361d
+Compiled and tested on multiple platforms
+
+### ADDED
+- Admin commands with automatic prototype detection and container search
+- Signal handling for graceful shutdown on SIGINT/SIGTERM
+- Silent mode support for server management
+
+### FIXED
+- **Buffer overflow prevention** - continued improvements to buffer management system
+- Missing signal.h header in gameloop.c
+
+### MODIFIED
+- Migrated load and purge commands from C to Python (olc.c → cmd_admin.py)
+- Enhanced purge command with location-specific messaging and multi-location object search
+
+### NEW COMMANDS
+- `clone <prototype>` (admin) - automatically detects and clones mobile or object prototypes
+- Enhanced `purge <target>` (admin) - improved object destruction with container search and location-aware messaging
+
+---
+
 # NakedMud v4.3.5
 **Git commits:** a576f0d..463850bsc
 Compiled and tested on multiple platforms
