@@ -12,7 +12,7 @@ def check_char_name(arg):
     '''checks to make sure the character name is valid. Names are valid if they
        are greater than 2 characters, less than 13, and comprise only alpha
        characters.'''
-    return len(arg) >= 3 and len(arg) <= 12 and arg.isalpha()
+    return len(arg) >= 3 and len(arg) <= 17 and arg.isalpha()
 
 def cg_name_handler(sock, arg):
     if not check_char_name(arg):
@@ -39,6 +39,8 @@ def cg_sex_handler(sock, arg):
         result = {
             'M' : 'male',
             'F' : 'female',
+			'N' : 'non-binary',
+			'O' : 'other',
             }[arg[0].upper()]
         sock.ch.sex = result
         sock.pop_ih()
@@ -89,7 +91,7 @@ def cg_name_prompt(sock):
     sock.send_raw("What is your character's name? ")
 
 def cg_sex_prompt(sock):
-    sock.send_raw("What is your sex (M/F)? ")
+    sock.send_raw("What is your sex (M/F/N/O)? ")
 
 def cg_race_prompt(sock):
     sock.send("Available races are: ")

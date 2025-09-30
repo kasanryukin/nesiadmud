@@ -22,6 +22,8 @@
 const char *sex_names[NUM_SEXES] = {
   "male",
   "female",
+  "non-binary",
+  "other",
   "neutral"
 };
 

@@ -1,0 +1,192 @@
+list:=
+  key: main
+  val:-
+    wielded   :-
+      damage_types      :=
+        name: slashing
+        -
+        name: bludgeoning
+        -
+        name: piercing
+        -
+        name: fire
+        -
+        name: cold
+        -
+        name: acid
+        -
+        name: lightning
+        -
+      weapon_categories :=
+        name: melee
+        -
+        name: ranged
+        -
+        name: thrown
+        -
+      ranged_types      :=
+        name: bow
+        -
+        name: crossbow
+        -
+        name: sling
+        -
+        name: thrown
+        -
+        name: firearm
+        -
+      materials         :=
+        name: steel
+        -
+        name: iron
+        -
+        name: bronze
+        -
+        name: silver
+        -
+        name: gold
+        -
+        name: mithril
+        -
+        name: adamantine
+        -
+        name: wood
+        -
+        name: bone
+        -
+        name: crystal
+        -
+      special_properties:=
+        name: versatile
+        -
+        name: offhand
+        -
+        name: magical
+        -
+        name: blessed
+        -
+        name: cursed
+        -
+      special_attacks   :=
+        name: sharpness
+        -
+        name: speed
+        -
+        name: accuracy
+        -
+      -
+    equipped  :-
+      armor_types       :=
+        name: clothing
+        -
+        name: light
+        -
+        name: medium
+        -
+        name: heavy
+        -
+        name: shield
+        -
+      materials         :=
+        name: leather
+        -
+        name: cloth
+        -
+        name: steel
+        -
+        name: iron
+        -
+        name: bronze
+        -
+        name: silver
+        -
+        name: gold
+        -
+        name: mithril
+        -
+        name: adamantine
+        -
+        name: wood
+        -
+        name: bone
+        -
+        name: crystaldragonscale
+        -
+      special_properties:=
+        name: magical
+        -
+        name: blessed
+        -
+        name: cursed
+        -
+      -
+    worn_types:-
+      worn_types:=
+        name     : shirt
+        builtin  : 1
+        positions:=
+          position: torso
+          -
+          position: arm
+          -
+          position: arm
+          -
+        -
+        name     : pants
+        builtin  : 0
+        positions:=
+          position: legs
+          -
+        -
+        name     : helmet
+        builtin  : 0
+        positions:=
+          position: head
+          -
+        -
+        name     : boots
+        builtin  : 0
+        positions:=
+          position: feet
+          -
+        -
+        name     : gloves
+        builtin  : 0
+        positions:=
+          position: hands
+          -
+        -
+        name     : cloak
+        builtin  : 0
+        positions:=
+          position: about body
+          -
+        -
+        name     : belt
+        builtin  : 0
+        positions:=
+          position: waist
+          -
+        -
+        name     : ring
+        builtin  : 0
+        positions:=
+          position: finger
+          -
+        -
+        name     : necklace
+        builtin  : 0
+        positions:=
+          position: neck
+          -
+        -
+        name     : bracelet
+        builtin  : 0
+        positions:=
+          position: wrist
+          -
+        -
+      -
+    -
+  -
+-

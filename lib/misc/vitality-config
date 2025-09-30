@@ -1,0 +1,124 @@
+defaults:-
+  hp_hitdie         : 10
+  sp_hitdie         : 10
+  ep_hitdie         : 10
+  regen_heartbeat   : 10
+  hp_regen          : 1
+  sp_regen          : 1
+  ep_regen          : 1
+  corpse_object     : corpse@limbo
+  death_room        : limbo@limbo
+  regen_display     : 0
+  regen_display_full: 1
+  -
+status  :-
+  hp_status:-
+    messages:=
+      threshold: 0
+      message  : You are at death's door.
+      -
+      threshold: 10
+      message  : You are gushing vital fluids.
+      -
+      threshold: 20
+      message  : You are bleeding profusely.
+      -
+      threshold: 30
+      message  : You are badly wounded.
+      -
+      threshold: 40
+      message  : You are wounded.
+      -
+      threshold: 50
+      message  : You have moderate injuries.
+      -
+      threshold: 60
+      message  : You have some cuts and bruises.
+      -
+      threshold: 70
+      message  : You have light scratches.
+      -
+      threshold: 80
+      message  : You have minor scrapes.
+      -
+      threshold: 90
+      message  : You are in good condition.
+      -
+      threshold: 100
+      message  : You are in perfect condition.
+      -
+    -
+  sp_status:-
+    messages:=
+      threshold: 0
+      message  : You are magically drained.
+      -
+      threshold: 10
+      message  : You are severely mentally exhausted.
+      -
+      threshold: 20
+      message  : You are mentally exhausted.
+      -
+      threshold: 30
+      message  : You are very mentally fatigued.
+      -
+      threshold: 40
+      message  : You are mentally fatigued.
+      -
+      threshold: 50
+      message  : You are moderately drained.
+      -
+      threshold: 60
+      message  : You are slightly drained.
+      -
+      threshold: 70
+      message  : You are feeling mentally sharp.
+      -
+      threshold: 80
+      message  : You are mentally focused.
+      -
+      threshold: 90
+      message  : You are mentally alert.
+      -
+      threshold: 100
+      message  : You are mentally sharp and focused.
+      -
+    -
+  ep_status:-
+    messages:=
+      threshold: 0
+      message  : You are utterly exhausted.
+      -
+      threshold: 10
+      message  : You are completely drained.
+      -
+      threshold: 20
+      message  : You are severely winded.
+      -
+      threshold: 30
+      message  : You are breathing very heavily.
+      -
+      threshold: 40
+      message  : You are breathing heavily.
+      -
+      threshold: 50
+      message  : You are moderately tired.
+      -
+      threshold: 60
+      message  : You are slightly winded.
+      -
+      threshold: 70
+      message  : You are feeling energetic.
+      -
+      threshold: 80
+      message  : You are feeling strong.
+      -
+      threshold: 90
+      message  : You are feeling vigorous.
+      -
+      threshold: 100
+      message  : You are fully energized.
+      -
+    -
+  -
+-

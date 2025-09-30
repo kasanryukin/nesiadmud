@@ -1,0 +1,17 @@
+body:-
+  part_types:=
+    name: hands
+    -
+    name: legs
+    -
+    name: feet
+    -
+    name: wings
+    -
+    name: hooves
+    -
+  sizes     :=
+    name: gigantic
+    -
+  -
+-

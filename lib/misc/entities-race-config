@@ -1,0 +1,1146 @@
+races:=
+  name          : forest elf
+  abbrev        : flf
+  pc_ok         : 1
+  body_size     : medium
+  body_positions:=
+    name  : floating about head
+    type  : floating about head
+    weight: 0
+    -
+    name  : head
+    type  : head
+    weight: 2
+    -
+    name  : face
+    type  : face
+    weight: 2
+    -
+    name  : left ear
+    type  : ear
+    weight: 0
+    -
+    name  : right ear
+    type  : ear
+    weight: 0
+    -
+    name  : neck
+    type  : neck
+    weight: 1
+    -
+    name  : torso
+    type  : torso
+    weight: 50
+    -
+    name  : about body
+    type  : about body
+    weight: 0
+    -
+    name  : left arm
+    type  : arm
+    weight: 7
+    -
+    name  : right arm
+    type  : arm
+    weight: 7
+    -
+    name  : left wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : right wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : hands
+    type  : hands
+    weight: 4
+    -
+    name  : waist
+    type  : waist
+    weight: 1
+    -
+    name  : legs
+    type  : legs
+    weight: 18
+    -
+    name  : feet
+    type  : feet
+    weight: 4
+    -
+    name  : left grip
+    type  : held
+    weight: 0
+    -
+    name  : right grip
+    type  : held
+    weight: 0
+    -
+    name  : left index finger
+    type  : finger
+    weight: 1
+    -
+    name  : right index finger
+    type  : finger
+    weight: 1
+    -
+    name  : left middle finger
+    type  : finger
+    weight: 0
+    -
+    name  : right middle finger
+    type  : finger
+    weight: 0
+    -
+  -
+  name          : dwarf
+  abbrev        : dwa
+  pc_ok         : 1
+  body_size     : small
+  body_positions:=
+    name  : head
+    type  : head
+    weight: 2
+    -
+    name  : face
+    type  : face
+    weight: 2
+    -
+    name  : left ear
+    type  : ear
+    weight: 0
+    -
+    name  : right ear
+    type  : ear
+    weight: 0
+    -
+    name  : neck
+    type  : neck
+    weight: 1
+    -
+    name  : torso
+    type  : torso
+    weight: 50
+    -
+    name  : floating about head
+    type  : floating about head
+    weight: 0
+    -
+    name  : about body
+    type  : about body
+    weight: 0
+    -
+    name  : left arm
+    type  : arm
+    weight: 7
+    -
+    name  : right arm
+    type  : arm
+    weight: 7
+    -
+    name  : left wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : right wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : hands
+    type  : hands
+    weight: 4
+    -
+    name  : left index finger
+    type  : finger
+    weight: 1
+    -
+    name  : left middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : right index finger
+    type  : finger
+    weight: 1
+    -
+    name  : right middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : waist
+    type  : waist
+    weight: 1
+    -
+    name  : legs
+    type  : legs
+    weight: 16
+    -
+    name  : feet
+    type  : feet
+    weight: 4
+    -
+    name  : left grip
+    type  : held
+    weight: 0
+    -
+    name  : right grip
+    type  : held
+    weight: 0
+    -
+  -
+  name          : gnome
+  abbrev        : gno
+  pc_ok         : 1
+  body_size     : small
+  body_positions:=
+    name  : head
+    type  : head
+    weight: 2
+    -
+    name  : face
+    type  : face
+    weight: 2
+    -
+    name  : left ear
+    type  : ear
+    weight: 0
+    -
+    name  : right ear
+    type  : ear
+    weight: 0
+    -
+    name  : neck
+    type  : neck
+    weight: 1
+    -
+    name  : torso
+    type  : torso
+    weight: 50
+    -
+    name  : floating about head
+    type  : floating about head
+    weight: 0
+    -
+    name  : about body
+    type  : about body
+    weight: 0
+    -
+    name  : left arm
+    type  : arm
+    weight: 7
+    -
+    name  : right arm
+    type  : arm
+    weight: 7
+    -
+    name  : left wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : right wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : hands
+    type  : hands
+    weight: 4
+    -
+    name  : left index finger
+    type  : finger
+    weight: 1
+    -
+    name  : left middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : right index finger
+    type  : finger
+    weight: 1
+    -
+    name  : right middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : waist
+    type  : waist
+    weight: 1
+    -
+    name  : legs
+    type  : legs
+    weight: 16
+    -
+    name  : feet
+    type  : feet
+    weight: 4
+    -
+    name  : left grip
+    type  : held
+    weight: 0
+    -
+    name  : right grip
+    type  : held
+    weight: 0
+    -
+  -
+  name          : halfling
+  abbrev        : hal
+  pc_ok         : 1
+  body_size     : small
+  body_positions:=
+    name  : head
+    type  : head
+    weight: 2
+    -
+    name  : face
+    type  : face
+    weight: 2
+    -
+    name  : left ear
+    type  : ear
+    weight: 0
+    -
+    name  : right ear
+    type  : ear
+    weight: 0
+    -
+    name  : neck
+    type  : neck
+    weight: 1
+    -
+    name  : torso
+    type  : torso
+    weight: 50
+    -
+    name  : floating about head
+    type  : floating about head
+    weight: 0
+    -
+    name  : about body
+    type  : about body
+    weight: 0
+    -
+    name  : left arm
+    type  : arm
+    weight: 7
+    -
+    name  : right arm
+    type  : arm
+    weight: 7
+    -
+    name  : left wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : right wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : hands
+    type  : hands
+    weight: 4
+    -
+    name  : left index finger
+    type  : finger
+    weight: 1
+    -
+    name  : left middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : right index finger
+    type  : finger
+    weight: 1
+    -
+    name  : right middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : waist
+    type  : waist
+    weight: 1
+    -
+    name  : legs
+    type  : legs
+    weight: 16
+    -
+    name  : feet
+    type  : feet
+    weight: 4
+    -
+    name  : left grip
+    type  : held
+    weight: 0
+    -
+    name  : right grip
+    type  : held
+    weight: 0
+    -
+  -
+  name          : half elf
+  abbrev        : hef
+  pc_ok         : 1
+  body_size     : medium
+  body_positions:=
+    name  : head
+    type  : head
+    weight: 2
+    -
+    name  : face
+    type  : face
+    weight: 2
+    -
+    name  : left ear
+    type  : ear
+    weight: 0
+    -
+    name  : right ear
+    type  : ear
+    weight: 0
+    -
+    name  : neck
+    type  : neck
+    weight: 1
+    -
+    name  : torso
+    type  : torso
+    weight: 50
+    -
+    name  : floating about head
+    type  : floating about head
+    weight: 0
+    -
+    name  : about body
+    type  : about body
+    weight: 0
+    -
+    name  : left arm
+    type  : arm
+    weight: 7
+    -
+    name  : right arm
+    type  : arm
+    weight: 7
+    -
+    name  : left wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : right wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : hands
+    type  : hands
+    weight: 4
+    -
+    name  : left index finger
+    type  : finger
+    weight: 1
+    -
+    name  : left middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : right index finger
+    type  : finger
+    weight: 1
+    -
+    name  : right middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : waist
+    type  : waist
+    weight: 1
+    -
+    name  : legs
+    type  : legs
+    weight: 16
+    -
+    name  : feet
+    type  : feet
+    weight: 4
+    -
+    name  : left grip
+    type  : held
+    weight: 0
+    -
+    name  : right grip
+    type  : held
+    weight: 0
+    -
+  -
+  name          : moon elf
+  abbrev        : mlf
+  pc_ok         : 1
+  body_size     : medium
+  body_positions:=
+    name  : head
+    type  : head
+    weight: 2
+    -
+    name  : face
+    type  : face
+    weight: 2
+    -
+    name  : left ear
+    type  : ear
+    weight: 0
+    -
+    name  : right ear
+    type  : ear
+    weight: 0
+    -
+    name  : neck
+    type  : neck
+    weight: 1
+    -
+    name  : torso
+    type  : torso
+    weight: 50
+    -
+    name  : floating about head
+    type  : floating about head
+    weight: 0
+    -
+    name  : about body
+    type  : about body
+    weight: 0
+    -
+    name  : left arm
+    type  : arm
+    weight: 7
+    -
+    name  : right arm
+    type  : arm
+    weight: 7
+    -
+    name  : left wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : right wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : hands
+    type  : hands
+    weight: 4
+    -
+    name  : left index finger
+    type  : finger
+    weight: 1
+    -
+    name  : left middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : right index finger
+    type  : finger
+    weight: 1
+    -
+    name  : right middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : waist
+    type  : waist
+    weight: 1
+    -
+    name  : legs
+    type  : legs
+    weight: 16
+    -
+    name  : feet
+    type  : feet
+    weight: 4
+    -
+    name  : left grip
+    type  : held
+    weight: 0
+    -
+    name  : right grip
+    type  : held
+    weight: 0
+    -
+  -
+  name          : dark elf
+  abbrev        : dlf
+  pc_ok         : 1
+  body_size     : medium
+  body_positions:=
+    name  : head
+    type  : head
+    weight: 2
+    -
+    name  : face
+    type  : face
+    weight: 2
+    -
+    name  : left ear
+    type  : ear
+    weight: 0
+    -
+    name  : right ear
+    type  : ear
+    weight: 0
+    -
+    name  : neck
+    type  : neck
+    weight: 1
+    -
+    name  : torso
+    type  : torso
+    weight: 50
+    -
+    name  : floating about head
+    type  : floating about head
+    weight: 0
+    -
+    name  : about body
+    type  : about body
+    weight: 0
+    -
+    name  : left arm
+    type  : arm
+    weight: 7
+    -
+    name  : right arm
+    type  : arm
+    weight: 7
+    -
+    name  : left wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : right wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : hands
+    type  : hands
+    weight: 4
+    -
+    name  : left index finger
+    type  : finger
+    weight: 1
+    -
+    name  : left middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : right index finger
+    type  : finger
+    weight: 1
+    -
+    name  : right middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : waist
+    type  : waist
+    weight: 1
+    -
+    name  : legs
+    type  : legs
+    weight: 16
+    -
+    name  : feet
+    type  : feet
+    weight: 4
+    -
+    name  : left grip
+    type  : held
+    weight: 0
+    -
+    name  : right grip
+    type  : held
+    weight: 0
+    -
+  -
+  name          : moon catfolk
+  abbrev        : sar
+  pc_ok         : 1
+  body_size     : medium
+  body_positions:=
+    name  : floating about head
+    type  : floating about head
+    weight: 0
+    -
+    name  : head
+    type  : head
+    weight: 2
+    -
+    name  : face
+    type  : face
+    weight: 2
+    -
+    name  : left ear
+    type  : ear
+    weight: 0
+    -
+    name  : right ear
+    type  : ear
+    weight: 0
+    -
+    name  : neck
+    type  : neck
+    weight: 2
+    -
+    name  : about body
+    type  : about body
+    weight: 0
+    -
+    name  : torso
+    type  : torso
+    weight: 48
+    -
+    name  : right arm
+    type  : arm
+    weight: 2
+    -
+    name  : left arm
+    type  : arm
+    weight: 2
+    -
+    name  : hands
+    type  : hands
+    weight: 1
+    -
+    name  : left index finger
+    type  : finger
+    weight: 1
+    -
+    name  : right index finger
+    type  : finger
+    weight: 1
+    -
+    name  : left middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : right middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : tail
+    type  : tail
+    weight: 2
+    -
+    name  : legs
+    type  : legs
+    weight: 18
+    -
+    name  : left wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : right wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : waist
+    type  : waist
+    weight: 5
+    -
+    name  : feet
+    type  : feet
+    weight: 8
+    -
+    name  : left claws
+    type  : claw
+    weight: 1
+    -
+    name  : right claws
+    type  : claw
+    weight: 1
+    -
+  -
+  name          : solar catfolk
+  abbrev        : nar
+  pc_ok         : 1
+  body_size     : medium
+  body_positions:=
+    name  : floating about head
+    type  : floating about head
+    weight: 0
+    -
+    name  : head
+    type  : head
+    weight: 2
+    -
+    name  : face
+    type  : face
+    weight: 2
+    -
+    name  : left ear
+    type  : ear
+    weight: 0
+    -
+    name  : right ear
+    type  : ear
+    weight: 0
+    -
+    name  : neck
+    type  : neck
+    weight: 2
+    -
+    name  : about body
+    type  : about body
+    weight: 0
+    -
+    name  : torso
+    type  : torso
+    weight: 48
+    -
+    name  : right arm
+    type  : arm
+    weight: 2
+    -
+    name  : left arm
+    type  : arm
+    weight: 2
+    -
+    name  : hands
+    type  : hands
+    weight: 1
+    -
+    name  : left index finger
+    type  : finger
+    weight: 1
+    -
+    name  : right index finger
+    type  : finger
+    weight: 1
+    -
+    name  : left middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : right middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : tail
+    type  : tail
+    weight: 2
+    -
+    name  : legs
+    type  : legs
+    weight: 18
+    -
+    name  : left wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : right wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : waist
+    type  : waist
+    weight: 5
+    -
+    name  : feet
+    type  : feet
+    weight: 8
+    -
+    name  : left claws
+    type  : claw
+    weight: 1
+    -
+    name  : right claws
+    type  : claw
+    weight: 1
+    -
+  -
+  name          : wolffolk
+  abbrev        : sch
+  pc_ok         : 1
+  body_size     : medium
+  body_positions:=
+    name  : floating about head
+    type  : floating about head
+    weight: 0
+    -
+    name  : head
+    type  : head
+    weight: 2
+    -
+    name  : face
+    type  : face
+    weight: 2
+    -
+    name  : left ear
+    type  : ear
+    weight: 0
+    -
+    name  : right ear
+    type  : ear
+    weight: 0
+    -
+    name  : neck
+    type  : neck
+    weight: 2
+    -
+    name  : about body
+    type  : about body
+    weight: 0
+    -
+    name  : torso
+    type  : torso
+    weight: 48
+    -
+    name  : right arm
+    type  : arm
+    weight: 2
+    -
+    name  : left arm
+    type  : arm
+    weight: 2
+    -
+    name  : hands
+    type  : hands
+    weight: 1
+    -
+    name  : left index finger
+    type  : finger
+    weight: 1
+    -
+    name  : right index finger
+    type  : finger
+    weight: 1
+    -
+    name  : left middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : right middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : tail
+    type  : tail
+    weight: 2
+    -
+    name  : legs
+    type  : legs
+    weight: 18
+    -
+    name  : left wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : right wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : waist
+    type  : waist
+    weight: 5
+    -
+    name  : feet
+    type  : feet
+    weight: 8
+    -
+    name  : left claws
+    type  : claw
+    weight: 1
+    -
+    name  : right claws
+    type  : claw
+    weight: 1
+    -
+  -
+  name          : half giant
+  abbrev        : hgt
+  pc_ok         : 1
+  body_size     : large
+  body_positions:=
+    name  : head
+    type  : head
+    weight: 2
+    -
+    name  : face
+    type  : face
+    weight: 2
+    -
+    name  : left ear
+    type  : ear
+    weight: 0
+    -
+    name  : right ear
+    type  : ear
+    weight: 0
+    -
+    name  : neck
+    type  : neck
+    weight: 1
+    -
+    name  : torso
+    type  : torso
+    weight: 50
+    -
+    name  : floating about head
+    type  : floating about head
+    weight: 0
+    -
+    name  : about body
+    type  : about body
+    weight: 0
+    -
+    name  : left arm
+    type  : arm
+    weight: 7
+    -
+    name  : right arm
+    type  : arm
+    weight: 7
+    -
+    name  : left wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : right wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : hands
+    type  : hands
+    weight: 4
+    -
+    name  : left index finger
+    type  : finger
+    weight: 1
+    -
+    name  : left middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : right index finger
+    type  : finger
+    weight: 1
+    -
+    name  : right middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : waist
+    type  : waist
+    weight: 1
+    -
+    name  : legs
+    type  : legs
+    weight: 16
+    -
+    name  : feet
+    type  : feet
+    weight: 4
+    -
+    name  : left grip
+    type  : held
+    weight: 0
+    -
+    name  : right grip
+    type  : held
+    weight: 0
+    -
+  -
+  name          : birdfolk
+  abbrev        : hgt
+  pc_ok         : 1
+  body_size     : large
+  body_positions:=
+    name  : head
+    type  : head
+    weight: 2
+    -
+    name  : face
+    type  : face
+    weight: 2
+    -
+    name  : left ear
+    type  : ear
+    weight: 0
+    -
+    name  : right ear
+    type  : ear
+    weight: 0
+    -
+    name  : neck
+    type  : neck
+    weight: 1
+    -
+    name  : torso
+    type  : torso
+    weight: 36
+    -
+    name  : floating about head
+    type  : floating about head
+    weight: 0
+    -
+    name  : about body
+    type  : about body
+    weight: 0
+    -
+    name  : left arm
+    type  : arm
+    weight: 7
+    -
+    name  : right arm
+    type  : arm
+    weight: 7
+    -
+    name  : left wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : right wrist
+    type  : wrist
+    weight: 1
+    -
+    name  : hands
+    type  : hands
+    weight: 4
+    -
+    name  : left index finger
+    type  : finger
+    weight: 1
+    -
+    name  : left middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : right index finger
+    type  : finger
+    weight: 1
+    -
+    name  : right middle finger
+    type  : finger
+    weight: 1
+    -
+    name  : waist
+    type  : waist
+    weight: 1
+    -
+    name  : legs
+    type  : legs
+    weight: 16
+    -
+    name  : feet
+    type  : feet
+    weight: 4
+    -
+    name  : left grip
+    type  : held
+    weight: 0
+    -
+    name  : right grip
+    type  : held
+    weight: 0
+    -
+	name  : wings
+	type  : wings
+	weight: 14
+	-
+  -
+-

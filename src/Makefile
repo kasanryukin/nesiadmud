@@ -33,10 +33,10 @@ MODULES += time alias help2
 
 # flags to use during compilation
 # C_FLAGS := -Wall -g -ggdb -O2
-C_FLAGS := -Wall -g -ggdb -O0 -DCYTHON_PEP489_MULTI_PHASE_INIT=0
+C_FLAGS := -Wall -g -ggdb -O0 -DCYTHON_PEP489_MULTI_PHASE_INIT=0 -I/usr/include/python3.12
 
 # extra libraries if required
-LIBS    := -lz -lpthread -lcrypt
+LIBS    := -lz -lpthread -lcrypt -lpython3.12
 
 # each module will add to this from its module.mk file
 SRC     := gameloop.c mud.c utils.c interpret.c handler.c inform.c \
