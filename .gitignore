@@ -103,3 +103,6 @@ Thumbs.db
 
 gemfile.lock
 lib/misc/time
+
+#windows bullshit
+**/*Zone.Identifier
