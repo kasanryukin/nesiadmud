@@ -10,13 +10,6 @@ import world
 from mudsys import add_cmd
 from entities.entity_config import get_race_config, get_body_config, save_race_config, save_body_config, BodyPosition, Race
 
-"""  Attribute Handler """
-try:
-    import attributes.attribute_data as attribute_data
-    ATTRIBUTES_AVAILABLE = True
-except ImportError:
-    ATTRIBUTES_AVAILABLE = False
-
 # OLC return values
 MENU_CHOICE_INVALID = -1
 MENU_NOCHOICE = 0
@@ -57,14 +50,15 @@ def entities_config_chooser(sock, data, choice):
                    body_sizes_parser, None, data)
         return MENU_NOCHOICE
     elif choice == '3':
-        mud.log_string(f"Attempting to enter race_menu")
-        olc.do_olc(sock, races_menu, races_chooser, races_parser, None, data)
+        olc.do_olc(sock, races_menu, races_chooser,
+                   races_parser, None, data)
         return MENU_NOCHOICE
     return MENU_CHOICE_INVALID
 
 def entities_config_parser(sock, data, choice, arg):
     """Parse entities config menu input"""
     return False
+
 
 
 # Helper function for tabular display
@@ -317,7 +311,7 @@ def format_race_list_with_builtin(all_races, race_config, custom_races, line_wid
             # For built-in races, use hardcoded info since world.get_race_info() doesn't work properly
             if race_name == "human":
                 abbrev = "hum"
-                pc_ok = False
+                pc_ok = True
                 body_positions = 15  # Approximate - human has standard body
             elif race_name == "hill giant":
                 abbrev = "gia"
@@ -394,45 +388,38 @@ Current races ({y%d{n):
 {cQ{n) Return to main menu
 """)
 
-def races_chooser(sock, race, choice):
-    """Handle race menu choices."""
-    mud.log_string(f"races_chooser() called")
-    #mud.log_string(f"races_chooser called with choice: '{choice}'")
-    choice = choice.upper()
-    
+def races_chooser(sock, data, choice):
+    """Handle races menu choices"""
     if choice == '1':
         sock.send_raw("Enter new race name: ")
         return 1
     elif choice == '2':
-        sock.send_raw("Enter race name: ")
+        sock.send_raw("Enter race name to remove: ")
         return 2
     elif choice == '3':
         sock.send_raw("Enter race name to edit: ")
         return 3
     return MENU_CHOICE_INVALID
-	
+
 def races_parser(sock, data, choice, arg):
     """Parse races input"""
-    mud.log_string(f"Races parser succesfully entered")
     race_config = get_race_config()
     custom_races = race_config.get_race_names()
     builtin_races = ["human", "hill giant"]
     all_races = list(custom_races) + [race for race in builtin_races if race not in custom_races]
-    mud.log_string(f"Race listing succesfful")
+    
     if choice == 1 and arg:
-        mud.log_string(f"Creating new race sucessfully entered")
         race_name = arg.strip()
         if race_name and race_name not in all_races:
             race = Race(race_name, race_name[:3].lower(), False)
             race_config.add_race(race)
             sock.send_raw(f"Created new race: {race_name}\n")
             # Start race editing
-            olc.do_olc(sock, race_menu, races_chooser, race_parser, race_saver, race)
+            olc.do_olc(sock, race_menu, race_chooser, race_parser, race_saver, race)
             return True
         else:
             sock.send_raw(f"Race '{race_name}' already exists or invalid name.\n")
-            return True
-    
+            return True  # Return to menu instead of staying in parser
     elif choice == 2 and arg:
         race_name = arg.strip()
         if race_name in custom_races:
@@ -441,34 +428,17 @@ def races_parser(sock, data, choice, arg):
             return True
         else:
             sock.send_raw(f"Race '{race_name}' not found or is built-in (cannot remove).\n")
-            return True
-    
+            return True  # Return to menu instead of staying in parser
     elif choice == 3 and arg:
         race_name = arg.strip()
-        mud.log_string(f"Choice 3: Attempting to edit race '{race_name}'")
-        mud.log_string(f"custom_races list: {custom_races}")
-        mud.log_string(f"Is '{race_name}' in custom_races? {race_name in custom_races}")
         if race_name in custom_races:
             race = race_config.get_race(race_name)
-            mud.log_string(f"get_race returned: {race}")
-            mud.log_string(f"race type: {type(race)}")
-            
-            # Safety check - if get_race returns None, something is wrong
-            if race is None:
-                mud.log_string(f"race.name = {race.name}")
-                mud.log_string(f"race has body_positions? {hasattr(race, 'body_positions')}")
-                sock.send_raw("Error: Could not retrieve race data.\n")
-                mud.log_string(f"ERROR: get_race('{race_name}') returned None")
-                return True
-            
             # Start race editing
-            mud.log_string("Calling olc.do_olc with race editor")
             olc.do_olc(sock, race_menu, race_chooser, race_parser, race_saver, race)
             return True
         else:
             sock.send_raw(f"Race '{race_name}' not found or is built-in (cannot edit).\n")
-            return True
-    
+            return True  # Return to menu instead of staying in parser
     return False
 
 # Race OLC Menu Constants
@@ -477,21 +447,11 @@ RACE_ABBREV = 2
 RACE_PC_OK = 3
 RACE_BODY_SIZE = 4
 RACE_BODY_POSITIONS = 5
-RACE_ATTRIBUTES = 6
 
-# Race Menu
 def race_menu(sock, race):
     """Display race editing menu."""
-    mud.log_string("race_menu() called")	
     # Calculate total weight
     total_weight = sum(pos.weight for pos in race.body_positions)
-    
-    # Format attributes display
-    if ATTRIBUTES_AVAILABLE:
-        from entities.entity_config import format_race_attributes
-        attr_display = format_race_attributes(race)
-    else:
-        attr_display = "N/A"
     
     sock.send_raw("""
 {g+{n==============================================================================
@@ -503,7 +463,6 @@ def race_menu(sock, race):
 {c3{n) PC OK       : {y%s{n
 {c4{n) Body Size   : {y%s{n
 {c5{n) Body Positions ({y%d{n) - Total weight: {y%d%%{n
-{c6{n) Attributes  : %s
 
 {cS{n) Save
 {cQ{n) Quit
@@ -515,15 +474,13 @@ Enter choice: """ % (
         'Yes' if race.pc_ok else 'No',
         race.body_size,
         len(race.body_positions),
-        total_weight,
-        attr_display  # Display the attributes
+        total_weight
     ))
-
 
 def race_chooser(sock, race, choice):
     """Handle race menu choices."""
-    mud.log_string(f"Race Chooser Entered")
     choice = choice.upper()
+    
     if choice == '1':
         sock.send_raw("Enter new race name: ")
         return RACE_NAME
@@ -553,14 +510,6 @@ def race_chooser(sock, race, choice):
     elif choice == '5':
         olc.do_olc(sock, race_positions_menu, race_positions_chooser,
                    race_positions_parser, None, race)
-        return MENU_NOCHOICE
-    elif choice == '6':
-        # NEW: Launch attribute editor
-        if ATTRIBUTES_AVAILABLE:
-            olc.do_olc(sock, race_attributes_menu, race_attributes_chooser,
-                       race_attributes_parser, None, race)
-        else:
-            sock.send_raw("{RAttributes module is not loaded.{n\n")
         return MENU_NOCHOICE
     else:
         return MENU_CHOICE_INVALID
@@ -596,117 +545,6 @@ def race_parser(sock, race, choice, arg):
                 sock.send_raw(f"Invalid body size '{size}'. Please choose from available sizes.\n")
                 return False
         return False
-    
-    return False
-
-# Attributes menu
-def race_attributes_menu(sock, race):
-    """Display race attributes editing menu"""
-    if not ATTRIBUTES_AVAILABLE:
-        sock.send_raw("{RAttributes module is not loaded.{n\n")
-        return
-    
-    try:
-        import attributes.attribute_data as attribute_data
-    except ImportError:
-        sock.send_raw("{RAttributes module failed to import.{n\n")
-        mud.log_string("Failed to import attributes.attribute_data in race_attributes_menu")
-        return
-    
-    sock.send_raw("""
-{g+{n==============================================================================
-{c%s - Base Attributes{n
-{g+{n==============================================================================
-
-""" % race.name)
-    
-    attr_names = attribute_data.get_attribute_names()
-    for i, attr_name in enumerate(attr_names, 1):
-        abbrev = attribute_data.get_attribute_abbrev(attr_name)
-        value = race.get_base_attribute(attr_name)
-        desc = attribute_data.get_attribute_description(attr_name)
-        
-        # Color code the value
-        if value > 10:
-            color = "{G"
-        elif value < 10:
-            color = "{R"
-        else:
-            color = "{Y"
-        
-        sock.send_raw(f"{{c}}{i:2}){{n {abbrev} - {attr_name.capitalize():<15} {color}{value:>3}{{n\n")
-        sock.send_raw(f"    {desc}\n\n")
-    
-    sock.send_raw("{cA{n) Apply human baseline (all 10)\n")
-    sock.send_raw("{cQ{n) Return to race editor\n\n")
-    sock.send_raw("Enter choice: ")
-
-
-ATTR_EDIT = 100
-
-def race_attributes_chooser(sock, race, choice):
-    """Handle attribute menu choices"""
-    if not ATTRIBUTES_AVAILABLE:
-        return MENU_CHOICE_INVALID
-    
-    try:
-        import attributes.attribute_data as attribute_data
-    except ImportError:
-        mud.log_string("Failed to import attributes.attribute_data in race_attributes_chooser")
-        return MENU_CHOICE_INVALID
-    
-    choice = choice.upper()
-    
-    if choice == 'A':
-        # Apply human baseline
-        attr_names = attribute_data.get_attribute_names()
-        for attr_name in attr_names:
-            race.set_base_attribute(attr_name, 10)
-        sock.send_raw("{GApplied human baseline to all attributes.{n\n")
-        return MENU_NOCHOICE
-    
-    # Try to parse as number
-    try:
-        choice_num = int(choice)
-        attr_names = attribute_data.get_attribute_names()
-        if 1 <= choice_num <= len(attr_names):
-            attr_name = attr_names[choice_num - 1]
-            abbrev = attribute_data.get_attribute_abbrev(attr_name)
-            current = race.get_base_attribute(attr_name)
-            sock.send_raw(f"\nEditing {attr_name.upper()} ({abbrev}) - Current: {current}\n")
-            sock.send_raw(f"Valid range: 2-255 (Human baseline: 10)\n")
-            sock.send_raw(f"Enter new value: ")
-            # Store which attribute we're editing
-            race.temp_attr_edit = attr_name
-            return ATTR_EDIT
-    except ValueError:
-        pass
-    
-    return MENU_CHOICE_INVALID
-
-
-def race_attributes_parser(sock, race, choice, arg):
-    """Parse attribute editing input"""
-    if not ATTRIBUTES_AVAILABLE:
-        return False
-    
-    if choice == ATTR_EDIT and arg and hasattr(race, 'temp_attr_edit'):
-        attr_name = race.temp_attr_edit
-        delattr(race, 'temp_attr_edit')
-        
-        try:
-            new_value = int(arg.strip())
-            race.set_base_attribute(attr_name, new_value)
-            actual_value = race.get_base_attribute(attr_name)
-            
-            if actual_value != new_value:
-                sock.send_raw(f"{{YValue adjusted to valid range: {actual_value}{{n\n")
-            else:
-                sock.send_raw(f"{{G}}{attr_name.capitalize()} set to {actual_value}{{n\n")
-            return True
-        except ValueError:
-            sock.send_raw("{RInvalid number.{n\n")
-            return True
     
     return False
 
@@ -923,4 +761,3 @@ def cmd_entityconfig(ch, cmd, arg):
 
 # Register command
 add_cmd("entityconfig", None, cmd_entityconfig, "admin", False)
-add_cmd("econfig", None, cmd_entityconfig, "admin", False)

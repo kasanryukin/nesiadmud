@@ -10,6 +10,8 @@ body:-
     -
     name: hooves
     -
+    name: eyes
+    -
   sizes     :=
     name: gigantic
     -

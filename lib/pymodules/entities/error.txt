@@ -1,0 +1,122 @@
+Oct  1 12:05:48: Niam has reconnected.
+
+Oct  1 12:06:02: Attempting to enter race_menu
+
+Oct  1 12:06:02: pyolc_do_menu failed
+
+Traceback (most recent call last):
+
+  File "/home/niam/muds/nakedmud/lib/../lib/pymodules/entities/entity_config_olc.py", line 557, in race_menu
+
+    total_weight = sum(pos.weight for pos in race.body_positions)
+
+                                             ^^^^^^^^^^^^^^^^^^^
+
+AttributeError: 'NoneType' object has no attribute 'body_positions'
+
+Oct  1 12:07:34: race_chooser() called
+
+Oct  1 12:07:34: pyolc_do_chooser failed: 3
+
+Traceback (most recent call last):
+
+  File "/home/niam/muds/nakedmud/lib/../lib/pymodules/entities/entity_config_olc.py", line 512, in race_chooser
+
+    race.pc_ok = not race.pc_ok
+
+                     ^^^^^^^^^^
+
+AttributeError: 'NoneType' object has no attribute 'pc_ok'
+
+Oct  1 12:07:34: pyolc_do_menu failed
+
+Traceback (most recent call last):
+
+  File "/home/niam/muds/nakedmud/lib/../lib/pymodules/entities/entity_config_olc.py", line 557, in race_menu
+
+    total_weight = sum(pos.weight for pos in race.body_positions)
+
+                                             ^^^^^^^^^^^^^^^^^^^
+
+AttributeError: 'NoneType' object has no attribute 'body_positions'
+
+Oct  1 12:07:52: race_chooser() called
+
+Oct  1 12:07:52: pyolc_do_menu failed
+
+Traceback (most recent call last):
+
+  File "/home/niam/muds/nakedmud/lib/../lib/pymodules/entities/entity_config_olc.py", line 557, in race_menu
+
+    total_weight = sum(pos.weight for pos in race.body_positions)
+
+                                             ^^^^^^^^^^^^^^^^^^^
+
+AttributeError: 'NoneType' object has no attribute 'body_positions'
+
+Oct  1 12:12:53: Attempting to enter race_menu
+
+Oct  1 12:12:53: pyolc_do_menu failed
+
+Traceback (most recent call last):
+
+  File "/home/niam/muds/nakedmud/lib/../lib/pymodules/entities/entity_config_olc.py", line 557, in race_menu
+
+    total_weight = sum(pos.weight for pos in race.body_positions)
+
+                                             ^^^^^^^^^^^^^^^^^^^
+
+AttributeError: 'NoneType' object has no attribute 'body_positions'
+
+Oct  1 12:12:57: race_chooser() called
+
+Oct  1 12:12:57: pyolc_do_menu failed
+
+Traceback (most recent call last):
+
+  File "/home/niam/muds/nakedmud/lib/../lib/pymodules/entities/entity_config_olc.py", line 557, in race_menu
+
+    total_weight = sum(pos.weight for pos in race.body_positions)
+
+                                             ^^^^^^^^^^^^^^^^^^^
+
+AttributeError: 'NoneType' object has no attribute 'body_positions'
+
+Oct  1 12:13:04: race_chooser() called
+
+Oct  1 12:13:04: pyolc_do_menu failed
+
+Traceback (most recent call last):
+
+  File "/home/niam/muds/nakedmud/lib/../lib/pymodules/entities/entity_config_olc.py", line 653, in race_positions_menu
+
+    total_weight = sum(pos.weight for pos in race.body_positions)
+
+                                             ^^^^^^^^^^^^^^^^^^^
+
+AttributeError: 'NoneType' object has no attribute 'body_positions'
+
+Oct  1 12:13:11: pyolc_do_menu failed
+
+Traceback (most recent call last):
+
+  File "/home/niam/muds/nakedmud/lib/../lib/pymodules/entities/entity_config_olc.py", line 653, in race_positions_menu
+
+    total_weight = sum(pos.weight for pos in race.body_positions)
+
+                                             ^^^^^^^^^^^^^^^^^^^
+
+AttributeError: 'NoneType' object has no attribute 'body_positions'
+
+Oct  1 12:13:20: pyolc_do_parser failed: 3, 3
+
+Traceback (most recent call last):
+
+  File "/home/niam/muds/nakedmud/lib/../lib/pymodules/entities/entity_config_olc.py", line 765, in race_positions_parser
+
+    position = race.get_position(name)
+
+               ^^^^^^^^^^^^^^^^^
+
+AttributeError: 'NoneType' object has no attribute 'get_position'
+

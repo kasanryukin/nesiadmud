@@ -6,13 +6,6 @@ with basic selection for name, sex, and race.
 '''
 import mudsys, mud, socket, char, hooks
 
-# Import attributes module for character initialization
-try:
-    import attributes.attribute_aux as attribute_aux
-    ATTRIBUTES_AVAILABLE = True
-except ImportError:
-    ATTRIBUTES_AVAILABLE = False
-    mud.log_string("char_gen: Attributes module not available")
 
 
 def check_char_name(arg):
@@ -46,8 +39,8 @@ def cg_sex_handler(sock, arg):
         result = {
             'M' : 'male',
             'F' : 'female',
-            'N' : 'non-binary',
-            'O' : 'other',
+			'N' : 'non-binary',
+			'O' : 'other',
             }[arg[0].upper()]
         sock.ch.sex = result
         sock.pop_ih()
@@ -70,50 +63,6 @@ def cg_finish_handler(sock, arg):
     
     # register and save him to disk and to an account
     mudsys.do_register(sock.ch)
-
-    # Initialize attributes based on race
-    if ATTRIBUTES_AVAILABLE:
-        try:
-            aux = attribute_aux.get_attributes(sock.ch)
-            if aux and not aux.initialized:
-                aux.initialize_for_race(sock.ch.race)
-                mud.log_string(f"Initialized attributes for {sock.ch.name} ({sock.ch.race})")
-                
-                # Initialize vitality from attributes
-                try:
-                    import vitality.vitality_core as vitality
-                    vitality.initialize_vitality(sock.ch)
-                    mud.log_string(f"Initialized vitality for {sock.ch.name}")
-                except ImportError:
-                    pass  # Vitality module not loaded
-                
-                # Display rolled attributes to the player
-                sock.send("\r\n{G*** Your attributes have been determined by your race ***{n\r\n")
-                sock.send("{c┌─────────────────────────────────────┐{n\r\n")
-                sock.send("{c│{n        {WYOUR ATTRIBUTES{n            {c│{n\r\n")
-                sock.send("{c├─────────────────────────────────────┤{n\r\n")
-                
-                import attributes.attribute_data as attribute_data
-                for attr_name in attribute_data.get_attribute_names():
-                    abbrev = attribute_data.get_attribute_abbrev(attr_name)
-                    value = aux.get_attribute(attr_name)
-                    
-                    # Color code based on value
-                    if value >= 14:
-                        color = "{G"  # Green for excellent
-                    elif value >= 10:
-                        color = "{Y"  # Yellow for average
-                    else:
-                        color = "{R"  # Red for below average
-                    
-                    attr_display = attr_name.capitalize()
-                    sock.send(f"{{c│{{n {abbrev}: {attr_display:<20} {color}{value:>3}{{n {{c│{{n\r\n")
-                
-                sock.send("{c└─────────────────────────────────────┘{n\r\n")
-                sock.send(f"{{YYou have been granted {aux.tdp_available} TDP (Time Development Points){{n\r\n")
-                sock.send("{cUse 'train' to spend TDP and improve your attributes.{n\r\n\r\n")
-        except Exception as e:
-            mud.log_string(f"Error initializing attributes for {sock.ch.name}: {str(e)}")
 
     # make him exist in the game for functions to look him up
     mudsys.try_enter_game(sock.ch)
@@ -187,24 +136,6 @@ def guest_gen_hook(info):
 
     # log that the character created
     mud.log_string("Guest character created (id %d)." % ch.uid)
-    
-    # Initialize attributes for guest (human baseline)
-    if ATTRIBUTES_AVAILABLE:
-        try:
-            aux = attribute_aux.get_attributes(ch)
-            if aux and not aux.initialized:
-                aux.initialize_for_race("human")
-                mud.log_string(f"Initialized attributes for guest {ch.name}")
-                
-                # Initialize vitality from attributes
-                try:
-                    import vitality.vitality_core as vitality
-                    vitality.initialize_vitality(ch)
-                    mud.log_string(f"Initialized vitality for guest {ch.name}")
-                except ImportError:
-                    pass  # Vitality module not loaded
-        except Exception as e:
-            mud.log_string(f"Error initializing attributes for guest {ch.name}: {str(e)}")
 
     # make him exist in the game for functions to look him up
     mudsys.try_enter_game(ch)
@@ -236,3 +167,4 @@ def __unload__():
     '''removes the hooks for character generation'''
     hooks.remove("create_character", char_gen_hook)
     hooks.remove("create_guest",     guest_gen_hook)
+

@@ -6,13 +6,7 @@ using the auxiliary data storage system. Follows the gear module pattern.
 """
 import mud
 import storage
-"""  Attribute Handler """
-try:
-    import attributes.attribute_data as attribute_data
-    ATTRIBUTES_AVAILABLE = True
-except ImportError:
-    ATTRIBUTES_AVAILABLE = False
-	
+
 class BodyPosition:
     """Represents a single body position with name, type, and weight."""
     
@@ -44,48 +38,6 @@ class Race:
         self.pc_ok = pc_ok
         self.body_positions = []
         self.body_size = "medium"
-        self.base_attributes = {
-            "strength": 10,
-            "reflex": 10,
-            "agility": 10,
-            "charisma": 10,
-            "discipline": 10,
-            "wisdom": 10,
-            "intelligence": 10,
-            "stamina": 10
-        }
-    
-    def set_base_attribute(self, attr_name, value):
-        """
-        Set the base value for an attribute for this race.
-        
-        Args:
-            attr_name (str): Attribute name (e.g., "strength")
-            value (int): Base value for this race
-        """
-        if attr_name in self.base_attributes:
-            # Validate if attributes module is available
-            if ATTRIBUTES_AVAILABLE:
-                value = attribute_data.validate_attribute_value(attr_name, value)
-            else:
-                # Basic validation without attributes module
-                value = max(2, min(255, value))
-            
-            self.base_attributes[attr_name] = value
-            return True
-        return False
-    
-    def get_base_attribute(self, attr_name):
-        """
-        Get the base value for an attribute for this race.
-        
-        Args:
-            attr_name (str): Attribute name
-        
-        Returns:
-            int: Base value, or 10 if not found
-        """
-        return self.base_attributes.get(attr_name, 10)
     
     def add_position(self, position):
         """Add a body position to this race."""
@@ -116,12 +68,6 @@ class Race:
             position.store(pos_set)
             positions_list.add(pos_set)
         storage_set.storeList("body_positions", positions_list)
-        
-        # Store base attributes
-        attr_set = storage.StorageSet()  # FIXED: Create new StorageSet
-        for attr_name, value in self.base_attributes.items():
-            attr_set.storeInt(attr_name, value)
-        storage_set.storeSet("base_attributes", attr_set)
     
     @staticmethod
     def from_storage(storage_set):
@@ -130,78 +76,17 @@ class Race:
         abbrev = storage_set.readString("abbrev")
         pc_ok = storage_set.readBool("pc_ok")
         body_size = storage_set.readString("body_size")
-    
+        
         race = Race(name, abbrev, pc_ok)
         race.body_size = body_size
-    
+        
         # Load body positions
         positions_list = storage_set.readList("body_positions")
         for pos_set in positions_list.sets():
             position = BodyPosition.from_storage(pos_set)
             race.add_position(position)
-    
-        # Read base attributes (with fallback for old data)
-        try:
-            attr_set = storage_set.readSet("base_attributes")
-            for attr_name in race.base_attributes.keys():
-                try:
-                    race.base_attributes[attr_name] = attr_set.readInt(attr_name)
-                except:
-                    # If attribute not in storage, keep default
-                    pass
-        except:
-            # If no base_attributes section exists, keep all defaults
-            pass
-    
+        
         return race
-
-
-# Helper function for displaying race attributes
-def format_race_attributes(race):
-    """
-    Format a race's attribute bases for display.
-    
-    Args:
-        race (Race): Race to format
-    
-    Returns:
-        str: Formatted attribute string
-    """
-    if not ATTRIBUTES_AVAILABLE:
-        return "Attributes module not loaded"
-    
-    attrs = []
-    for attr_name in attribute_data.get_attribute_names():
-        value = race.get_base_attribute(attr_name)
-        abbrev = attribute_data.get_attribute_abbrev(attr_name)
-        
-        # Color code: green if above 10, red if below
-        if value > 10:
-            color = "{G"
-        elif value < 10:
-            color = "{R"
-        else:
-            color = "{Y"
-        
-        attrs.append(f"{abbrev}:{color}{value}{{n")
-    
-    return " ".join(attrs)
-
-
-# ========================================
-# EXAMPLE: How to use in other code
-# ========================================
-"""
-# In character creation or when setting race:
-race = race_config.get_race(character_race_name)
-if race:
-    # Get racial attribute bases
-    str_base = race.get_base_attribute("strength")
-    int_base = race.get_base_attribute("intelligence")
-    
-    # Pass to attributes module for character initialization
-    # (The attributes module will apply ±4 variance)
-"""
 
 class BodyTypes:
     """Manages custom body position types and sizes."""
@@ -390,7 +275,7 @@ def create_default_race_config():
     race_config = RaceConfig()
     
     # Create elf race - similar to human but more graceful
-    elf = Race("elf", "elf", False)
+    elf = Race("elf", "elf", True)
     elf.body_size = "medium"
     elf.add_position(BodyPosition("floating about head", "floating about head", 0))
     elf.add_position(BodyPosition("head", "head", 2))
@@ -463,7 +348,7 @@ def create_default_race_config():
     race_config.add_race(dragon)
     
     # Create centaur race - human torso on horse body
-    centaur = Race("centaur", "cen", False)
+    centaur = Race("centaur", "cen", True)
     centaur.body_size = "large"
     centaur.add_position(BodyPosition("floating about head", "floating about head", 0))
     centaur.add_position(BodyPosition("head", "head", 2))

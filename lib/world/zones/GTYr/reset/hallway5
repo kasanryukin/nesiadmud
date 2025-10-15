@@ -1,0 +1,9 @@
+resets:=
+  type    : 1
+  times   : 1
+  chance  : 100
+  max     : 8
+  room_max: 3
+  arg     : gen_priest
+  -
+-

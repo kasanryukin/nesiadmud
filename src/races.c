@@ -66,8 +66,10 @@ void init_races() {
   bodyAddPositionByName(body, "right leg",               "leg",                 9);
   bodyAddPositionByName(body, "left leg",                "leg",                 9);
   bodyAddPositionByName(body, "waist",                   "waist",               1);
-  bodyAddPositionByName(body, "right finger",            "finger",              1);
-  bodyAddPositionByName(body, "left finger",             "finger",              1);
+  bodyAddPositionByName(body, "right ring finger",       "finger",              1);
+  bodyAddPositionByName(body, "left ring finger",        "finger",              1);
+  bodyAddPositionByName(body, "left middle finger",      "finger",              0);
+  bodyAddPositionByName(body, "right middle finger",     "finger",              0);
   bodyAddPositionByName(body, "right hand",              "right hand",          2);
   bodyAddPositionByName(body, "left hand",               "left hand",           2);
   bodyAddPositionByName(body, "right wrist",             "wrist",               1);
@@ -79,6 +81,7 @@ void init_races() {
   bodyAddPositionByName(body, "neck",                    "neck",                1);
   bodyAddPositionByName(body, "right ear",               "ear",                 0);
   bodyAddPositionByName(body, "left ear",                "ear",                 0);
+  bodyAddPositionByName(body, "eyes",                    "eyes",                0);
   bodyAddPositionByName(body, "face",                    "face",                2);
   bodyAddPositionByName(body, "head",                    "head",                2);
   bodyAddPositionByName(body, "floating about head",     "floating about head", 0);
@@ -86,7 +89,7 @@ void init_races() {
   //                                                                    100
 
   // add the basic races
-  add_race("human", "hum", body, TRUE);
+  add_race("human", "hum", body, FALSE);
   //********************************************************************
   // If you are wanting to add new, non-stock races it is suggested
   // you do so through a module and import them with add_race instead

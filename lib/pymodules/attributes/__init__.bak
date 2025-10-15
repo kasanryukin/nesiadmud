@@ -1,0 +1,45 @@
+"""
+Attributes Module for NakedMud
+================================
+Manages character attributes (STR, REF, AGI, CHA, DIS, WIS, INT, STA)
+and their effects on game mechanics.
+
+This module provides:
+- Attribute definitions and valid ranges
+- Auxiliary data storage for character attributes
+- TDP (Time Development Points) system for attribute training
+- Derived stat calculations (carrying capacity, etc.)
+- Integration with vitality for HP/SP/EP calculations
+- Integration with entities for racial attribute modifiers
+"""
+import os
+import importlib
+import mudsys
+"""__all__ = []
+
+for fl in os.listdir(__path__[0]):
+    if fl.endswith(".py") and not (fl == "__init__.py" or fl.startswith(".")):
+        __all__.append(fl[:-3])
+
+# import all of our modules so they can register and initialize
+__all__ = ['attributes_aux', 'attributes_data', 'attributes_commands']
+for module in __all__:
+    importlib.import_module('.' + module, package=__name__)"""
+
+def __unload__():
+    #Called when the module is unloaded.
+    pass
+
+def __load__():
+    #Called when the module is loaded.#
+    # Import here instead of at module level
+    import attributes.attribute_aux as attribute_aux
+    import attributes.commands as commands
+    
+    # Register auxiliary data installer
+    mudsys.register_char_init_hook(attribute_aux.install_attributes)
+    
+    # Register commands
+    commands.register_commands()
+    #Attributes successfully loaded
+#mudsys.log_string("Attributes module loaded successfully")

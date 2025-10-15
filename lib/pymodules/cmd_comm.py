@@ -158,7 +158,25 @@ def cmd_page(ch, cmd, arg):
     ch.send("\007\007You page " + ch.see_as(tgt))
     tgt.send("\007\007*" + tgt.see_as(ch) + "* " + mssg)
 
+def finish_desc_editor(sock, editor_output):
+    '''this function is passed to edit_text, and called after a socket exits the
+       text editor.'''
+    # make sure our character has not somehow vanished.
+    # If it is still around, change its description to the output of the editor
+    if sock.ch != None:
+        sock.ch.desc = editor_output
 
+def cmd_describe(ch, cmd, arg):
+    '''Allows a character to set his or her own description.'''
+    # first, make sure we have a socket. The text editor pushes an input
+    # handler onto the socket's stack. Thus, the socket needs to exist.
+    if ch.sock != None:
+       ch.send("You seem to be missing a socket.")
+    else:
+        # edit text editor mode. Set the initial value of the text editor to
+        # our current description. When the text editor is finished, call the
+        # function we're passing in
+        ch.sock.edit_text(ch.desc, finish_desc_editor)
 
 ################################################################################
 # add our commands
@@ -167,16 +185,17 @@ mudsys.add_cmd("ask",     None, cmd_ask,   "player", False)
 mudsys.add_cmd("say",     None, cmd_say,   "player", False)
 mudsys.add_cmd("'",       None, cmd_say,   "player", False)
 mudsys.add_cmd("tell",    None, cmd_tell,  "player", False)
-mudsys.add_cmd("chat",    None, cmd_chat,  "player", False)
+#mudsys.add_cmd("chat",    None, cmd_chat,  "player", False)
 mudsys.add_cmd("wizchat", "wiz",cmd_wiz,   "wizard", False)
-mudsys.add_cmd("gossip",  None, cmd_chat,  "player", False)
+#mudsys.add_cmd("gossip",  None, cmd_chat,  "player", False)
 mudsys.add_cmd("\"",      None, cmd_chat,  "player", False)
 mudsys.add_cmd("page",    None, cmd_page,  "player", False)
 mudsys.add_cmd("greet",   None, cmd_greet, "player", False)
 mudsys.add_cmd("approach",None, cmd_greet, "player", False)
 mudsys.add_cmd("emote",   None, cmd_emote, "player", False)
-mudsys.add_cmd("gemote",  None, cmd_gemote,"player", False)
+#mudsys.add_cmd("gemote",  None, cmd_gemote,"player", False)
 mudsys.add_cmd(":",       None, cmd_emote, "player", False)
+mudsys.add_cmd("describe", None, cmd_describe, "player", True)
 
 def chk_room_communication(ch, cmd):
     if ch.pos in ("sleeping", "unconscious"):

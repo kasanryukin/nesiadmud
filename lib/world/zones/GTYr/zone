@@ -1,0 +1,13 @@
+pulse_timer: 5
+name       : GreatTempleOfYttribus
+desc       :~
+      The Great Temple of Yttribus, honoring all of the Pantheon.
+editors    : Niam
+resettable :=
+  room: tmphighpriestroom
+  -
+  room: grandaltar
+  -
+  room: hallway5
+  -
+-
