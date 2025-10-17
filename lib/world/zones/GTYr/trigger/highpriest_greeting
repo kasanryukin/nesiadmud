@@ -1,9 +1,6 @@
 name: An Unfinished Trigger
 type: enter
 code:~
-  # A simple greeting trigger for a mob
-  import mudsys
-  # This trigger runs when someone enters the room
-  if ch.name != me.name:  # Don't greet yourself
-      me.send("say Greetings %s!, welcome to the Temple." % ch.name)
+  if ch.name !=me.name:
+    me.act("say Welcome to the temple %s." % ch.name)
 -

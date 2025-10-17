@@ -15,4 +15,7 @@ script  :~
   ### race and gender
   me.race     = "foxkin"
   me.gender   = "female"
+  
+  ### character triggers
+  me.attach("highpriest_greeting")
 -

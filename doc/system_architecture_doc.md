@@ -16,7 +16,7 @@
 - **C Integration:** Python-only, uses auxiliary data
 - **Status:** Complete with TDP training system
 
-### 3. Vitality System → Next Priority
+### 3. Vitality System ✓ Implemented - Stage One, Assignment, Regereration and Attribute Calculations
 - **Manages:** HP, SP, EP, regeneration
 - **Dependencies:** Attributes (for calculations), Entities (body positions for injury)
 - **Required by:** Combat, Injury, Death
@@ -207,7 +207,7 @@
 ### Phase 1: Core Mechanics (Current Focus)
 1. ✅ Entities
 2. ✅ Attributes & TDP
-3. **→ Vitality** (Next - HP/SP/EP from attributes)
+3. ✅ Vitality** (HP/SP/EP from attributes)
 4. **→ Injury** (Simple version with vitality)
 5. **→ Death basics** (hook into existing system)
 

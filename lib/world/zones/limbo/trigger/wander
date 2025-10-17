@@ -1,0 +1,20 @@
+name: Mobile Movement Master Trigger
+type: heartbeat
+code:~
+  import random
+  import mud
+  rand_val = random.randint(1, 100)
+  if rand_val <= 5:
+    home_zone = me.room.proto.split('@')[1] if '@' in me.room.proto else None
+    valid_dirs = []
+    for direction in ["north", "east", "south", "west", "northeast", "northwest", "southwest", "southeast", "up", "down"]:
+      if me.room.exit(direction) is not None:
+        exit_obj = me.room.exit(direction)
+        dest_proto = exit_obj.destproto
+        dest_zone = dest_proto.split('@')[1] if '@' in dest_proto else home_zone
+        if dest_zone and dest_zone.lower() == home_zone.lower():
+          valid_dirs.append(direction)
+    if valid_dirs:
+      direction = random.choice(valid_dirs)
+      me.act("%s" % direction)
+-

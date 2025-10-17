@@ -103,6 +103,7 @@ SRC  += scripts/scripts.c       \
 	scripts/pychar.c        \
 	scripts/pyobj.c         \
 	scripts/pymud.c         \
+	scripts/pymud_movement.c \
 	scripts/pymudsys.c      \
 	scripts/pyhooks.c       \
 	scripts/pyroom.c        \

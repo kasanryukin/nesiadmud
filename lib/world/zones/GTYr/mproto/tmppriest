@@ -14,4 +14,7 @@ script  :~
   
   ### race and gender
   me.race     = "human"
+  
+  ### character triggers
+  me.attach("wander@limbo")
 -

@@ -53,6 +53,9 @@
 
 #include "../olc2/olc.h"
 
+// Forward declaration for mud_movement module
+extern PyMODINIT_FUNC PyInit_mud_movement(void);
+
 //*****************************************************************************
 // module data
 //*****************************************************************************
@@ -77,6 +80,7 @@ ModuleInfo modules[] = {
     {"hooks",     &PyInit_PyHooks},
     {"olc",       &PyInit_PyOLC},
     {"world",     &PyInit_PyWorld},
+	{"mud_movement", &PyInit_mud_movement},
     {NULL, NULL}  
 };
 
@@ -523,9 +527,13 @@ PyObject *mud_script_dict(void) {
   mudmod = PyImport_ImportModule("event");
   PyDict_Update(dict, PyModule_GetDict(mudmod));
   Py_DECREF(mudmod);
+  PyObject *movmod = PyImport_ImportModule("mud_movement");
+  PyDict_Update(dict, PyModule_GetDict(movmod));
+  Py_DECREF(movmod);
   mudmod = PyImport_ImportModule("random");
   PyDict_SetItemString(dict, "random", mudmod);
   Py_DECREF(mudmod);
+  
 
   return dict;
 }
