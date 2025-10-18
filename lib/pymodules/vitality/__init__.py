@@ -36,6 +36,7 @@ try:
     # Import the core module
     from . import vitality_core
     from . import vitality_regen
+    from . import commands
     
     # Install auxiliary data using Python's auxiliary system
     auxiliary.install("vitality_data", vitality_core.VitalityAuxData, "character")
@@ -45,6 +46,7 @@ try:
     
     # Register commands
     vitality_regen.register_commands()
+    commands.register_commands()
     mud.log_string("Vitality: Auxiliary data installed on characters")
     
     mud.log_string("Vitality module loaded successfully")

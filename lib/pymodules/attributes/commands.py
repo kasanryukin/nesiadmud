@@ -537,8 +537,66 @@ def cmd_grantdp(ch, cmd, arg):
     ch.send(f"Granted {amount} TDP to {target.name}. ({old_tdp} -> {new_tdp})")
     target.send(f"You have been granted {amount} TDP! Total: {new_tdp}")
 
+def cmd_mobattributes(ch, cmd, arg):
+    """
+    Admin command to view a mob's attributes and vitality.
+    Usage: mobattributes <target>
+    """
+    if not arg or not arg.strip():
+        ch.send("Usage: mobattributes <target>")
+        return
+    
+    # Find the target mob in the room
+    target = None
+    for char in ch.room.chars:
+        if arg.lower() in char.name.lower():
+            target = char
+            break
+    
+    if not target:
+        ch.send("That target is not here.")
+        return
+    
+    if target.is_pc:
+        ch.send("That's a player, not a mob.")
+        return
+    
+    # Check if target has attributes
+    attr_aux = target.getAuxiliary("attribute_data")
+    if not attr_aux:
+        ch.send("%s has no attribute data." % target.name)
+        return
+    
+    # Display attributes
+    ch.send("\n{c=== Attributes for %s ==={n" % target.name)
+    ch.send("{g%-15s {c%3d{n" % ("Strength:", attr_aux.strength))
+    ch.send("{g%-15s {c%3d{n" % ("Reflex:", attr_aux.reflex))
+    ch.send("{g%-15s {c%3d{n" % ("Agility:", attr_aux.agility))
+    ch.send("{g%-15s {c%3d{n" % ("Charisma:", attr_aux.charisma))
+    ch.send("{g%-15s {c%3d{n" % ("Discipline:", attr_aux.discipline))
+    ch.send("{g%-15s {c%3d{n" % ("Wisdom:", attr_aux.wisdom))
+    ch.send("{g%-15s {c%3d{n" % ("Intelligence:", attr_aux.intelligence))
+    ch.send("{g%-15s {c%3d{n" % ("Stamina:", attr_aux.stamina))
+    
+    ch.send("\n{g%-15s {c%3d / %3d{n" % ("TDP:", attr_aux.tdp_spent, 
+                                          attr_aux.tdp_spent + attr_aux.tdp_available))
+    
+    # Display vitality if available
+    vit_aux = target.getAuxiliary("vitality_data")
+    if vit_aux:
+        ch.send("\n{c=== Vitality for %s ==={n" % target.name)
+        ch.send("{g%-15s {c%6.1f / %6.1f{n" % ("HP:", vit_aux.hp, vit_aux.max_hp))
+        ch.send("{g%-15s {c%6.1f / %6.1f{n" % ("SP:", vit_aux.sp, vit_aux.max_sp))
+        ch.send("{g%-15s {c%6.1f / %6.1f{n" % ("EP:", vit_aux.ep, vit_aux.max_ep))
+        ch.send("{g%-15s {c%s{n" % ("Dead:", "Yes" if vit_aux.is_dead else "No"))
+    else:
+        ch.send("\n{y%s has no vitality data.{n" % target.name)
+    
+    ch.send("\n")
+
 
 def register_commands():
+
     """
     Register all attribute commands with NakedMud.
     Called when the module loads.
@@ -547,7 +605,8 @@ def register_commands():
     mudsys.add_cmd("stats", None, cmd_stats, "player", False)
     mudsys.add_cmd("train", None, cmd_train, "player", False)
     mudsys.add_cmd("attributes", None, cmd_attributes, "player", False)
-    
+    # Builder commands
+    mudsys.add_cmd("mobattributes", None, cmd_mobattributes, "admin", False)
     # Admin commands
     mudsys.add_cmd("setattr", None, cmd_setattr, "admin", False)
     mudsys.add_cmd("grantdp", None, cmd_grantdp, "admin", False)
