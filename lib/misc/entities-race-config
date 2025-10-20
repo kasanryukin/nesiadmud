@@ -476,8 +476,124 @@ races:=
     type  : head
     weight: 2
     -
+    name  : eyes
+    type  : eyes
+    weight: 0
+    -
+    name  : neck
+    type  : neck
+    weight: 1
+    -
+    name  : torso
+    type  : torso
+    weight: 50
+    -
+    name  : left ear
+    type  : ear
+    weight: 0
+    -
+    name  : right ear
+    type  : ear
+    weight: 0
+    -
+    name  : left arm
+    type  : arm
+    weight: 8
+    -
+    name  : right arm
+    type  : arm
+    weight: 8
+    -
+    name  : left hand
+    type  : left hand
+    weight: 2
+    -
+    name  : right hand
+    type  : right hand
+    weight: 2
+    -
+    name  : left ring finger
+    type  : finger
+    weight: 0
+    -
+    name  : right ring finger
+    type  : finger
+    weight: 0
+    -
+    name  : right middle finger
+    type  : finger
+    weight: 0
+    -
+    name  : left middle finger
+    type  : finger
+    weight: 0
+    -
+    name  : left wrist
+    type  : wrist
+    weight: 0
+    -
+    name  : right wrist
+    type  : wrist
+    weight: 0
+    -
+    name  : waist
+    type  : waist
+    weight: 1
+    -
+    name  : left leg
+    type  : leg
+    weight: 10
+    -
+    name  : right leg
+    type  : leg
+    weight: 10
+    -
+    name  : left foot
+    type  : left foot
+    weight: 2
+    -
+    name  : right foot
+    type  : right foot
+    weight: 2
+    -
+    name  : left grip
+    type  : held
+    weight: 0
+    -
+    name  : right grip
+    type  : held
+    weight: 0
+    -
+    name  : tail
+    type  : tail
+    weight: 1
+    -
     name  : face
     type  : face
+    weight: 1
+    -
+  base_attributes:-
+    strength    : 10
+    reflex      : 12
+    agility     : 12
+    charisma    : 12
+    discipline  : 8
+    wisdom      : 10
+    intelligence: 10
+    stamina     : 10
+    -
+  -
+  name           : lizardfolk
+  abbrev         : liz
+  pc_ok          : 1
+  body_size      : medium
+  body_positions :=
+    name  : floating about head
+    type  : floating about head
+    weight: 0
+    -
+    name  : head
+    type  : head
     weight: 2
     -
     name  : eyes
@@ -567,6 +683,14 @@ races:=
     name  : right grip
     type  : held
     weight: 0
+    -
+    name  : face
+    type  : face
+    weight: 1
+    -
+    name  : tail
+    type  : tail
+    weight: 1
     -
   base_attributes:-
     strength    : 10
@@ -592,10 +716,6 @@ races:=
     type  : head
     weight: 2
     -
-    name  : face
-    type  : face
-    weight: 2
-    -
     name  : eyes
     type  : eyes
     weight: 0
@@ -683,6 +803,14 @@ races:=
     name  : right grip
     type  : held
     weight: 0
+    -
+    name  : face
+    type  : face
+    weight: 1
+    -
+    name  : tail
+    type  : tail
+    weight: 1
     -
   base_attributes:-
     strength    : 11
@@ -708,10 +836,6 @@ races:=
     type  : head
     weight: 2
     -
-    name  : face
-    type  : face
-    weight: 2
-    -
     name  : eyes
     type  : eyes
     weight: 0
@@ -799,6 +923,14 @@ races:=
     name  : right grip
     type  : held
     weight: 0
+    -
+    name  : face
+    type  : face
+    weight: 1
+    -
+    name  : tail
+    type  : tail
+    weight: 1
     -
   base_attributes:-
     strength    : 8
