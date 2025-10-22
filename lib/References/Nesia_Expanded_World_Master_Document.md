@@ -81,29 +81,36 @@ Polar regions are bound by ice sheets and tundra, forming the natural barriers o
 | Race      | Description                                     | % of World Population |
 |-----------|-------------------------------------------------|-----------------------|
 | Narakzir  | Dwarves, industrial and stoic                   |          22%          |
-| Yerionde  | Elves, scholarly and magical                    |          20%          |
-| Wildlands | Independent tribal groups                       |          12%          |
+| Yerionde  | Elves, scholarly and magical                    |          19%          |
+| Wildlands | Independent tribal groups                       |          9%           |
 | Seren     | Wolfkin, Ruthenian-inspired                     |          5%           |
 | Valinayau | Gnomes, Levantine-influenced                    |          5%           |
-| Memti     | Half-giantoids (trolls, ogres, etc.)            |          5%           |
+| Memti     | Half-giantoids (trolls, ogres, etc.)            |          9%           |
 | Kitabu    | Foxkin, Japanese cultural influence             |          4%           |
-| Qaluk     | Ravenfolk, Inuit-themed                         |          4%           |
+| Qaluk     | Ravenfolk, Inuit-themed                         |          2%           |
 | Hidians   | Hobbit-like Halflings                           |          4%           |
-| Sraj’es   | Lizardfolk, serpent-motif culture               |          3%           |
-| Amarunk   | Catfolk, Nigerian-inspired                      |          3%           |
+| Sraj’es   | Lizardfolk, serpent-motif culture               |          4%           |
+| Amarunk   | Catfolk, Nigerian-inspired                      |          4%           |
 | Roshinver | Pixies, Celtic isolationists                    |          1%           |
 | Hohap     | Highland humans, Three Kingdoms era China theme |          <1%          |
 | Yttribian | Baseline humans                                 |          11%          |
 
 ### Cultural Overview
 Each race of Nesia maintains its own distinct homeland and diaspora.  
-- **Narakzir:** Masters of metallurgy and architecture; reside mainly in mountainous and subterranean regions.  
+- **Narakzir:** Masters of metallurgy and architecture; resides in a wide variety of regions, both above and below ground.  
 - **Yerionde:** Ancient elven empire of artistry and arcane mastery.  
-- **Seren:** A hardy and spiritual people inhabiting taiga forests.  
+- **Seren:** A hardy and spiritual people inhabiting taiga forests.
+- **Valinayau** An industrialized culture, constantly tinkering with things, sometimes things they shouldn't.
+- **Memti** A loose grouping of halfbreeds, found in shanty towns everywhere working as laborers.
 - **Kitabu:** Island-dwelling foxkin bound by honor and craft.  
 - **Hidians:** Peaceful agrarian halflings renowned for craftsmanship.  
 - **Qaluk:** Arctic birdfolk adapted to cold climates and flight-based trade routes.  
-- **Amarunk:** Jungle and savanna dwellers known for agility and trade networks.
+- **Amarunk:** Jungle and savanna dwellers known for their agility and trade networks.
+- **Sraj'es** Desert merchants and renowned mercenaries.
+- **Roshinver** Reclusive, but powerful mages, rarely leaving their archipelago.
+- **Yttribian** Humans found all over the world, usually in shanty towns outside the northern continent.
+- **Hohap** Humans that have slighty divergent evolution. Shorter than Yttribians, taller than Hidians.
+- **Wildlans** Less a distinct culture, these areas might have population, but no government has claimed them.
 
 ---
 
@@ -129,7 +136,7 @@ Each race of Nesia maintains its own distinct homeland and diaspora.
 | Shazah    | Kingdom      | Khargibunba | Narakzir         | 2%     | 2%    |
 | Khiz      | Kingdom      | Ziraburarak | Narakzir         | 2%     | 2%    |
 | Fay       | Empire       | Snowbayard  | Hidians          | 2%     | 2%    |
-| Ika       | Empire       | Nujuk       | Qaluk            | 2%     | 2%    |
+| Ika       | Empire       | Nujuk       | Memti            | 2%     | 2%    |
 | Ovetsia   | Protectorate | Ovets       | Seren            | 1%     | 2%    |
 | Roria     | Grand Duchy  | Flalehaven  | Yttribian        | 1%     | 6%    |
 | Namama    | Shogunate    | Kokoto      | Kitabu           | 1%     | 2%    |
@@ -146,6 +153,9 @@ Each race of Nesia maintains its own distinct homeland and diaspora.
 - **Chechia Tsardom:** Expansive taiga and tundra; home of the Seren wolfkin culture.  
 - **Kawa and Namama Shogunates:** Island realms steeped in tradition, blending nature reverence with martial discipline.  
 - **Fay Empire:** Halfling-dominated western maritime nation, specializing in navigation and trade.
+- **Gawia City-State** Largest seat of the Amarunk people. Defended against invasion many times through it's history.
+- **North Western Wildlands** Largest population of Qaluk live in these vast taigas and frozen wastes. Controls the world supply of Blue Crystallum.
+- **Ikan Empire** Nascent nation established by the Memti, untested by time. Non giantoids are forced to live in shanty towns and impovershed neighborhoods.
 
 
 ## Religion and Mythology
@@ -212,7 +222,7 @@ The cosmic horrors known as the Outsiders represent forces beyond mortal compreh
 | Soulglass          | Luminescent crystal            | Enchantments                 |
 | Grimstone          | Dark ore radiating heat        | Cursed relics, energy source |
 | Aetherium          | Magical silver mineral         | High-tier enchantments       |
-
+| Blue Crystallum    | Rare blue crystalline metal    | Reagent used in food preservation |
 ---
 
 ## Wildlands and Neutral Zones
@@ -231,4 +241,4 @@ They consist of:
 - Elevation ranges are averaged per cell; each biome can support micro-biomes.  
 - The above dataset serves as a canonical foundation for MUD world generation or narrative expansions.
 
-**Document Revision:** v1.6 (22 October 2025)  
+**Document Revision:** v1.12 (22 October 2025)  
