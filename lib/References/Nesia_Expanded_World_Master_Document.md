@@ -15,9 +15,9 @@ The world’s surface can be divided into three principal continental masses:
 
 Polar regions are bound by ice sheets and tundra, forming the natural barriers of the **Far North** and **South Glaciers**.
 
-**See Map:** [Nesia_political_map.svg]  
-**See Heightmap:** [Nesia 2025-10-22-11-45.png]  
-**See Biome Map:** [Nesia 2025-10-22-12-05.png]
+[**See Map:**](Nesia_political_map.svg)  
+[**See Heightmap:**](Nesia 2025-10-22-11-45.png)  
+[**See Biome Map:**](Nesia 2025-10-22-12-05.png)
 
 ---
 
