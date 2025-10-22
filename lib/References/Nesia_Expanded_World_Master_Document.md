@@ -53,18 +53,18 @@ Polar regions are bound by ice sheets and tundra, forming the natural barriers o
 
 | Hex Color | Biome                      | Description                          |
 |-----------|----------------------------|--------------------------------------|
-|  <span style="color: #d5e7eb;">#d5e7eb</span>  | Glacier                    | Ice caps and frozen tundra           |
-|  #0b9131  | Wetland                    | Marshes, deltas, and floodplains     |
-|  #409c43  | Temperate Rainforest       | Dense northern forests               |
-|  #7dcb35  | Tropical Rainforest        | Hot, humid jungles                   |
-|  #b6d95d  | Tropical Seasonal Forest   | Alternating wet/dry forests          |
-|  #4b6b32  | Taiga                      | Northern coniferous forests          |
-|  #fbe79f  | Hot Desert                 | Arid basins and salt flats           |
-|  #29bc56  | Temperate Deciduous Forest | Broadleaf mixed forests              |
-|  #d2d082  | Savanna                    | Warm grasslands with scattered trees |
-|  #c8d68f  | Grassland                  | Temperate steppes                    |
-|  #b5b887  | Cold Desert                | Windblown alpine plateaus            |
-|  #96784b  | Tundra                     | Permafrost lowlands                  |
+| <span style="color: #d5e7eb;">#d5e7eb</span>  | Glacier                    | Ice caps and frozen tundra           |
+| <span style="color: #0b9131;">#0b9131</span>  | Wetland                    | Marshes, deltas, and floodplains     |
+| <span style="color: #409c43;">#409c43</span>  | Temperate Rainforest       | Dense northern forests               |
+| <span style="color: #7dcb35;">#7dcb35</span>   | Tropical Rainforest        | Hot, humid jungles                   |
+| <span style="color: #b6d95d;">#b6d95d</span>   | Tropical Seasonal Forest   | Alternating wet/dry forests          |
+| <span style="color: #4b6b32;">#4b6b32</span>   | Taiga                      | Northern coniferous forests          |
+| <span style="color: #fbe79f;">#fbe79f</span>   | Hot Desert                 | Arid basins and salt flats           |
+| <span style="color: #29bc56;">#29bc56</span>   | Temperate Deciduous Forest | Broadleaf mixed forests              |
+| <span style="color: #d2d082;">#d2d082</span>   | Savanna                    | Warm grasslands with scattered trees |
+| <span style="color: #c8d68f;">#c8d68f</span>   | Grassland                  | Temperate steppes                    |
+| <span style="color: #b5b887;">#b5b887</span>   | Cold Desert                | Windblown alpine plateaus            |
+| <span style="color: #96784b;">#96784b</span>   | Tundra                     | Permafrost lowlands                  |
 
 ### Continental Biome Overview
 
