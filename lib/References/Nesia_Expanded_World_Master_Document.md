@@ -40,10 +40,10 @@ Polar regions are bound by ice sheets and tundra, forming the natural barriers o
 | Skyreach          | #d5414b  | 14001–22000+   | The highest mountain ranges in Nesia |
 
 ### Major Mountain Systems
-- **The Kharthan Range** — A central massif bisecting the Narakzir realms; rich in **Ironwood** and **Starsteel** veins.  
+- **The Khathoian Range** — A central massif bisecting the Narakzir realms; rich in **Ironwood** and **Starsteel** veins.  
 - **The Aymnan Rise** — High arid plateau, source of several major rivers feeding into the southern kingdoms.  
 - **The Fayic Highlands** — A cooler, wetter terrain dotted with glacial valleys and lakes.  
-- **The Mythian Spine** — A continuous chain across the east, housing some of the tallest recorded peaks.
+- **The Cazian Spine** — A continuous chain across the western side of the central continent, housing some of the tallest recorded peaks explored.
 
 ---
 
@@ -53,7 +53,7 @@ Polar regions are bound by ice sheets and tundra, forming the natural barriers o
 
 | Hex Color | Biome                      | Description                          |
 |-----------|----------------------------|--------------------------------------|
-|  #d5e7eb  | Glacier                    | Ice caps and frozen tundra           |
+|  <span style="color: #d5e7eb;">#d5e7eb</span>  | Glacier                    | Ice caps and frozen tundra           |
 |  #0b9131  | Wetland                    | Marshes, deltas, and floodplains     |
 |  #409c43  | Temperate Rainforest       | Dense northern forests               |
 |  #7dcb35  | Tropical Rainforest        | Hot, humid jungles                   |
