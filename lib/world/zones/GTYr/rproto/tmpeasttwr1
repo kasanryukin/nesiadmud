@@ -5,8 +5,8 @@ script  :~
   ### conventions laid out by redit, or delete the top line
   
   ### string values
-  me.name       = "an unfinished room"
-  me.desc       = me.desc + " " + "    It looks unfinished.\r\n"
+  me.name       = "Hall of Dawn of Gate"
+  me.desc       = me.desc + " " + "    You stand in a grand hallway with a floor made up of polished alternating \r\ntiles of black and gold limestone.  The north side of the hall is adorned with \r\nintricate designs in white and gold, with crimson accents.  The carvings \r\nfeature elegant patterns and motifs that catch the light, creating a sense of \r\nopulence and grandeur.  On the south side, the walls are decorated with \r\nsophisticated black and silver designs, with muted violet accents adding a \r\nsubtle, regal touch.  The overall atmosphere is one of refined elegance and \r\nsolemn grandeur, hinting at the temple’s revered history.\r\n"
   
   ### begin exit: west
   exit = me.dig("west", "tmpsouth")

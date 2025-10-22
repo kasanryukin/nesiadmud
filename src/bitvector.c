@@ -81,11 +81,28 @@ void init_bitvectors() {
   // and also create some of the basic bitvectors and 
   // bits that come stock and are required for the core release
   bitvectorCreate("char_prfs");
+  
+  bitvectorCreate("char_bits");
+  bitvectorAddBit("char_bits", "canfly");
 
   bitvectorCreate("obj_bits");
   bitvectorAddBit("obj_bits", "notake");
+  bitvectorAddBit("obj_bits", "cursed");
+  bitvectorAddBit("obj_bits", "blessed");
+  bitvectorAddBit("obj_bits", "glow");
+  bitvectorAddBit("obj_bits", "nodrop");
+  bitvectorAddBit("obj_bits", "decay");
+  bitvectorAddBit("obj_bits", "lightsource");
 
   bitvectorCreate("room_bits");
+  bitvectorAddBit("room_bits", "nowander");
+  bitvectorAddBit("room_bits", "safe");
+  bitvectorAddBit("room_bits", "darkness");
+  bitvectorAddBit("room_bits", "underwater");
+  bitvectorAddBit("room_bits", "midair");
+  bitvectorAddBit("room_bits", "no_magic");
+  bitvectorAddBit("room_bits", "no_telepot");
+  bitvectorAddBit("room_bits", "no_portal");
 
   bitvectorCreate("user_groups");
   bitvectorAddBit("user_groups", "admin");

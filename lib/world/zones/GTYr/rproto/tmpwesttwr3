@@ -5,10 +5,21 @@ script  :~
   ### conventions laid out by redit, or delete the top line
   
   ### string values
-  me.name       = "an unfinished room"
-  me.desc       = me.desc + " " + "    It looks unfinished.\r\n"
+  me.name       = "Precipice of Balance and Hammer"
+  me.desc       = me.desc + " " + "    You stand in a grand marble-floored hallway, the cool, polished surface \r\nreflecting the dim light from the sconces along the walls.  The north side of \r\nthe hall features intricate relief carvings in steel grey and deep blue, \r\ndepicting a pair of scales balanced upon a sword point, encircled by a laurel \r\nwreath.  The south side showcases a stylized hammer striking an anvil, with \r\nsparks forming a radiant halo above it, adorned in deep crimson and burnished \r\nbronze.  At the end of the hall, stairs lead both up and down.  The stairs \r\nleading upwards are finished in steel grey, while the stairs leading downwards \r\nare in burnished bronze, creating a harmonious yet distinct transition between \r\nthe levels.  The air is filled with a subtle, sacred atmosphere, hinting at the\r\ntemple's ancient and revered history.\r\n"
+  
+  ### room bits
+  me.bits     = ', '.join([me.bits, "nowander"])
+  
+  ### begin exit: down
+  exit = me.dig("down", "hallhammer1")
+  ### end exit
   
   ### begin exit: east
   exit = me.dig("east", "tmpwesttwr2")
+  ### end exit
+  
+  ### begin exit: up
+  exit = me.dig("up", "hallbalance1")
   ### end exit
 -

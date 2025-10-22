@@ -5,10 +5,21 @@ script  :~
   ### conventions laid out by redit, or delete the top line
   
   ### string values
-  me.name       = "an unfinished room"
-  me.desc       = me.desc + " " + "    It looks unfinished.\r\n"
+  me.name       = "Precipice of Dawn and Gate"
+  me.desc       = me.desc + " " + "    You stand at the end of a grand hallway with a floor made up of polished \r\nalternating tiles of black and gold limestone.  The north side of the hall is \r\nadorned with intricate designs featuring a rising sun split by a sword’s \r\nvertical silhouette, half in shadow and half in gold, symbolizing balance and \r\npower.  The south side is decorated with a vertical oval of silver light \r\nrepresenting a portal, sealed by a black sword crossed before it, with the \r\ninner oval faintly resembling an eye when drawn by candlelight, symbolizing \r\nwisdom and guidance.  At the end of the hall, stairs lead both up and down.\r\nThe stairs leading upwards are finished in white and gold, while the stairs \r\nleading downwards are in black and silver.  The white and gold stairs ascend \r\nwith an aura of purity and grandeur, while the black and silver stairs descend \r\nwith a sense of mystery and sophistication.  The walls maintain their elegant \r\ndesigns, creating a harmonious and awe-inspiring atmosphere.  The air is filled\r\nwith a subtle, sacred atmosphere, hinting at the temple’s ancient and revered\r\nhistory.\r\n"
+  
+  ### room bits
+  me.bits     = ', '.join([me.bits, "nowander"])
+  
+  ### begin exit: down
+  exit = me.dig("down", "hallgate1")
+  ### end exit
   
   ### begin exit: west
   exit = me.dig("west", "tmpeasttwr2")
+  ### end exit
+  
+  ### begin exit: up
+  exit = me.dig("up", "halldawn1")
   ### end exit
 -

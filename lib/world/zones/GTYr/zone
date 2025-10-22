@@ -4,6 +4,10 @@ desc       :~
       The Great Temple of Yttribus, honoring all of the Pantheon.
 editors    : Niam
 resettable :=
+  room: hallhammer2
+  -
+  room: hallbalance4
+  -
   room: grandaltar
   -
   room: hallway5

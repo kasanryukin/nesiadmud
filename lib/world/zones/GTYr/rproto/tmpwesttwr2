@@ -5,8 +5,8 @@ script  :~
   ### conventions laid out by redit, or delete the top line
   
   ### string values
-  me.name       = "an unfinished room"
-  me.desc       = me.desc + " " + "    It looks unfinished.\r\n"
+  me.name       = "Hall of Balancer and Hammer"
+  me.desc       = me.desc + " " + "    You stand in a grand marble-floored hallway, the cool, polished surface \r\nreflecting the dim light from the sconces along the walls.  The north wall is \r\nadorned with intricate relief carvings depicting a pair of scales balanced upon\r\na sword point, encircled by a laurel wreath.  This elegant and symbolic design \r\nis rendered in deep blue and steel grey, creating a striking visual effect.  On\r\nthe south wall, a stylized hammer striking an anvil is depicted, with sparks \r\nforming a radiant halo above it.  This side is adorned in deep crimson and \r\nburnished bronze, adding warmth and dynamism to the scene.  The air is filled \r\nwith a subtle, sacred atmosphere, hinting at the temple's ancient and revered \r\nhistory.\r\n"
   
   ### begin exit: east
   exit = me.dig("east", "tmpwesttwr1")

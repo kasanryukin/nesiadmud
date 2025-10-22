@@ -110,6 +110,7 @@ struct char_data {
   LIST                 * inventory;
   AUX_TABLE            * auxiliary_data;
   BITVECTOR            * prfs;
+  BITVECTOR            * bits;
   BITVECTOR            * user_groups;
 
   // data for NPCs only
@@ -147,6 +148,7 @@ CHAR_DATA *newChar() {
   ch->multi_rdesc   = strdup("");
   ch->multi_name    = strdup("");
   ch->prfs          = bitvectorInstanceOf("char_prfs");
+  ch->bits          = bitvectorInstanceOf("char_bits");
   ch->user_groups   = bitvectorInstanceOf("user_groups");
   bitSet(ch->user_groups, DFLT_USER_GROUP);
 

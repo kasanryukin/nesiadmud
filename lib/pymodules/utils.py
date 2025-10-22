@@ -143,7 +143,7 @@ def build_show_list(ch, list, s_func, m_func = None, joiner = "\r\n",
             elif m_func == None or m_func(thing) == "":
                 buf.append("(" + str(count) + ") " + s_func(thing))
             else:
-                buf.append(m_func(thing) % count)
+                buf.append(m_func(thing) % (count,))
         else: pass
 
     # do we have to put "and" at the end?

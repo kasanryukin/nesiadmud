@@ -6,17 +6,17 @@ script  :~
   
   ### string values
   me.name       = "an unfinished room"
-  me.terrain    = "City"
   me.desc       = me.desc + " " + "    It looks unfinished.\r\n"
   
-  ### room bits
-  me.bits     = ', '.join([me.bits, "nowander"])
-  
-  ### begin exit: south
-  exit = me.dig("south", "tmpcourtyard")
+  ### begin exit: down
+  exit = me.dig("down", "tmpeasttwr3")
   ### end exit
   
   ### begin exit: north
-  exit = me.dig("north", "tmpsouth")
+  exit = me.dig("north", "halldawn2")
+  ### end exit
+  
+  ### begin exit: east
+  exit = me.dig("east", "halldawn3")
   ### end exit
 -

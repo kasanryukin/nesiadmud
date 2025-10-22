@@ -9,7 +9,7 @@ script  :~
   me.name     = "Temple Priest"
   me.mname    = "%d Temple Priests"
   me.rdesc    = "A Temple Priest is busy cleaning here."
-  me.mdesc    = "Several Temple Priests are cleaning here."
+  me.mdesc    = "%d Priests are busy cleaning here."
   me.desc     = me.desc + ' ' + "    The Priest is wearing a dull charcoal grey robe.\r\n"
   
   ### race and gender
