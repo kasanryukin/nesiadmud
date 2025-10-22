@@ -25,7 +25,7 @@ Polar regions are bound by ice sheets and tundra, forming the natural barriers o
 
 ### Elevation Bands (Heightmap Reference)
 
-| Color             | Hex Code | Elevation (ft) |  Description                         |
+| Name              | Hex Code | Elevation (ft) |  Description                         |
 |-------------------|----------|----------------|--------------------------------------|
 | Deep Ocean        | #5c4ea0  | -5000          | Abyssal basins                       |
 | Ocean             | #4a6cae  | -3000 to -500  | Deep continental shelves             |
