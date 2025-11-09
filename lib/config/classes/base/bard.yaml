@@ -1,0 +1,89 @@
+# ============================================================================
+# CLASS: BARD
+# Location: config/classes/base/bard.yaml
+# ============================================================================
+
+class_name: "Bard"
+class_id: "bard"
+tier: "base"
+
+description: "Performer and social manipulator who blends art, lore, and light magic."
+flavor: |
+  Bards are storytellers and social catalysts. Their art can soothe crowds, inspire
+  soldiers, or spread rumors. They often hold keys to cultural knowledge and songs.
+
+starting_skills:
+  "Performance": 1
+  "Arcane Magic": 1
+  "Appraisal": 1
+  "History Lore": 1
+  "Perception": 1
+  "Parry": 1
+  "Long Blades": 1
+  "Sleight of Hand": 1
+attributes:
+  strength: 0
+  reflex: 12
+  agility: 12
+  charisma: 18
+  discipline: 14
+  wisdom: 12
+  intelligence: 12
+  stamina: 12
+skills:
+  primary:
+    - "Bard"
+    - "Utility"
+    - "Scholar"
+  secondary:
+    - "Magic"
+    - "Service"
+  tertiary:
+    - "Crafting"
+    - "Processing"
+    - "Weapons"
+    - "Armor"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available:
+      - "basic_attack"
+  10:
+    description: "Journeyman"
+    tdp_granted: 10
+    attribute_bonuses: {}
+    abilities_available: []
+  50:
+    description: "Adept"
+    tdp_granted: 20
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_bard@starter_zone"
+  location: "starter_zone"
+  join_dialog: "bard_join_prompt"
+advanced_paths:
+  - class_id: "virtuoso"
+    requires_second_base: "scholar"
+    min_level: 100
+  - class_id: "chronicler"
+    requires_second_base: "scholar"
+    min_level: 100
+  - class_id: "savant"
+    requires_second_base: "scholar"
+    min_level: 100
+  - class_id: "archivist"
+    requires_second_base: "scholar"
+    min_level: 100
+  - class_id: "skald"
+    requires_second_base: "barbarian"
+    min_level: 100
+class_restricted_skills:
+passive_abilities:
+  - id: "basic_resolve"
+    description: "Base class resolve: small passive bonuses based on class."
+notes: |
+  - Developer notes for the class.
+

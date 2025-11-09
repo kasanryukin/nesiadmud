@@ -1,0 +1,59 @@
+# ============================================================================
+# CLASS: SKALD
+# Location: config/classes/advanced/skald.yaml
+# ============================================================================
+
+class_name: "Skald"
+class_id: "skald"
+tier: "advanced"
+
+description: "Warrior-poet keeping oral tradition and saga."
+flavor: |
+  Warrior-poet keeping oral tradition and saga.
+
+requirements:
+  min_level: 100
+  min_skills: {}
+  requires_base_classes:
+    - "barbarian"
+    - "bard"
+  quests_required: []
+
+attributes:
+  strength: 70
+  reflex: 120
+  agility: 120
+  charisma: 90
+  discipline: 130
+  wisdom: 60
+  intelligence: 60
+  stamina: 140
+skills:
+  primary:
+    - "Service"
+    - "Bard"
+    - "Weapons"
+    - "Combat"
+  secondary:
+    - "Scholar"
+    - "Languages"
+  tertiary:
+    - "Magic"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_{aid}@starter_zone"
+  location: "starter_zone"
+  join_dialog: "{aid}_join_prompt"
+class_restricted_skills:
+  - "{primary[0]}"
+passive_abilities:
+  - id: "{aid}_passive"
+    description: "Passive ability placeholder for {name}."
+notes: |
+  - Auto-generated advanced class from combination {base1} + {base2}.
+

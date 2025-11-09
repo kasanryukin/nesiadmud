@@ -21,13 +21,13 @@
 - **Dependencies:** Attributes (for calculations), Entities (body positions for injury)
 - **Required by:** Combat, Injury, Death
 - **C Integration:** Likely needs C hooks for damage events
-- **Status:** Complete, waiting on combat, injury, and death systems.
+- **Status:** Complete, waiting on combatand injury systems.
 
 ---
 
 ## Character Development Layer
 
-### 4. Experience Pools
+### 4. Experience Pools ✓ Implemented
 - **Manages:** Multiple XP pools, level progression
 - **Dependencies:** Attributes (INT affects pool size), Guild/Class
 - **Required by:** Skills, Guilds, Character advancement
@@ -86,7 +86,7 @@
   - Attributes (STA) affect injury resistance
   - Combat causes injuries
 
-### 9. Death & Resurrection
+### 9. Death & Resurrection: Stage 1 done - NPC death
 - **Manages:** Character death, corpses, penalties, revival
 - **Dependencies:** Vitality, Combat, Injury
 - **Required by:** Corpse recovery, Experience penalties
@@ -207,14 +207,14 @@
 ### Phase 1: Core Mechanics (Current Focus)
 1. ✅ Entities
 2. ✅ Attributes & TDP
-3. ✅ Vitality** (HP/SP/EP from attributes)
-4. **→ Injury** (Simple version with vitality)
-5. **→ Death basics** (hook into existing system)
+3. ✅ Vitality (HP/SP/EP from attributes)
+4. ✅ Injury (Simple version with vitality and basic wounds)
+5. ✅ Death basics (hook into existing system)
 
 ### Phase 2: Character Development
-6. Experience Pools (integrate with attributes)
-7. Skills (basic framework, attribute modifiers)
-8. Guilds/Classes (basic framework, attribute requirements)
+6. ✅ Experience Pools (integrate with attributes)
+7. ✅ Skills (basic framework, attribute modifiers)
+8. ✅ Guilds/Classes (basic framework, attribute requirements)
 
 ### Phase 3: Combat Foundation
 9. Combat System (**C integration priority**)
@@ -422,14 +422,12 @@ This pattern is used for:
 - Character generation with attribute initialization
 - Entity config OLC with attribute editor
 - Storage/loading of character attributes
+- Vitality system (HP/SP/EP calculations from attributes)
+- Basic injury tracking
+- Death system integration
+- Simple regeneration
 
 **Next Immediate Steps:**
-1. Vitality system (HP/SP/EP calculations from attributes)
-2. Basic injury tracking
-3. Death system integration
-4. Simple regeneration
-
-**After That:**
 1. Experience pools
 2. Basic skills framework
 3. Guild system basics

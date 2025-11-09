@@ -1,0 +1,112 @@
+# ============================================================================
+# CLASS: ROGUE
+# Location: config/classes/base/rogue.yaml
+# ============================================================================
+
+class_name: "Rogue"
+class_id: "rogue"
+tier: "base"
+
+description: "Stealthy operator skilled in infiltration, subterfuge, and precision strikes."
+flavor: |
+  Rogues favor cunning over brute force. They excel at reading a situation, moving
+  unseen, and exploiting weaknesses with swift precision. From urban thieves to
+  covert operatives, rogues are versatile and dangerous.
+
+starting_skills:
+  "Stealth": 1
+  "Lockpicking": 1
+  "Light Armor": 1
+  "Short Blades": 1
+  "Melee Combat": 1
+  "Crossbows": 1
+  "Disarming Traps": 1
+  "Perception": 1
+attributes:
+  strength: 10
+  reflex: 14
+  agility: 16
+  charisma: 10
+  discipline: 12
+  wisdom: 0
+  intelligence: 0
+  stamina: 8
+skills:
+  primary:
+    - "Utility"
+    - "Rogue"
+  secondary:
+    - "Armor"
+    - "Weapons"
+  tertiary:
+    - "Combat"
+    - "Processinh"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available:
+      - "basic_attack"
+  10:
+    description: "Journeyman"
+    tdp_granted: 10
+    attribute_bonuses: {}
+    abilities_available: []
+  50:
+    description: "Adept"
+    tdp_granted: 20
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_rogue@starter_zone"
+  location: "starter_zone"
+  join_dialog: "rogue_join_prompt"
+advanced_paths:
+  - class_id: "duelist"
+    requires_second_base: "warrior"
+    min_level: 100
+  - class_id: "mercenary"
+    requires_second_base: "warrior"
+    min_level: 100
+  - class_id: "ninja"
+    requires_second_base: "warrior"
+    min_level: 100
+    notes: "Lore variant; trained only in the Kitabu homeland. Unlocks unique skill 'Ninpo'."
+  - class_id: "assassin"
+    requires_second_base: "monk"
+    min_level: 100
+  - class_id: "shadowfist"
+    requires_second_base: "monk"
+    min_level: 100
+  - class_id: "reaver"
+    requires_second_base: "barbarian"
+    min_level: 100
+  - class_id: "trapper"
+    requires_second_base: "hunter"
+    min_level: 100
+  - class_id: "scout"
+    requires_second_base: "hunter"
+    min_level: 100
+  - class_id: "inquisitor"
+    requires_second_base: "cleric"
+    min_level: 100
+  - class_id: "arcane_trickster"
+    requires_second_base: "mage"
+    min_level: 100
+  - class_id: "warlock_heretical"
+    requires_second_base: "mage"
+    min_level: 100
+  - class_id: "spymaster"
+    requires_second_base: "scholar"
+    min_level: 100
+  - class_id: "sleuth"
+    requires_second_base: "scholar"
+    min_level: 100
+class_restricted_skills:
+passive_abilities:
+  - id: "basic_resolve"
+    description: "Base class resolve: small passive bonuses based on class."
+notes: |
+  - Developer notes for the class.
+

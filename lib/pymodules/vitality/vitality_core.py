@@ -119,6 +119,79 @@ class VitalityAuxData:
         
         return set
 
+def get_vitality(ch):
+    """
+    Get a character's vitality auxiliary data.
+    
+    Args:
+        ch: Character object
+    
+    Returns:
+        VitalityAuxData: The character's vitality data, or None
+    """
+    return ch.getAuxiliary("vitality_data")
+
+
+def ensure_vitality(ch):
+    """
+    Ensure a character has vitality data installed.
+    
+    Args:
+        ch: Character object
+    
+    Returns:
+        VitalityAuxData: The character's vitality data
+    """
+    aux = get_vitality(ch)
+    if aux is None:
+        # Auxiliary data is auto-created when accessed if properly installed
+        return ch.getAuxiliary("vitality_data")
+    return aux
+
+
+def get_vitality_percent(ch, vitality_type="hp"):
+    """
+    Get the percentage of a vitality pool.
+    
+    Args:
+        ch: Character object
+        vitality_type: "hp", "sp", or "ep"
+    
+    Returns:
+        float: Percentage (0.0 to 100.0)
+    """
+    vit_aux = get_vitality(ch)
+    if not vit_aux:
+        return 100.0
+    
+    if vitality_type == "hp":
+        return (vit_aux.hp / vit_aux.max_hp * 100.0) if vit_aux.max_hp > 0 else 0.0
+    elif vitality_type == "sp":
+        return (vit_aux.sp / vit_aux.max_sp * 100.0) if vit_aux.max_sp > 0 else 0.0
+    elif vitality_type == "ep":
+        return (vit_aux.ep / vit_aux.max_ep * 100.0) if vit_aux.max_ep > 0 else 0.0
+    
+    return 0.0
+
+
+def get_vitality_color(percent):
+    """
+    Get a color code based on vitality percentage.
+    
+    Args:
+        percent: Vitality percentage (0-100)
+    
+    Returns:
+        str: Color code for display
+    """
+    if percent >= 75:
+        return "{G"  # Green - healthy
+    elif percent >= 50:
+        return "{Y"  # Yellow - wounded
+    elif percent >= 25:
+        return "{y"  # Dark yellow - badly wounded
+    else:
+        return "{R"  # Red - critical
 
 def calculate_max_hp(ch):
     """
@@ -295,190 +368,3 @@ def initialize_vitality(ch):
     mud.log_string(f"Initialized vitality for {ch.name}: "
                    f"HP {vit_aux.max_hp:.0f}, SP {vit_aux.max_sp:.0f}, EP {vit_aux.max_ep:.0f}")
 
-
-def take_damage(ch, amount, damage_type="physical", body_part=None):
-    """
-    Apply damage to a character.
-    
-    Args:
-        ch: Character object
-        amount: Damage amount
-        damage_type: Type of damage (physical, magical, fire, etc.)
-        body_part: Specific body part hit (for future injury.py)
-    
-    Returns:
-        float: Actual damage dealt
-    """
-    vit_aux = get_vitality(ch)
-    if not vit_aux:
-        return 0.0
-    
-    # TODO: Apply damage resistances based on type
-    # TODO: Apply armor reduction
-    actual_damage = max(0, amount)
-    
-    # Apply damage to HP
-    old_hp = vit_aux.hp
-    vit_aux.hp = max(0, vit_aux.hp - actual_damage)
-    
-    # Hook: Let injury system process body part damage (future injury.py)
-    hooks.run("take_damage", hooks.build_info("ch int str str", 
-              (ch, int(actual_damage), damage_type, body_part or "")))
-    
-    # Check for death
-    if vit_aux.hp <= 0 and old_hp > 0:
-        hooks.run("character_death", hooks.build_info("ch", (ch,)))
-    
-    return actual_damage
-
-
-def heal_damage(ch, amount, heal_type="physical"):
-    """
-    Heal a character's HP.
-    
-    Args:
-        ch: Character object
-        amount: Amount to heal
-        heal_type: Type of healing (physical, magical, etc.)
-    
-    Returns:
-        float: Actual amount healed
-    """
-    vit_aux = get_vitality(ch)
-    if not vit_aux:
-        return 0.0
-    
-    old_hp = vit_aux.hp
-    vit_aux.hp = min(vit_aux.max_hp, vit_aux.hp + amount)
-    actual_healed = vit_aux.hp - old_hp
-    
-    # Hook: Notify healing occurred
-    hooks.run("character_healed", hooks.build_info("ch int str", 
-              (ch, int(actual_healed), heal_type)))
-    
-    return actual_healed
-
-
-def modify_sp(ch, amount):
-    """
-    Modify character's SP (for spell casting, restoration, etc.)
-    
-    Args:
-        ch: Character object
-        amount: Amount to modify (negative to spend, positive to restore)
-    
-    Returns:
-        bool: True if modification successful, False if insufficient SP
-    """
-    vit_aux = get_vitality(ch)
-    if not vit_aux:
-        return False
-    
-    new_sp = vit_aux.sp + amount
-    
-    # Check if trying to spend more than available
-    if new_sp < 0:
-        return False
-    
-    vit_aux.sp = min(vit_aux.max_sp, new_sp)
-    return True
-
-
-def modify_ep(ch, amount):
-    """
-    Modify character's EP (for abilities, actions, etc.)
-    
-    Args:
-        ch: Character object
-        amount: Amount to modify (negative to spend, positive to restore)
-    
-    Returns:
-        bool: True if modification successful, False if insufficient EP
-    """
-    vit_aux = get_vitality(ch)
-    if not vit_aux:
-        return False
-    
-    new_ep = vit_aux.ep + amount
-    
-    # Check if trying to spend more than available
-    if new_ep < 0:
-        return False
-    
-    vit_aux.ep = min(vit_aux.max_ep, new_ep)
-    return True
-
-
-def get_vitality(ch):
-    """
-    Get a character's vitality auxiliary data.
-    
-    Args:
-        ch: Character object
-    
-    Returns:
-        VitalityAuxData: The character's vitality data, or None
-    """
-    return ch.getAuxiliary("vitality_data")
-
-
-def ensure_vitality(ch):
-    """
-    Ensure a character has vitality data installed.
-    
-    Args:
-        ch: Character object
-    
-    Returns:
-        VitalityAuxData: The character's vitality data
-    """
-    aux = get_vitality(ch)
-    if aux is None:
-        # Auxiliary data is auto-created when accessed if properly installed
-        return ch.getAuxiliary("vitality_data")
-    return aux
-
-
-def get_vitality_percent(ch, vitality_type="hp"):
-    """
-    Get the percentage of a vitality pool.
-    
-    Args:
-        ch: Character object
-        vitality_type: "hp", "sp", or "ep"
-    
-    Returns:
-        float: Percentage (0.0 to 100.0)
-    """
-    vit_aux = get_vitality(ch)
-    if not vit_aux:
-        return 100.0
-    
-    if vitality_type == "hp":
-        return (vit_aux.hp / vit_aux.max_hp * 100.0) if vit_aux.max_hp > 0 else 0.0
-    elif vitality_type == "sp":
-        return (vit_aux.sp / vit_aux.max_sp * 100.0) if vit_aux.max_sp > 0 else 0.0
-    elif vitality_type == "ep":
-        return (vit_aux.ep / vit_aux.max_ep * 100.0) if vit_aux.max_ep > 0 else 0.0
-    
-    return 0.0
-
-
-def get_vitality_color(percent):
-    """
-    Get a color code based on vitality percentage.
-    
-    Args:
-        percent: Vitality percentage (0-100)
-    
-    Returns:
-        str: Color code for display
-    """
-    if percent >= 75:
-        return "{G"  # Green - healthy
-    elif percent >= 50:
-        return "{Y"  # Yellow - wounded
-    elif percent >= 25:
-        return "{y"  # Dark yellow - badly wounded
-    else:
-        return "{R"  # Red - critical

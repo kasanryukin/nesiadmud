@@ -1,18 +1,13 @@
 {W-----------------------------------------------------------------------------{n
-{W                        Welcome to NesiaMud v0.0.5!{n
+{W                        Welcome to NesiaMud v0.0.7!{n
 {W-----------------------------------------------------------------------------{n
-{YGreetings, Builder!{n Welcome to the most advanced content-less MUD engine.
-Whether you're a seasoned world architect or just starting your journey into
-MUD development, you've chosen the perfect platform for bringing your creative
-visions to life.
+{YGreetings, Player!{n Welcome to Nesia! Built from the foundation of NakedMud,
+Nesia is a completely custom codebase beyond the sockets.  Drawing inspiration
+from various MUDs of yore, there should be a little bit of everything for
+everybody.  If this is your first visit, besure to read the tutorial in full.
 
-{REXCITING NEW FEATURES:{n
-{G• Live Reload System{n - Update your world without reboots!
-  {c→ {wrreload <room>{n, {wmreload <mobile>{n, {woreload <object>{n, {whreload <help>{n
-{G• Advanced Trigger System{n - Create dynamic, interactive experiences
-  {c→ {wpre_command{n and {wheartbeat{n triggers for NPCs and objects
-{G• Enhanced Help System{n - Organized, role-based command reference
-  {c→ Try {whelp{n to explore the new categorized interface
 {W-----------------------------------------------------------------------------{n
-{wMaintained by Limping Ninja | kevin@limpingninja.com{n
+{wNesiaMud Maintained by Druid Niam{n
+{whttps://github.com/kasanryukin/nesiamud{n
+{wNakedMud Maintained by Limping Ninja | kevin@limpingninja.com{n
 {whttps://github.com/limpingninja/nakedmud{n

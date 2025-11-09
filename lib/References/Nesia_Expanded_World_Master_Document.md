@@ -241,4 +241,30 @@ They consist of:
 - Elevation ranges are averaged per cell; each biome can support micro-biomes.  
 - The above dataset serves as a canonical foundation for MUD world generation or narrative expansions.
 
+## Calendar and Days of the week
+|Month   | Name   |
+|--------|--------|
+|  1     | 'of beginings'|
+|  2     | 'of frost'|
+|  3     | 'of planting'|
+|  4     | 'of flowers'|
+|  5     | 'of wind'|
+|  6     | 'of medians'|
+|  7     | 'of freedom'|
+|  8     | 'of heat'|
+|  9     | 'of harvest'|
+|  10    | 'of rememberance'|
+|  11    | 'of fellowship'|
+|  12    | 'of endings'|
+
+|Day  | Name |
+|-----|------|
+|1 | 'Menz day'|
+|2 | 'Tes day'|
+|3 | 'Waz day'|
+|4 | 'Tinz day'|
+|5 | 'Fuz day'|
+|6 | 'Suz day'|
+|7 | 'Ezd day'|
+
 **Document Revision:** v1.12 (22 October 2025)  

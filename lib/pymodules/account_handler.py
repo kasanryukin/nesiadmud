@@ -326,7 +326,7 @@ def acct_main_menu(sock):
 
     # append our title
     opts.insert(1, "            {nW E L C O M E  T O        ")
-    opts.insert(2, "             {nN A K E D M U D          ")
+    opts.insert(2, "             {nN E S I A M U D          ")
             
     # display all of our info
     sock.send("")
@@ -376,7 +376,7 @@ def account_handler_hook(info):
     sock.send("== Options Are ================================================================")
     sock.send("    Load account   : load   <account> <password>")
     sock.send("    Create account : create <account> <password>")
-    sock.send("    Play as guest  : guest")
+    #sock.send("    Play as guest  : guest")
     sock.send("===============================================================================")
     sock.send("")
 

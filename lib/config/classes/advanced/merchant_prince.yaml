@@ -1,0 +1,61 @@
+# ============================================================================
+# CLASS: MERCHANT PRINCE
+# Location: config/classes/advanced/merchant_prince.yaml
+# ============================================================================
+
+class_name: "Merchant Prince"
+class_id: "merchant_prince"
+tier: "advanced"
+
+description: "Commercial magnate and trade lord."
+flavor: |
+  Commercial magnate and trade lord.
+
+requirements:
+  min_level: 100
+  min_skills: {}
+  requires_base_classes:
+    - "artisan"
+    - "scholar"
+  quests_required: []
+
+attributes:
+  strength: 50
+  reflex: 70
+  agility: 60
+  charisma: 100
+  discipline: 140
+  wisdom: 130
+  intelligence: 130
+  stamina: 50
+skills:
+  primary:
+    - "Crafting"
+    - "Artisan"
+    - "Scholar"
+    - "Service"
+  secondary:
+    - "Processing"
+    - "Gathering"
+  tertiary:
+    - "Languages"
+    - "Armor"
+    - "Combat"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_{aid}@starter_zone"
+  location: "starter_zone"
+  join_dialog: "{aid}_join_prompt"
+class_restricted_skills:
+  - "{primary[0]}"
+passive_abilities:
+  - id: "{aid}_passive"
+    description: "Passive ability placeholder for {name}."
+notes: |
+  - Auto-generated advanced class from combination {base1} + {base2}.
+

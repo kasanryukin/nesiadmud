@@ -1,0 +1,150 @@
+# ============================================================================
+# CLASS: SCHOLAR
+# Location: config/classes/base/scholar.yaml
+# ============================================================================
+
+class_name: "Scholar"
+class_id: "scholar"
+tier: "base"
+
+description: "Academic, researcher, and keeper of knowledge; expert in theory and items."
+flavor: |
+  Scholars are the custodians of Nesian memory. They translate texts, analyze
+  artifacts, repair relics, and teach others. Their power is insight and preparation,
+  not raw magical output.
+
+starting_skills:
+  "History Lore": 1
+  "Research": 1
+  "Teaching": 1
+  "Scholarship": 1
+  "Arcane Lore": 1
+  "Magic Item Use": 1
+  "Appraisal": 1
+  "Perception": 1
+attributes:
+  strength: 0
+  reflex: 0
+  agility: 0
+  charisma: 10
+  discipline: 14
+  wisdom: 14
+  intelligence: 14
+  stamina: 0
+skills:
+  primary:
+    - "Scholar"
+    - "Languages"
+    - "Artisan"
+  secondary:
+    - "Utility"
+    - "Magic"
+  tertiary:
+    - "Crafting"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available:
+      - "basic_attack"
+  10:
+    description: "Journeyman"
+    tdp_granted: 10
+    attribute_bonuses: {}
+    abilities_available: []
+  50:
+    description: "Adept"
+    tdp_granted: 20
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_scholar@starter_zone"
+  location: "starter_zone"
+  join_dialog: "scholar_join_prompt"
+advanced_paths:
+  - class_id: "tactician"
+    requires_second_base: "warrior"
+    min_level: 100
+  - class_id: "warmage"
+    requires_second_base: "warrior"
+    min_level: 100
+  - class_id: "spymaster"
+    requires_second_base: "rogue"
+    min_level: 100
+  - class_id: "sleuth"
+    requires_second_base: "rogue"
+    min_level: 100
+  - class_id: "philosopher"
+    requires_second_base: "monk"
+    min_level: 100
+  - class_id: "skald"
+    requires_second_base: "barbarian"
+    min_level: 100
+  - class_id: "naturalist"
+    requires_second_base: "hunter"
+    min_level: 100
+  - class_id: "prelate"
+    requires_second_base: "cleric"
+    min_level: 100
+  - class_id: "oracle"
+    requires_second_base: "cleric"
+    min_level: 100
+  - class_id: "medicus"
+    requires_second_base: "cleric"
+    min_level: 100
+  - class_id: "enchanter"
+    requires_second_base: "mage"
+    min_level: 100
+  - class_id: "necromancer"
+    requires_second_base: "mage"
+    min_level: 100
+  - class_id: "artificer"
+    requires_second_base: "mage"
+    min_level: 100
+  - class_id: "warlock"
+    requires_second_base: "mage"
+    min_level: 100
+  - class_id: "elementalist"
+    requires_second_base: "mage"
+    min_level: 100
+  - class_id: "illusionist"
+    requires_second_base: "mage"
+    min_level: 100
+  - class_id: "conjuror"
+    requires_second_base: "mage"
+    min_level: 100
+  - class_id: "virtuoso"
+    requires_second_base: "bard"
+    min_level: 100
+  - class_id: "chronicler"
+    requires_second_base: "bard"
+    min_level: 100
+  - class_id: "savant"
+    requires_second_base: "bard"
+    min_level: 100
+  - class_id: "archivist"
+    requires_second_base: "bard"
+    min_level: 100
+  - class_id: "guildmaster"
+    requires_second_base: "artisan"
+    min_level: 100
+  - class_id: "architect"
+    requires_second_base: "artisan"
+    min_level: 100
+  - class_id: "master_crafter"
+    requires_second_base: "artisan"
+    min_level: 100
+  - class_id: "merchant_prince"
+    requires_second_base: "artisan"
+    min_level: 100
+  - class_id: "runesmith"
+    requires_second_base: "artisan"
+    min_level: 100
+class_restricted_skills:
+passive_abilities:
+  - id: "basic_resolve"
+    description: "Base class resolve: small passive bonuses based on class."
+notes: |
+  - Developer notes for the class.
+

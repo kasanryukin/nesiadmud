@@ -1,0 +1,59 @@
+# ============================================================================
+# CLASS: PRELATE
+# Location: config/classes/advanced/prelate.yaml
+# ============================================================================
+
+class_name: "Prelate"
+class_id: "prelate"
+tier: "advanced"
+
+description: "Guardian of scripture, liturgy, and law."
+flavor: |
+  Guardian of scripture, liturgy, and law.
+
+requirements:
+  min_level: 100
+  min_skills: {}
+  requires_base_classes:
+    - "cleric"
+    - "scholar"
+  quests_required: []
+
+attributes:
+  strength: 50
+  reflex: 0
+  agility: 0
+  charisma: 130
+  discipline: 130
+  wisdom: 150
+  intelligence: 130
+  stamina: 50
+skills:
+  primary:
+    - "Cleric"
+    - "Scholar"
+    - "Magic"
+  secondary:
+    - "Service"
+    - "Armor"
+  tertiary:
+    - "Combat"
+    - "Weapons"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_{aid}@starter_zone"
+  location: "starter_zone"
+  join_dialog: "{aid}_join_prompt"
+class_restricted_skills:
+  - "{primary[0]}"
+passive_abilities:
+  - id: "{aid}_passive"
+    description: "Passive ability placeholder for {name}."
+notes: |
+  - Auto-generated advanced class from combination {base1} + {base2}.
+

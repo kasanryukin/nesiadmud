@@ -58,7 +58,9 @@
 #ifdef MODULE_ALIAS
 #include "alias/alias.h"
 #endif
-
+#ifdef MODULE_GEARSKILLS
+#include "gearskills/skills_verbs_aux.h"
+#endif
 
 // local procedures
 void game_loop    ( int control );
@@ -69,7 +71,7 @@ bool shut_down    = FALSE;
 int  control;
 
 // silent mode flag - when TRUE, suppress terminal output
-bool silent_mode  = FALSE;
+bool silent_mode  = TRUE;
 
 // Signal handling to allow graceful shutdown on Ctrl-C or SIGTERM
 static void handle_signal(int signo) {
@@ -316,6 +318,10 @@ int main(int argc, char **argv)
   init_help();
 #endif
 
+#ifdef MODULE_GEARSKILLS
+  log_string("Initializing Gear Skills and Verbs system.");
+  skills_verbs_aux_init();
+#endif
 
 
   /**********************************************************************/

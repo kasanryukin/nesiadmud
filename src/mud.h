@@ -31,7 +31,7 @@
 #define MODULE_ALIAS
 #define MODULE_HELP2
 #define MODULE_TIME
-
+#define MODULE_GEARSKILLS
 
 
 //*****************************************************************************

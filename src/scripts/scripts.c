@@ -53,9 +53,6 @@
 
 #include "../olc2/olc.h"
 
-// Forward declaration for mud_movement module
-extern PyMODINIT_FUNC PyInit_mud_movement(void);
-
 //*****************************************************************************
 // module data
 //*****************************************************************************
@@ -80,7 +77,6 @@ ModuleInfo modules[] = {
     {"hooks",     &PyInit_PyHooks},
     {"olc",       &PyInit_PyOLC},
     {"world",     &PyInit_PyWorld},
-	{"mud_movement", &PyInit_mud_movement},
     {NULL, NULL}  
 };
 
@@ -500,42 +496,58 @@ void init_scripts(void) {
 // makes a dictionary with all of the neccessary stuff in it, but without
 // a builtins module set
 PyObject *mud_script_dict(void) {
-  PyObject* dict = PyDict_New();
+    PyObject* dict = PyDict_New();
+    if (!dict) return NULL;
 
-  // add the exit() function so people can terminate scripts
-  PyObject *sys = PyImport_ImportModule("sys");
-  if(sys != NULL) {
-    PyObject *exit = PyDict_GetItemString(PyModule_GetDict(sys), "exit");
-    if(exit != NULL) PyDict_SetItemString(dict, "exit", exit);
-    if(exit != NULL) PyDict_SetItemString(dict, "end_script", exit);
-    Py_DECREF(sys);
-  }
-  
-  // merge all of the mud module contents with our current dict
-  PyObject *mudmod = PyImport_ImportModule("mud");
-  PyDict_Update(dict, PyModule_GetDict(mudmod));
-  Py_DECREF(mudmod);
-  mudmod = PyImport_ImportModule("char");
-  PyDict_Update(dict, PyModule_GetDict(mudmod));
-  Py_DECREF(mudmod);
-  mudmod = PyImport_ImportModule("room");
-  PyDict_Update(dict, PyModule_GetDict(mudmod));
-  Py_DECREF(mudmod);
-  mudmod = PyImport_ImportModule("obj");
-  PyDict_Update(dict, PyModule_GetDict(mudmod));
-  Py_DECREF(mudmod);
-  mudmod = PyImport_ImportModule("event");
-  PyDict_Update(dict, PyModule_GetDict(mudmod));
-  Py_DECREF(mudmod);
-  PyObject *movmod = PyImport_ImportModule("mud_movement");
-  PyDict_Update(dict, PyModule_GetDict(movmod));
-  Py_DECREF(movmod);
-  mudmod = PyImport_ImportModule("random");
-  PyDict_SetItemString(dict, "random", mudmod);
-  Py_DECREF(mudmod);
-  
+    // Add exit() function from sys
+    PyObject *sys = PyImport_ImportModule("sys");
+    if (sys) {
+        PyObject *exit = PyDict_GetItemString(PyModule_GetDict(sys), "exit");
+        if (exit) {
+            PyDict_SetItemString(dict, "exit", exit);
+            PyDict_SetItemString(dict, "end_script", exit);
+        }
+        Py_DECREF(sys);
+    } else {
+        log_string("mud_script_dict: failed to import 'sys'");
+        PyErr_Print();
+        PyErr_Clear();
+    }
 
-  return dict;
+    // Helper macro to safely merge modules
+    #define SAFE_MERGE_MODULE(name) do { \
+        PyObject *mod = PyImport_ImportModule(name); \
+        if (!mod) { \
+            log_string("mud_script_dict: failed to import module '%s'", name); \
+            if (PyErr_Occurred()) { PyErr_Print(); PyErr_Clear(); } \
+            break; \
+        } \
+        PyObject *mod_dict = PyModule_GetDict(mod); \
+        if (mod_dict) PyDict_Update(dict, mod_dict); \
+        else log_string("mud_script_dict: module '%s' has no dict", name); \
+        Py_DECREF(mod); \
+    } while(0)
+
+    SAFE_MERGE_MODULE("mud");
+    SAFE_MERGE_MODULE("char");
+    SAFE_MERGE_MODULE("room");
+    SAFE_MERGE_MODULE("obj");
+    SAFE_MERGE_MODULE("event");
+
+    // Add random module directly
+    PyObject *randmod = PyImport_ImportModule("random");
+    if (randmod) {
+        PyDict_SetItemString(dict, "random", randmod);
+        Py_DECREF(randmod);
+    } else {
+        log_string("mud_script_dict: failed to import 'random'");
+        PyErr_Print();
+        PyErr_Clear();
+    }
+
+    #undef SAFE_MERGE_MODULE
+
+    return dict;
 }
 
 PyObject *restricted_script_dict(void) {

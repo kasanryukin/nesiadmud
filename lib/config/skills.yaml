@@ -1,0 +1,745 @@
+# Progression: Skill Definitions
+# ===============================
+# Master list of all available skills in the game.
+# No placement (primary/secondary/tertiary/else) - that's class-specific in config/classes/*.yaml
+# Skills include metadata for dynamic lookups (weapon_class, armor_type, etc.)
+
+skills:
+  # ============================================================================
+  # COMBAT SKILLS
+  # ============================================================================
+  
+  - name: "Melee Combat"
+    category:
+      - "Combat"
+    description: "General melee ability affecting all weapon attacks"
+  
+  - name: "Ranged Combat"
+    category:
+      - "Combat"
+    description: "General ranged combat ability"
+  
+  - name: "Defense"
+    category:
+      - "Combat"
+    description: "Overall defensive capability and awareness"
+  
+  - name: "Dodge"
+    category:
+      - "Combat"
+    description: "Ability to evade incoming attacks"
+  
+  - name: "Parry"
+    category:
+      - "Combat"
+    description: "Ability to deflect attacks with a weapon"
+  
+  - name: "Block"
+    category:
+      - "Combat"
+    description: "Ability to block attacks with shield or weapon"
+  
+  - name: "Brawling"
+    category:
+      - "Combat"
+    description: "Fighting with fists, kicks, and unarmed techniques"
+  
+  - name: "Tactics"
+    category:
+      - "Combat"
+    description: "Combat strategy and battlefield awareness"
+  
+  # ============================================================================
+  # WEAPONS (By Class)
+  # ============================================================================
+  
+  # Bladed Weapons
+  - name: "Long Blades"
+    category:
+      - "Weapons"
+    subcategory: "Bladed Weapons"
+    weapon_class: "long_blades"
+    description: "Scimitar, Longsword, Estoc, Katana, Battleaxe"
+  
+  - name: "Short Blades"
+    category:
+      - "Weapons"
+    subcategory: "Bladed Weapons"
+    weapon_class: "short_blades"
+    description: "Dagger, Shortsword, Misericorde, Hand Axe"
+  
+  - name: "Two-handed Blades"
+    category:
+      - "Weapons"
+    subcategory: "Bladed Weapons"
+    weapon_class: "twohanded_blades"
+    description: "Bastard Sword, Greatsword, Claymore, Greataxe"
+  
+  # Blunt Weapons
+  - name: "Blunt Weapons"
+    category:
+      - "Weapons"
+    subcategory: "Blunt Weapons"
+    weapon_class: "blunt"
+    description: "Club, Mace, War Hammer"
+
+  - name: "Two-handed Blunt"
+    category:
+      - "Weapons"
+    subcategory: "Blunt Weapons"
+    weapon_class: "twohanded_blunt"
+    description: "Sledge Hammer, Greatclub, Spiked Maul"
+  
+  # Polearms
+  - name: "Polearms"
+    category:
+      - "Weapons"
+    subcategory: "Polearms"
+    weapon_class: "polearms"
+    description: "Spear, Pike, Halberd, Glaive, Lance"
+  
+  - name: "Staves"
+    category:
+      - "Weapons"
+    subcategory: "Polearms"
+    weapon_class: "staves"
+    description: "Staff, Quarterstaff, Bo"
+  
+  # Ranged Weapons
+  - name: "Bows"
+    category:
+      - "Weapons"
+    subcategory: "Ranged Weapons"
+    weapon_class: "bows"
+    description: "Shortbow, Longbow, Horsebow"
+
+  - name: "Composite Bows"
+    category:
+      - "Weapons"
+    subcategory: "Ranged Weapons"
+    weapon_class: "bows"
+    description: "Composite Shortbow, Composite Longbow"
+  
+  - name: "Crossbows"
+    category:
+      - "Weapons"
+    subcategory: "Ranged Weapons"
+    weapon_class: "crossbows"
+    description: "Crossbow, Heavy Crossbow"
+  
+  - name: "Throwing Weapons"
+    category:
+      - "Weapons"
+    subcategory: "Ranged Weapons"
+    weapon_class: "throwing_weapons"
+    description: "Throwing Knife, Throwing Star, Boomerang, Throwing Hammer"
+  
+ 
+  # ============================================================================
+  # ARMOR
+  # ============================================================================
+  
+  - name: "Light Armor"
+    category:
+      - "Armor"
+    armor_type: "light"
+    description: "Leather, cloth, bone"
+  
+  - name: "Medium Armor"
+    category:
+      - "Armor"
+    armor_type: "medium"
+    description: "Chainmail, Ringmail"
+  
+  - name: "Heavy Armor"
+    category:
+      - "Armor"
+    armor_type: "heavy"
+    description: "Scale, Half-plate, Banded"
+  
+  - name: "Very Heavy Armor"
+    category:
+      - "Armor"
+    armor_type: "veryheavy"
+    description: "Full-plate, Field-plate, Jousting-plate"
+  
+  - name: "Shield Mastery"
+    category:
+      - "Armor"
+    description: "Proficiency with shields for defense and offense"
+  
+  # ============================================================================
+  # MAGIC SKILLS
+  # ============================================================================
+  #General
+  - name: "Spellcraft"
+    category:
+      - "Magic"
+    description: "General spellcasting ability"
+ 
+  - name: "Mana Control"
+    category:
+      - "Magic"
+    description: "Efficiency in casting and mana management"
+  
+  - name: "Spell Lore"
+    category:
+      - "Magic"
+    description: "Knowledge of spells and magical effects"
+  
+  - name: "Arcane Lore"
+    category:
+      - "Magic"
+    description: "Understanding of arcane principles"
+ 
+  - name: "Ritual Magic"
+    category:
+      - "Magic"
+    description: "Knowledge of complicated spell casting processes"
+
+  - name: "Magic Item Use"
+    category:
+      - "Magic"
+    description: "Ability to use and interface with magic items"
+    
+ 
+  # Class Restricted  
+  - name: "Arcane Magic"
+    category:
+      - "Magic"
+    description: "Harnesses structured spells and arcane power through study and disciplined mental focus."
+
+  - name: "Holy Magic"
+    category:
+      - "Magic"
+    description: "Channels divine energy for healing, blessings, and smiting unholy or corrupted forces."
+
+  - name: "Life Magic"
+    category:
+      - "Magic"
+    description: "Manipulates vitality, growth, and restoration to heal wounds or bolster living energy."
+
+  - name: "Nature Magic"
+    category:
+      - "Magic"
+    description: "Draws upon primal forces of the wild to command plants, beasts, and natural elements."
+
+  - name: "Elemental Magic"
+    category:
+      - "Magic"
+    description: "Controls fire, water, earth, and air to attack, defend, or reshape the environment."
+
+  - name: "Inner Magic"
+    category:
+      - "Magic"
+    description: "Focuses personal will and spirit to manifest energy from within the self."
+
+  - name: "Light Magic"
+    category:
+      - "Magic"
+    description: "Uses radiant energy for purification, protection, and the banishment of darkness."
+
+  - name: "Shadow Magic"
+    category:
+      - "Magic"
+    description: "Wields darkness, illusion, and fear to conceal, deceive, or corrupt the unwary."
+
+  - name: "Eldritch Magic"
+    category:
+      - "Magic"
+    description: "Channels ancient, otherworldly forces beyond mortal understanding for unpredictable power."
+
+  - name: "Runic Magic"
+    category:
+      - "Magic"
+    description: "Utilizing ancient languages that shaped the primordial universe to cast spells and enchantments."
+
+ 
+  # Crafting Skills
+  - name: "Smithing"
+    category:
+      - "Crafting"
+    description: "Forging metal weapons, armor, and tools through heat and hammer."
+
+  - name: "Carpentry"
+    category:
+      - "Crafting"
+    description: "Building wooden structures, furniture, and functional goods."
+
+  - name: "Masonry"
+    category:
+      - "Crafting"
+    description: "Cutting, shaping, and assembling stone for structures or sculpture."
+
+  - name: "Leatherworking"
+    category:
+      - "Crafting"
+    description: "Tanning hides into leather and crafting armor, garments, or gear."
+
+  - name: "Tailoring"
+    category:
+      - "Crafting"
+    description: "Sewing and designing garments, robes, and light armor."
+
+  - name: "Fletching"
+    category:
+      - "Crafting"
+    description: "Making bows, arrows, and crossbow bolts from wood and sinew."
+
+  - name: "Alchemy"
+    category:
+      - "Crafting"
+    description: "Mixing reagents to create potions, toxins, and transformative elixirs."
+
+  - name: "Enchanting"
+    category:
+      - "Crafting"
+    description: "Imbuing items with magical effects or enhancements."
+
+  - name: "Runecrafting"
+    category:
+      - "Crafting"
+    description: "Inscribing and binding runes into objects for magical function."
+
+  - name: "Engineering"
+    category:
+      - "Crafting"
+    description: "Designing and constructing machines, siege engines, and mechanisms."
+
+  - name: "Artificing"
+    category:
+      - "Crafting"
+    description: "Creating magical devices, constructs, and powered artifacts."
+
+  - name: "Jewelry Crafting"
+    category:
+      - "Crafting"
+    description: "Cutting gems and crafting decorative or enchanted jewelry."
+
+  - name: "Cooking"
+    category:
+      - "Crafting"
+    description: "Preparing meals that restore health, stamina, or grant bonuses."
+
+  - name: "Brewing"
+    category:
+      - "Crafting"
+    description: "Creating ales, tonics, and potions through fermentation or infusion."
+
+  - name: "Glassblowing"
+    category:
+      - "Crafting"
+    description: "Shaping molten glass into containers, ornaments, or arcane lenses."
+
+  - name: "Tinkering"
+    category:
+      - "Crafting"
+    description: "Assembling small mechanical devices, traps, or precision instruments."
+
+  # Gathering Skills
+  - name: "Mining"
+    category:
+      - "Gathering"
+    description: "Extracting ores, gems, and minerals from underground deposits."
+
+  - name: "Logging"
+    category:
+      - "Gathering"
+    description: "Harvesting timber and lumber from forests and groves."
+
+  - name: "Herbalism"
+    category:
+      - "Gathering"
+    description: "Identifying and collecting medicinal or alchemical plants."
+
+  - name: "Hunting"
+    category:
+      - "Gathering"
+    description: "Tracking and harvesting animals for meat, hides, and reagents."
+
+  - name: "Fishing"
+    category:
+      - "Gathering"
+    description: "Catching fish and aquatic life for food or alchemy."
+
+  - name: "Foraging"
+    category:
+      - "Gathering"
+    description: "Collecting edible plants, fungi, or natural materials from the wild."
+
+  - name: "Skinning"
+    category:
+      - "Gathering"
+    description: "Harvesting hides, furs, and scales from hunted beasts."
+
+  - name: "Prospecting"
+    category:
+      - "Gathering"
+    description: "Surveying terrain to locate valuable crafting materials."
+
+  # Service & Civic Skills
+  - name: "Cooking Services"
+    category:
+      - "Service"
+    description: "Preparing meals or banquets for taverns, guilds, and travelers."
+
+  - name: "Sailing"
+    category:
+      - "Service"
+    description: "Operating ships, navigation, and seamanship across open waters."
+
+  - name: "Trading"
+    category:
+      - "Service"
+    description: "Buying, selling, and valuing goods for profit and barter."
+
+  - name: "Cartography"
+    category:
+      - "Service"
+    description: "Surveying and mapping terrain, routes, and landmarks."
+
+
+  # Scholarly & Artisan Skills
+  - name: "Scribing"
+    category:
+      - "Artisan"
+    description: "Copying texts, crafting scrolls, and recording magical formulas."
+
+  - name: "Research"
+    category:
+      - "Artisan"
+    description: "Studying lore, history, or sciences for discovery and invention."
+
+  - name: "Architecture"
+    category:
+      - "Artisan"
+    description: "Designing structural plans and calculating material requirements."
+
+  - name: "Sculpting"
+    category:
+      - "Artisan"
+    description: "Carving stone, wood, or clay into decorative or sacred art."
+
+  - name: "Painting"
+    category:
+      - "Artisan"
+    description: "Creating visual art to inspire, decorate, or convey story."
+
+  - name: "Calligraphy"
+    category:
+      - "Artisan"
+    description: "Decorative handwriting and magical script work for scrolls or sigils."
+
+  - name: "Music"
+    category:
+      - "Artisan"
+    description: "Performing and composing melodies for inspiration or magical resonance."
+
+  - name: "Tailoring"
+    category:
+      - "Artisan"
+    description: "Creating intricate garments, uniforms, or ceremonial robes."
+  
+  - name: "Leatherworking"
+    category:
+      - "Artisan"
+    description: "Ability to craft leather goods"
+
+  # Resource Conversion Skills
+  - name: "Smelting"
+    category:
+      - "Processing"
+    description: "Refining ores into usable ingots for smithing or trade."
+
+  - name: "Lumber Processing"
+    category:
+      - "Processing"
+    description: "Turning raw logs into planks and usable materials."
+
+  - name: "Tanning"
+    category:
+      - "Processing"
+    description: "Treating animal hides into usable leather."
+
+  - name: "Weaving"
+    category:
+      - "Processing"
+    description: "Spinning and interlacing fibers into cloth or rope."
+
+  - name: "Refining"
+    category:
+      - "Processing"
+    description: "Purifying raw materials or reagents for advanced crafting."
+
+  - name: "Distillation"
+    category:
+      - "Processing"
+    description: "Extracting essences or concentrates from liquids and reagents."
+  
+  - name: "Butchering"
+    category:
+      - "Processing"
+    description: "Ability to process animal carcasses"
+  
+  # ============================================================================
+  # BUILDING SKILLS (Framework for future)
+  # ============================================================================
+  
+  - name: "Architecture"
+    category:
+      - "Building"
+    description: "Understanding of building design"
+  
+  - name: "Masonry"
+    category:
+      - "Building"
+    description: "Ability to work with stone"
+  
+  - name: "Structural Engineering"
+    category:
+      - "Building"
+    description: "Understanding of structural integrity"
+  
+  - name: "Interior Design"
+    category:
+      - "Building"
+    description: "Ability to design interior spaces"
+  
+  - name: "Construction"
+    category:
+      - "Building"
+    description: "Erecting buildings, fortifications, and infrastructure."
+
+  # ============================================================================
+  # LANGUAGES
+  # ============================================================================
+  
+  - name: "Common Tongue"
+    category:
+      - "Languages"
+    description: "The common trade language"
+  
+  - name: "Yerionde"
+    category:
+      - "Languages"
+    description: "The language of the elves"
+  
+  - name: "Narakzir"
+    category:
+      - "Languages"
+    description: "The language of the dwarves"
+
+  - name: "Seren"
+    category:
+      - "Languages"
+    description: "The language of the wolfkin"
+
+  - name: "Valinayau"
+    category:
+      - "Languages"
+    description: "The language of the gnomes"
+ 
+  - name: "Memti"
+    category:
+      - "Languages"
+    description: "The language of the giant races"
+  
+  - name: "Kitabu"
+    category:
+      - "Languages"
+    description: "The language of the foxkin"
+    
+  - name: "Qaluk"
+    category:
+      - "Languages"
+    description: "The language of the dwarves"
+     
+  - name: "Hidians"
+    category:
+      - "Languages"
+    description: "The language of the halflings"
+     
+  - name: "Sraj’es"
+    category:
+      - "Languages"
+    description: "The language of the lizardfolk"
+     
+  - name: "Amarunk"
+    category:
+      - "Languages"
+    description: "The language of the catfolk"
+      
+  - name: "Roshinver"
+    category:
+      - "Languages"
+    description: "The language of the pixies"
+  
+  - name: "Hohap"
+    category:
+      - "Languages"
+    description: "The dialect of common spoken by the Hohap people"
+  
+  - name: "Yttribian"
+    category:
+      - "Languages"
+    description: "The language of humans"
+  
+  
+  # ============================================================================
+  # SCHOLAR SKILLS
+  # ============================================================================
+  
+  - name: "Scholarship"
+    category:
+      - "Scholar"
+    description: "General knowledge and learning"
+  
+  - name: "History Lore"
+    category:
+      - "Scholar"
+    description: "Knowledge of historical events"
+  
+  - name: "Nature Lore"
+    category:
+      - "Scholar"
+    description: "Knowledge of nature and wildlife"
+  
+  - name: "Creature Lore"
+    category:
+      - "Scholar"
+    description: "Knowledge of creatures and beasts"
+  
+  - name: "Religion Lore"
+    category:
+      - "Scholar"
+    description: "Knowledge of religions and theology"
+  
+  - name: "Nobility Lore"
+    category:
+      - "Scholar"
+    description: "Knowledge of noble houses and politics"
+
+  - name: "Appraisal"
+    category:
+      - "Scholar"
+    description: "Ability to assess item value"
+  
+  - name: "Teaching"
+    category:
+      - "Scholar"
+    description: "Ability to instruct others"
+  
+  # ============================================================================
+  # UTILITY SKILLS
+  # ============================================================================
+  
+  - name: "Stealth"
+    category:
+      - "Utility"
+    description: "Ability to move unseen"
+  
+  - name: "Hiding"
+    category:
+      - "Utility"
+    description: "Ability to conceal oneself"
+  
+  - name: "Perception"
+    category:
+      - "Utility"
+    description: "Ability to notice details"
+  
+  - name: "Lockpicking"
+    category:
+      - "Utility"
+      - "Service"
+    description: "Ability to pick locks"
+  
+  - name: "Pickpocketing"
+    category:
+      - "Utility"
+    description: "Ability to steal from others"
+  
+  - name: "Disarming Traps"
+    category:
+      - "Utility"
+    description: "Ability to disable traps"
+  
+  - name: "Climbing"
+    category:
+      - "Utility"
+    description: "Ability to climb surfaces"
+  
+  - name: "Swimming"
+    category:
+      - "Utility"
+    description: "Ability to swim"
+  
+  - name: "Survival"
+    category:
+      - "Utility"
+    description: "Ability to survive in the wilderness"
+  
+  - name: "First Aid"
+    category:
+      - "Utility"
+    description: "Ability to treat injuries"
+  
+  - name: "Medicine"
+    category:
+      - "Utility"
+    description: "Advanced medical knowledge"
+  
+  - name: "Athletics"
+    category:
+      - "Utility"
+    description: "Physical fitness and endurance"
+
+  # ============================================================================
+  # CLASS RESTRICTED SKILLS
+  # ============================================================================
+
+  - name: "Sleight of Hand"
+    category:
+      - "Rogue"
+      - "Bard"
+    description: "Ability to manipulate objects"
+  
+  - name: "Thievery"
+    category:
+      - "Rogue"
+    description: "Overall thievery and roguish skills"
+  
+  - name: "Animal Handling"
+    category:
+      - "Ranger"
+      - "Hunter"
+    description: "Training, breeding, and caring for animals and mounts."
+  
+  - name: "Tracking"
+    category:
+      - "Ranger"
+      - "Hunter"
+    description: "Following footprints, trails, and signs of creatures or travelers."
+  
+  - name: "Performance"
+    category:
+      - "Bard"
+    description: "Entertaining audiences through music, acting, or storytelling."
+
+  - name: "Healing"
+    category:
+      - "Priest"
+    description: "Treating wounds, diseases, and poisons through mundane means."
+
+  - name: "Ninpo"
+    category:
+      - "Ninja"
+    description: "Secret arts practiced by the Ninja clans of the Kitabu."
+    
+  # Unarmed
+  - name: "Unarmed Combat"
+    category:
+      - "Monk"
+    subcategory: "Unarmed"
+    weapon_class: "unarmed"
+    description: "Fists, kicks, and bare-handed combat"

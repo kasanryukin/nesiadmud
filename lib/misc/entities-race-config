@@ -1280,6 +1280,10 @@ races:=
     type  : held
     weight: 0
     -
+    name  : wings
+    type  : wings
+    weight: 0
+    -
   base_attributes:-
     strength    : 8
     reflex      : 10

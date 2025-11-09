@@ -1,0 +1,114 @@
+# ============================================================================
+# CLASS: CLERIC
+# Location: config/classes/base/cleric.yaml
+# ============================================================================
+
+class_name: "Cleric"
+class_id: "cleric"
+tier: "base"
+
+description: "Devout channeler of divine power, healer and spiritual anchor."
+flavor: |
+  Clerics act as the voice of the gods. Their faith grants miracles, protection, and
+  the ability to inspire or chastise the faithful. They often lead temples and rites.
+
+starting_skills:
+  "Healing": 1
+  "Blunt Weapons": 1
+  "Religious Lore": 1
+  "Medium Armor": 1
+  "Heavy Armor": 1
+  "Holy Magic": 1
+  "Scholarship": 1
+  "Ritual Magic": 1
+attributes:
+  strength: 10
+  reflex: 0
+  agility: 0
+  charisma: 16
+  discipline: 12
+  wisdom: 16
+  intelligence: 12
+  stamina: 10
+skills:
+  primary:
+    - "Magic"
+    - "Armor"
+    - "Priest"
+  secondary:
+    - "Scholar"
+    - "Weapons"
+  tertiary:
+    - "Service"
+    - "Utility"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available:
+      - "basic_attack"
+  10:
+    description: "Journeyman"
+    tdp_granted: 10
+    attribute_bonuses: {}
+    abilities_available: []
+  50:
+    description: "Adept"
+    tdp_granted: 20
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_cleric@starter_zone"
+  location: "starter_zone"
+  join_dialog: "cleric_join_prompt"
+advanced_paths:
+  - class_id: "paladin"
+    requires_second_base: "warrior"
+    min_level: 100
+  - class_id: "order_balanced_scales"
+    requires_second_base: "warrior"
+    min_level: 100
+  - class_id: "order_hammered_path"
+    requires_second_base: "warrior"
+    min_level: 100
+  - class_id: "order_radiant_dawn"
+    requires_second_base: "warrior"
+    min_level: 100
+  - class_id: "order_veiled_gate"
+    requires_second_base: "warrior"
+    min_level: 100
+  - class_id: "inquisitor"
+    requires_second_base: "rogue"
+    min_level: 100
+  - class_id: "templar_of_the_body"
+    requires_second_base: "monk"
+    min_level: 100
+  - class_id: "zealot"
+    requires_second_base: "barbarian"
+    min_level: 100
+  - class_id: "warden"
+    requires_second_base: "hunter"
+    min_level: 100
+  - class_id: "theurge"
+    requires_second_base: "mage"
+    min_level: 100
+  - class_id: "gatekeeper"
+    requires_second_base: "mage"
+    min_level: 100
+  - class_id: "prelate"
+    requires_second_base: "scholar"
+    min_level: 100
+  - class_id: "oracle"
+    requires_second_base: "scholar"
+    min_level: 100
+  - class_id: "medicus"
+    requires_second_base: "scholar"
+    min_level: 100
+class_restricted_skills:
+passive_abilities:
+  - id: "basic_resolve"
+    description: "Base class resolve: small passive bonuses based on class."
+notes: |
+  - Developer notes for the class.
+

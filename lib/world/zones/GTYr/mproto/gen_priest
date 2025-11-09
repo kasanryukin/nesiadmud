@@ -6,8 +6,8 @@ script  :~
   ### conventions laid out by medit, or delete the top line
   # Main script (runs in trusted context, at mob instantiation)
   import auxiliary
+  from vitality import vitality_core, injury_aux
   from attributes import attribute_aux
-  from vitality import vitality_core
 
   if me.getAuxiliary("attribute_data") is None:
     aux = attribute_aux.AttributeAuxData()
@@ -23,7 +23,7 @@ script  :~
     me.setAuxiliaryData("attribute_data", aux)
 
   if me.getAuxiliary("vitality_data") is None:
-    vit = vitality_aux.VitalityAuxData()
+    vit = vitality_core.VitalityAuxData()
     vit.initialized = True
     me.setAuxiliaryData("vitality_data", vit)
   ### keywords, short descs, room descs, and look descs

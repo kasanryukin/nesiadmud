@@ -1,0 +1,96 @@
+# ============================================================================
+# CLASS: BARBARIAN
+# Location: config/classes/base/barbarian.yaml
+# ============================================================================
+
+class_name: "Barbarian"
+class_id: "barbarian"
+tier: "base"
+
+description: "Feral warrior driven by instinct, strength, and ancestral fury."
+flavor: |
+  Barbarians harness the raw power of their heritage and the wilderness. In battle they
+  become unstoppable forces of rage and endurance, often serving as vanguards and
+  shock troops.
+
+starting_skills:
+  "Long Blades": 1
+  "Short Blades": 1
+  "Two-Handed Blades": 1
+  "Bows": 1
+  "Throwing Weapons": 1
+  "Light Armor": 1
+  "Medium Armor": 1
+  "Melee Combat": 1
+attributes:
+  strength: 14
+  reflex: 12
+  agility: 12
+  charisma: 0
+  discipline: 12
+  wisdom: 0
+  intelligence: 0
+  stamina: 16
+skills:
+  primary:
+    - "Weapons"
+    - "Combat"
+    - "Armor"
+  secondary:
+    - "Utility"
+    - "Processing"
+  tertiary:
+    - "Crafting"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available:
+      - "basic_attack"
+  10:
+    description: "Journeyman"
+    tdp_granted: 10
+    attribute_bonuses: {}
+    abilities_available: []
+  50:
+    description: "Adept"
+    tdp_granted: 20
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_barbarian@starter_zone"
+  location: "starter_zone"
+  join_dialog: "barbarian_join_prompt"
+advanced_paths:
+  - class_id: "berserker"
+    requires_second_base: "warrior"
+    min_level: 100
+  - class_id: "warlord"
+    requires_second_base: "warrior"
+    min_level: 100
+  - class_id: "reaver"
+    requires_second_base: "rogue"
+    min_level: 100
+  - class_id: "woodsman"
+    requires_second_base: "hunter"
+    min_level: 100
+  - class_id: "beast_master"
+    requires_second_base: "hunter"
+    min_level: 100
+  - class_id: "zealot"
+    requires_second_base: "cleric"
+    min_level: 100
+  - class_id: "runeblade"
+    requires_second_base: "mage"
+    min_level: 100
+  - class_id: "skald"
+    requires_second_base: "bard"
+    min_level: 100
+class_restricted_skills:
+passive_abilities:
+  - id: "basic_resolve"
+    description: "Base class resolve: small passive bonuses based on class."
+notes: |
+  - Developer notes for the class.
+

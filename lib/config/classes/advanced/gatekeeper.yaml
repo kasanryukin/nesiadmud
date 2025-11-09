@@ -1,0 +1,61 @@
+# ============================================================================
+# CLASS: GATEKEEPER
+# Location: config/classes/advanced/gatekeeper.yaml
+# ============================================================================
+
+class_name: "Gatekeeper"
+class_id: "gatekeeper"
+tier: "advanced"
+
+description: "Mage-priests of The Gate; open portals between distant locations."
+flavor: |
+  Mage-priests of The Gate; open portals between distant locations.
+
+requirements:
+  min_level: 100
+  min_skills: {}
+  requires_base_classes:
+    - "cleric"
+    - "mage"
+  quests_required: []
+
+attributes:
+  strength: 50
+  reflex: 0
+  agility: 0
+  charisma: 80
+  discipline: 130
+  wisdom: 140
+  intelligence: 140
+  stamina: 50
+skills:
+  primary:
+    - "Combat"
+    - "Magic"
+    - "Gatekeeper"
+    - "Scholar"
+    - "Cleric"
+  secondary:
+    - "Utility"
+    - "Armor"
+  tertiary:
+    - "Weapons"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_{aid}@starter_zone"
+  location: "starter_zone"
+  join_dialog: "{aid}_join_prompt"
+class_restricted_skills:
+  - "{primary[0]}"
+passive_abilities:
+  - id: "{aid}_passive"
+    description: "Passive ability placeholder for {name}."
+notes: |
+  - Auto-generated advanced class from combination {base1} + {base2}.
+  - Lore: Gatekeepers are priestly mages able to open planar or distant portals; may require temple access.
+

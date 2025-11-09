@@ -1,0 +1,60 @@
+# ============================================================================
+# CLASS: PALADIN
+# Location: config/classes/advanced/paladin.yaml
+# ============================================================================
+
+class_name: "Paladin"
+class_id: "paladin"
+tier: "advanced"
+
+description: "Holy champion of righteousness and protection."
+flavor: |
+  Holy champion of righteousness and protection.
+
+requirements:
+  min_level: 100
+  min_skills: {}
+  requires_base_classes:
+    - "warrior"
+    - "cleric"
+  quests_required: []
+
+attributes:
+  strength: 130
+  reflex: 60
+  agility: 60
+  charisma: 80
+  discipline: 100
+  wisdom: 80
+  intelligence: 60
+  stamina: 110
+skills:
+  primary:
+    - "Cleric"
+    - "Armor"
+    - "Weapons"
+    - "Service"
+    - "Paladin"
+  secondary:
+    - "Combat"
+    - "Magic"
+  tertiary:
+    - "Scholar"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_{aid}@starter_zone"
+  location: "starter_zone"
+  join_dialog: "{aid}_join_prompt"
+class_restricted_skills:
+  - "{primary[0]}"
+passive_abilities:
+  - id: "{aid}_passive"
+    description: "Passive ability placeholder for {name}."
+notes: |
+  - Auto-generated advanced class from combination {base1} + {base2}.
+

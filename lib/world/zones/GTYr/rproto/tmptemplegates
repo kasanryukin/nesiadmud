@@ -5,8 +5,13 @@ script  :~
   ### conventions laid out by redit, or delete the top line
   
   ### string values
-  me.name       = "an unfinished room"
-  me.desc       = me.desc + " " + "    It looks unfinished.\r\n"
+  me.name       = "Temple Gate - Temple Side"
+  me.terrain    = "Road"
+  me.desc       = me.desc + " " + "    The inner face of the temple’s grand gate looms tall, its twin doors of \r\ndark ironwood bound with blackened steel standing open to reveal the city \r\nbeyond.  The gatehouse itself is set into a wall of dark basalt, each block \r\nmassive and rough-hewn, their surfaces flecked with faint mica that glimmers \r\nfaintly.  [if is_morning()]The light of dawn glances off the stone, soft and \r\ngolden, chasing the last of the night’s chill from the air.[else]In shadow, \r\nthe wall seems even darker, absorbing the daylight into its depthless hue.[/if]\r\n\r\nBroad flagstones of pale granite form a clean, deliberate path that stretches \r\nnorth toward the temple’s inner courtyard.  On either side, narrow strips of \r\nraked gravel mark the division between sacred ground and the city’s edge.\r\n[if is_night()]Lanterns burn low beside the open gates, their flames steady in \r\nthe still air, and the faint scent of incense drifts from the courtyard \r\nbeyond.[else]The fragrance of incense mingles with the city’s breath, faint \r\nbut persistent, a reminder of the sanctum deeper within.[/if]\r\n\r\nHigh above, a narrow parapet crowns the wall where temple guards might patrol, \r\ntheir silhouettes cutting sharp against the sky.  The open gates themselves \r\nseem impossibly heavy, yet perfectly balanced, as though some ancient mechanism\r\naids their movement.\r\n"
+  
+  ### begin exit: south
+  exit = me.dig("south", "tmpgate@yttrcity")
+  ### end exit
   
   ### begin exit: north
   exit = me.dig("north", "tmpcourtyard")

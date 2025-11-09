@@ -5,8 +5,9 @@ script  :~
   ### conventions laid out by redit, or delete the top line
   
   ### string values
-  me.name       = "an unfinished room"
-  me.desc       = me.desc + " " + "    It looks unfinished.\r\n"
+  me.name       = "Temple Courtyard"
+  me.terrain    = "Road"
+  me.desc       = me.desc + " " + "    You stand in a large courtyard paved with large flagstones.  Lush \r\nvegetation lines the area, creating a serene and inviting environment.  The \r\ncourtyard is a tranquil space, with greenery approaching the temple gates to \r\nthe south.  The flagstones are well-worn and polished, indicating the many feet\r\nthat have walked this path over the years.  The air is filled with the scent of\r\nflowers and the gentle rustle of leaves, adding to the peaceful atmosphere.\r\nThe lush vegetation provides a natural and harmonious transition between the \r\ncourtyard and the temple, creating a sense of reverence and awe.\r\n"
   
   ### begin exit: south
   exit = me.dig("south", "tmptemplegates")

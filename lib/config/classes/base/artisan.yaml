@@ -1,0 +1,87 @@
+# ============================================================================
+# CLASS: ARTISAN
+# Location: config/classes/base/artisan.yaml
+# ============================================================================
+
+class_name: "Artisan"
+class_id: "artisan"
+tier: "base"
+
+description: "Civilian craftsman and trader focused on creation, commerce, and guilds."
+flavor: |
+  Artisans are the backbone of commerce and culture. They build, craft, trade, and
+  regulate guild systems. Played for those who prefer civic power and profession progression.
+
+starting_skills:
+  "Research": 1
+  "Trading": 1
+  "Appraisal": 1
+  "Scholarship": 1
+  "Perception": 1
+  "Prospecting": 1
+  "Defense": 1
+  "Athletics": 1
+attributes:
+  strength: 10
+  reflex: 14
+  agility: 12
+  charisma: 10
+  discipline: 14
+  wisdom: 12
+  intelligence: 12
+  stamina: 10
+skills:
+  primary:
+    - "Crafting"
+    - "Artisan"
+    - "Processing"
+  secondary:
+    - "Gathering"
+    - "Utility"
+  tertiary:
+    - "Scholar"
+    - "Combat"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available:
+      - "basic_attack"
+  10:
+    description: "Journeyman"
+    tdp_granted: 10
+    attribute_bonuses: {}
+    abilities_available: []
+  50:
+    description: "Adept"
+    tdp_granted: 20
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_artisan@starter_zone"
+  location: "starter_zone"
+  join_dialog: "artisan_join_prompt"
+advanced_paths:
+  - class_id: "guildmaster"
+    requires_second_base: "scholar"
+    min_level: 100
+  - class_id: "architect"
+    requires_second_base: "scholar"
+    min_level: 100
+  - class_id: "master_crafter"
+    requires_second_base: "scholar"
+    min_level: 100
+  - class_id: "merchant_prince"
+    requires_second_base: "scholar"
+    min_level: 100
+  - class_id: "runesmith"
+    requires_second_base: "scholar"
+    min_level: 100
+class_restricted_skills:
+passive_abilities:
+  - id: "basic_resolve"
+    description: "Base class resolve: small passive bonuses based on class."
+notes: |
+  - Developer notes for the class.
+

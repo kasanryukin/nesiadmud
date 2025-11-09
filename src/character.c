@@ -85,7 +85,21 @@ int poscmp(int pos1, int pos2) {
 struct char_data {
   // data for PCs only
   char                 * loadroom;
-
+  char                 * hair_color;
+  char                 * hair_style;
+  char                 * fur_color;
+  char                 * feather_color;
+  char                 * scale_color;
+  char                 * scale_marking;
+  char                 * marking_color;
+  char                 * tail_style;
+  char                 * mane_style;
+  char                 * build;
+  char                 * skin_tone;
+  char                 * eye_color;
+  char                 * eye_color_right;
+  int                    heterochromia;
+  char                 * beard_style;
   // shared data for PCs and NPCs
   int                    uid;
   time_t                 birth;
@@ -248,6 +262,143 @@ const char  *charGetMultiName( CHAR_DATA *ch) {
   return ch->multi_name;
 }
 
+
+
+// Appearance functions
+void charSetHairColor(CHAR_DATA *ch, const char *color) {
+  if(ch->hair_color) free(ch->hair_color);
+  ch->hair_color = strdupsafe(color);
+}
+
+const char *charGetHairColor(CHAR_DATA *ch) {
+  return ch->hair_color;
+}
+
+void charSetHairStyle(CHAR_DATA *ch, const char *style) {
+  if(ch->hair_style) free(ch->hair_style);
+  ch->hair_style = strdupsafe(style);
+}
+
+const char *charGetHairStyle(CHAR_DATA *ch) {
+  return ch->hair_style;
+}
+
+void charSetFurColor(CHAR_DATA *ch, const char *color) {
+  if(ch->fur_color) free(ch->fur_color);
+  ch->fur_color = strdupsafe(color);
+}
+
+const char *charGetFurColor(CHAR_DATA *ch) {
+  return ch->fur_color;
+}
+
+void charSetFeatherColor(CHAR_DATA *ch, const char *color) {
+  if(ch->feather_color) free(ch->feather_color);
+  ch->feather_color = strdupsafe(color);
+}
+
+const char *charGetFeatherColor(CHAR_DATA *ch) {
+  return ch->feather_color;
+}
+
+void charSetScaleColor(CHAR_DATA *ch, const char *color) {
+  if(ch->scale_color) free(ch->scale_color);
+  ch->scale_color = strdupsafe(color);
+}
+
+const char *charGetScaleColor(CHAR_DATA *ch) {
+  return ch->scale_color;
+}
+
+void charSetScaleMarking(CHAR_DATA *ch, const char *marking) {
+  if(ch->scale_marking) free(ch->scale_marking);
+  ch->scale_marking = strdupsafe(marking);
+}
+
+const char *charGetScaleMarking(CHAR_DATA *ch) {
+  return ch->scale_marking;
+}
+
+void charSetMarkingColor(CHAR_DATA *ch, const char *color) {
+  if(ch->marking_color) free(ch->marking_color);
+  ch->marking_color = strdupsafe(color);
+}
+
+const char *charGetMarkingColor(CHAR_DATA *ch) {
+  return ch->marking_color;
+}
+
+void charSetTailStyle(CHAR_DATA *ch, const char *style) {
+  if(ch->tail_style) free(ch->tail_style);
+  ch->tail_style = strdupsafe(style);
+}
+
+const char *charGetTailStyle(CHAR_DATA *ch) {
+  return ch->tail_style;
+}
+
+void charSetManeStyle(CHAR_DATA *ch, const char *style) {
+  if(ch->mane_style) free(ch->mane_style);
+  ch->mane_style = strdupsafe(style);
+}
+
+const char *charGetManeStyle(CHAR_DATA *ch) {
+  return ch->mane_style;
+}
+
+void charSetBuild(CHAR_DATA *ch, const char *build) {
+  if(ch->build) free(ch->build);
+  ch->build = strdupsafe(build);
+}
+
+const char *charGetBuild(CHAR_DATA *ch) {
+  return ch->build;
+}
+
+void charSetSkinTone(CHAR_DATA *ch, const char *tone) {
+  if(ch->skin_tone) free(ch->skin_tone);
+  ch->skin_tone = strdupsafe(tone);
+}
+
+const char *charGetSkinTone(CHAR_DATA *ch) {
+  return ch->skin_tone;
+}
+
+void charSetEyeColor(CHAR_DATA *ch, const char *color) {
+  if(ch->eye_color) free(ch->eye_color);
+  ch->eye_color = strdupsafe(color);
+}
+
+const char *charGetEyeColor(CHAR_DATA *ch) {
+  return ch->eye_color;
+}
+
+void charSetEyeColorRight(CHAR_DATA *ch, const char *color) {
+  if(ch->eye_color_right) free(ch->eye_color_right);
+  ch->eye_color_right = strdupsafe(color);
+}
+
+const char *charGetEyeColorRight(CHAR_DATA *ch) {
+  return ch->eye_color_right;
+}
+
+void charSetHeterochromia(CHAR_DATA *ch, int heterochromia) {
+  ch->heterochromia = heterochromia;
+}
+
+int charGetHeterochromia(CHAR_DATA *ch) {
+  return ch->heterochromia;
+}
+
+void charSetBeardStyle(CHAR_DATA *ch, const char *style) {
+  if(ch->beard_style) free(ch->beard_style);
+  ch->beard_style = strdupsafe(style);
+}
+
+const char *charGetBeardStyle(CHAR_DATA *ch) {
+  return ch->beard_style;
+}
+
 int charGetSex(CHAR_DATA *ch) {
   return ch->sex;
 }
@@ -294,6 +445,10 @@ OBJ_DATA *charGetFurniture(CHAR_DATA *ch) {
 
 BITVECTOR *charGetPrfs(CHAR_DATA *ch) {
   return ch->prfs;
+}
+
+BITVECTOR *charGetBits(CHAR_DATA *ch) {
+  return ch->bits;
 }
 
 BITVECTOR *charGetUserGroups(CHAR_DATA *ch) {
@@ -439,6 +594,23 @@ CHAR_DATA *charRead(STORAGE_SET *set) {
   charSetPos(mob,          read_int   (set, "position"));
   charSetHidden(mob,       read_int   (set, "hidden"));
   charSetWeight(mob,       read_double(set, "weight"));
+  
+  // Appearance customization
+  charSetHairColor(mob,      read_string(set, "hair_color"));
+  charSetHairStyle(mob,      read_string(set, "hair_style"));
+  charSetFurColor(mob,       read_string(set, "fur_color"));
+  charSetFeatherColor(mob,   read_string(set, "feather_color"));
+  charSetScaleColor(mob,     read_string(set, "scale_color"));
+  charSetScaleMarking(mob,   read_string(set, "scale_marking"));
+  charSetMarkingColor(mob,   read_string(set, "marking_color"));
+  charSetTailStyle(mob,      read_string(set, "tail_style"));
+  charSetManeStyle(mob,      read_string(set, "mane_style"));
+  charSetBuild(mob,          read_string(set, "build"));
+  charSetSkinTone(mob,       read_string(set, "skin_tone"));
+  charSetEyeColor(mob,       read_string(set, "eye_color"));
+  charSetEyeColorRight(mob,  read_string(set, "eye_color_right"));
+  charSetHeterochromia(mob,  read_int   (set, "heterochromia"));
+  charSetBeardStyle(mob,     read_string(set, "beard_style"));
 
   // make sure we always have the default group assigned
   if(!*bitvectorGetBits(mob->user_groups))
@@ -484,6 +656,23 @@ STORAGE_SET *charStore(CHAR_DATA *mob) {
   store_int   (set, "hidden",     mob->hidden);
   store_double(set, "weight",     mob->weight);
   store_long  (set, "birth",      mob->birth);
+  
+  // Appearance customization
+  store_string(set, "hair_color",      mob->hair_color);
+  store_string(set, "hair_style",      mob->hair_style);
+  store_string(set, "fur_color",       mob->fur_color);
+  store_string(set, "feather_color",   mob->feather_color);
+  store_string(set, "scale_color",     mob->scale_color);
+  store_string(set, "scale_marking",   mob->scale_marking);
+  store_string(set, "marking_color",   mob->marking_color);
+  store_string(set, "tail_style",      mob->tail_style);
+  store_string(set, "mane_style",      mob->mane_style);
+  store_string(set, "build",           mob->build);
+  store_string(set, "skin_tone",       mob->skin_tone);
+  store_string(set, "eye_color",       mob->eye_color);
+  store_string(set, "eye_color_right", mob->eye_color_right);
+  store_int   (set, "heterochromia",   mob->heterochromia);
+  store_string(set, "beard_style",     mob->beard_style);
 
   // PC-only data
   if(!charIsNPC(mob)) {
@@ -511,6 +700,24 @@ void charCopyTo( CHAR_DATA *from, CHAR_DATA *to) {
   charSetWeight     (to, charGetWeight(from));
   charSetRace       (to, charGetRace(from));
   charSetBody       (to, bodyCopy(charGetBody(from)));
+  
+  // Appearance customization
+  charSetHairColor(to, charGetHairColor(from));
+  charSetHairStyle(to, charGetHairStyle(from));
+  charSetFurColor(to, charGetFurColor(from));
+  charSetFeatherColor(to, charGetFeatherColor(from));
+  charSetScaleColor(to, charGetScaleColor(from));
+  charSetScaleMarking(to, charGetScaleMarking(from));
+  charSetMarkingColor(to, charGetMarkingColor(from));
+  charSetTailStyle(to, charGetTailStyle(from));
+  charSetManeStyle(to, charGetManeStyle(from));
+  charSetBuild(to, charGetBuild(from));
+  charSetSkinTone(to, charGetSkinTone(from));
+  charSetEyeColor(to, charGetEyeColor(from));
+  charSetEyeColorRight(to, charGetEyeColorRight(from));
+  charSetHeterochromia(to, charGetHeterochromia(from));
+  charSetBeardStyle(to, charGetBeardStyle(from));
+  
   bitvectorCopyTo   (from->prfs, to->prfs);
   bitvectorCopyTo   (from->prfs, to->prfs);
   to->birth = from->birth;

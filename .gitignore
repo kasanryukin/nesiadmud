@@ -3,6 +3,8 @@ src/NakedMud
 lib/muddata
 solice-lib/
 tools/
+lib/References/
+Temp/
 
 .vscode/
 .kiro/
@@ -106,3 +108,21 @@ lib/misc/time
 
 #windows bullshit
 **/*Zone.Identifier
+lib/config/skills_yaml_converter.py
+lib/config/yaml_advanced_attribute_calc.py
+lib/config/yaml_attribute_fixer.py
+lib/config/yaml_linter.py
+lib/config/yaml_parser.py
+lib/config/yaml_skill_validator.py
+lib/config/yaml_whitespace_cleaner.py
+lib/pymodules/char_gen.py.attribvitalmod
+lib/pymodules/char_gen.py.bak
+lib/pymodules/attributes/__init__.bak
+lib/pymodules/char_gen.py.bak
+lib/pymodules/char_gen.py.original
+lib/pymodules/char_gen.py.skillsandvit
+lib/pymodules/cmd_inform.py.original
+lib/pymodules/entities/entity_config.bak
+lib/pymodules/entities/entity_config_olc.bak
+lib/pymodules/entities/error.txt
+nesiamud.code-workspace

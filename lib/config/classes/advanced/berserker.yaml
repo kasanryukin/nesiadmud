@@ -1,0 +1,60 @@
+# ============================================================================
+# CLASS: BERSERKER
+# Location: config/classes/advanced/berserker.yaml
+# ============================================================================
+
+class_name: "Berserker"
+class_id: "berserker"
+tier: "advanced"
+
+description: "Primal fury and overwhelming offense."
+flavor: |
+  Primal fury and overwhelming offense.
+
+requirements:
+  min_level: 100
+  min_skills: {}
+  requires_base_classes:
+    - "warrior"
+    - "barbarian"
+  quests_required: []
+
+attributes:
+  strength: 150
+  reflex: 120
+  agility: 120
+  charisma: 0
+  discipline: 100
+  wisdom: 0
+  intelligence: 0
+  stamina: 140
+skills:
+  primary:
+    - "Combat"
+    - "Weapons"
+    - "Armor"
+    - "Berzerker"
+  secondary:
+    - "Utility"
+    - "Processing"
+  tertiary:
+    - "Crafting"
+    - "Gathering"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_{aid}@starter_zone"
+  location: "starter_zone"
+  join_dialog: "{aid}_join_prompt"
+class_restricted_skills:
+  - "{primary[0]}"
+passive_abilities:
+  - id: "{aid}_passive"
+    description: "Passive ability placeholder for {name}."
+notes: |
+  - Auto-generated advanced class from combination {base1} + {base2}.
+

@@ -28,6 +28,7 @@
 #include "pyobj.h"
 #include "pyauxiliary.h"
 #include "pystorage.h"
+#include "pyskills_verbs.h"
 
 
 
@@ -1509,6 +1510,7 @@ PyInit_PyObj(void) {
       "trigger owner is 'me'. Other variables can be specified. The opts\n"
       "variable can be a dictionary that maps optional variable names to their\n"
       "values.");
+    PySkillsVerbs_registerMethods();
 
     makePyType(&PyObj_Type, pyobj_getsetters, pyobj_methods);
     deleteListWith(pyobj_getsetters, free); pyobj_getsetters = NULL;

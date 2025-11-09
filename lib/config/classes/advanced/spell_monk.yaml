@@ -1,0 +1,60 @@
+# ============================================================================
+# CLASS: SPELL MONK
+# Location: config/classes/advanced/spell_monk.yaml
+# ============================================================================
+
+class_name: "Spell Monk"
+class_id: "spell_monk"
+tier: "advanced"
+
+description: "Infuses ki with elemental and warding effects."
+flavor: |
+  Infuses ki with elemental and warding effects.
+
+requirements:
+  min_level: 100
+  min_skills: {}
+  requires_base_classes:
+    - "monk"
+    - "mage"
+  quests_required: []
+
+attributes:
+  strength: 50
+  reflex: 50
+  agility: 50
+  charisma: 50
+  discipline: 160
+  wisdom: 120
+  intelligence: 140
+  stamina: 60
+skills:
+  primary:
+    - "Combat"
+    - "Monk"
+    - "Scholar"
+    - "Mage"
+  secondary:
+    - "Utility"
+    - "Armor"
+  tertiary:
+    - "Processing"
+    - "Gathering"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_{aid}@starter_zone"
+  location: "starter_zone"
+  join_dialog: "{aid}_join_prompt"
+class_restricted_skills:
+  - "{primary[0]}"
+passive_abilities:
+  - id: "{aid}_passive"
+    description: "Passive ability placeholder for {name}."
+notes: |
+  - Auto-generated advanced class from combination {base1} + {base2}.
+

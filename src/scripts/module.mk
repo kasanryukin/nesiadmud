@@ -99,11 +99,10 @@
 #   someone a bit more experienced will be able to help out.
 #
 ################################################################################
-SRC  += scripts/scripts.c       \
+SRC  += scripts/scripts.c   \
 	scripts/pychar.c        \
 	scripts/pyobj.c         \
 	scripts/pymud.c         \
-	scripts/pymud_movement.c \
 	scripts/pymudsys.c      \
 	scripts/pyhooks.c       \
 	scripts/pyroom.c        \
@@ -118,7 +117,8 @@ SRC  += scripts/scripts.c       \
 	scripts/triggers.c      \
 	scripts/trigedit.c      \
 	scripts/trighooks.c     \
-	scripts/pyolc.c
+	scripts/pyolc.c         \
+    scripts/pyskills_verbs.c
 
 
 # /usr/include/python3.11/Python.h

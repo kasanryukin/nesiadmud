@@ -1,0 +1,59 @@
+# ============================================================================
+# CLASS: VIRTUOSO
+# Location: config/classes/advanced/virtuoso.yaml
+# ============================================================================
+
+class_name: "Virtuoso"
+class_id: "virtuoso"
+tier: "advanced"
+
+description: "Master performer whose art approaches magic."
+flavor: |
+  Master performer whose art approaches magic.
+
+requirements:
+  min_level: 100
+  min_skills: {}
+  requires_base_classes:
+    - "bard"
+    - "scholar"
+  quests_required: []
+
+attributes:
+  strength: 0
+  reflex: 60
+  agility: 60
+  charisma: 140
+  discipline: 140
+  wisdom: 130
+  intelligence: 130
+  stamina: 60
+skills:
+  primary:
+    - "Bard"
+    - "Scholar"
+    - "Magic"
+    - "Service"
+  secondary:
+    - "Utility"
+    - "Languages"
+  tertiary:
+    - "Combat"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_{aid}@starter_zone"
+  location: "starter_zone"
+  join_dialog: "{aid}_join_prompt"
+class_restricted_skills:
+  - "{primary[0]}"
+passive_abilities:
+  - id: "{aid}_passive"
+    description: "Passive ability placeholder for {name}."
+notes: |
+  - Auto-generated advanced class from combination {base1} + {base2}.
+

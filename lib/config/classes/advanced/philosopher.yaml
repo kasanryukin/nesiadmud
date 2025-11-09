@@ -1,0 +1,62 @@
+# ============================================================================
+# CLASS: PHILOSOPHER
+# Location: config/classes/advanced/philosopher.yaml
+# ============================================================================
+
+class_name: "Philosopher"
+class_id: "philosopher"
+tier: "advanced"
+
+description: "Scholar of ethics and applied philosophy."
+flavor: |
+  Scholar of ethics and applied philosophy.
+
+requirements:
+  min_level: 100
+  min_skills: {}
+  requires_base_classes:
+    - "monk"
+    - "scholar"
+  quests_required: []
+
+attributes:
+  strength: 50
+  reflex: 50
+  agility: 50
+  charisma: 100
+  discipline: 160
+  wisdom: 130
+  intelligence: 130
+  stamina: 60
+skills:
+  primary:
+    - "Combat"
+    - "Scholar"
+    - "Monk"
+  secondary:
+    - "Utility"
+    - "Artisan"
+    - "Magic"
+  tertiary:
+    - "Crafting"
+    - "Processing"
+    - "Gathering"
+    - "Languages"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_{aid}@starter_zone"
+  location: "starter_zone"
+  join_dialog: "{aid}_join_prompt"
+class_restricted_skills:
+  - "{primary[0]}"
+passive_abilities:
+  - id: "{aid}_passive"
+    description: "Passive ability placeholder for {name}."
+notes: |
+  - Auto-generated advanced class from combination {base1} + {base2}.
+

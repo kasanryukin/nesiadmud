@@ -1,0 +1,59 @@
+# ============================================================================
+# CLASS: ARCANE ARCHER
+# Location: config/classes/advanced/arcane_archer.yaml
+# ============================================================================
+
+class_name: "Arcane Archer"
+class_id: "arcane_archer"
+tier: "advanced"
+
+description: "Channels spellcraft through arrows."
+flavor: |
+  Channels spellcraft through arrows.
+
+requirements:
+  min_level: 100
+  min_skills: {}
+  requires_base_classes:
+    - "hunter"
+    - "mage"
+  quests_required: []
+
+attributes:
+  strength: 60
+  reflex: 60
+  agility: 60
+  charisma: 0
+  discipline: 120
+  wisdom: 110
+  intelligence: 130
+  stamina: 50
+skills:
+  primary:
+    - "Magic"
+    - "Hunter"
+    - "Scholar"
+  secondary:
+    - "Weapons"
+    - "Utility"
+  tertiary:
+    - "Combat"
+    - "Processing"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_{aid}@starter_zone"
+  location: "starter_zone"
+  join_dialog: "{aid}_join_prompt"
+class_restricted_skills:
+  - "{primary[0]}"
+passive_abilities:
+  - id: "{aid}_passive"
+    description: "Passive ability placeholder for {name}."
+notes: |
+  - Auto-generated advanced class from combination {base1} + {base2}.
+

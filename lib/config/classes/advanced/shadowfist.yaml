@@ -1,0 +1,60 @@
+# ============================================================================
+# CLASS: SHADOWFIST
+# Location: config/classes/advanced/shadowfist.yaml
+# ============================================================================
+
+class_name: "Shadowfist"
+class_id: "shadowfist"
+tier: "advanced"
+
+description: "Ki-enhanced infiltrator and striker."
+flavor: |
+  Ki-enhanced infiltrator and striker.
+
+requirements:
+  min_level: 100
+  min_skills: {}
+  requires_base_classes:
+    - "rogue"
+    - "monk"
+  quests_required: []
+
+attributes:
+  strength: 100
+  reflex: 120
+  agility: 130
+  charisma: 100
+  discipline: 150
+  wisdom: 60
+  intelligence: 60
+  stamina: 100
+skills:
+  primary:
+    - "Combat"
+    - "Weapons"
+    - "Utility"
+    - "Rogue"
+    - "Monk"
+  secondary:
+    - "Processing"
+    - "Gathering"
+  tertiary:
+    - "Crafting"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_{aid}@starter_zone"
+  location: "starter_zone"
+  join_dialog: "{aid}_join_prompt"
+class_restricted_skills:
+  - "{primary[0]}"
+passive_abilities:
+  - id: "{aid}_passive"
+    description: "Passive ability placeholder for {name}."
+notes: |
+  - Auto-generated advanced class from combination {base1} + {base2}.
+

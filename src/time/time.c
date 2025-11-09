@@ -51,8 +51,8 @@ char *get_time_file(void) {
 #define TIME_FILE get_time_file()  // where do we keep time data?
 #define TIME_UPDATE_DELAY   1 MUD_HOUR  // how long is an in-game hour?
 #define HOURS_PER_DAY               24  // how many hours are in a day?
-#define NUM_MONTHS                   4  // how many months are in a year?
-#define DAYS_PER_WEEK                3  // how many days are in a week?
+#define NUM_MONTHS                  12  // how many months are in a year?
+#define DAYS_PER_WEEK                7  // how many days are in a week?
 #define USE_AMPM                  TRUE  // do we use the am/pm system?
 
 COMMAND(cmd_time);                      // a player command for seeing the time
@@ -72,17 +72,29 @@ struct day_data {
 };
 
 const struct month_data month_info[NUM_MONTHS] = {
-  // month name                 days   morning   afternoon    evening   night
-  { "the month of dawn",          30,        6,         12,        18,     22 },
-  { "the month of light",         30,        4,         10,        19,     23 },
-  { "the month of the moon",      30,        6,         12,        17,     21 },
-  { "the month of twilight",      30,        5,         13,        16,     20 },
+  // month name                 days   morning   afternoon    evening   night //Based on 35.6N, 82.2W
+  { "the month of beginnings",   30,        8,         13,        16,     20 }, //Jan
+  { "the month of frost",        30,        8,         13,        17,     20 }, //Feb
+  { "the month of planting",     30,        8,         13,        17,     21 }, //Mar
+  { "the month of flowers",      30,        7,         12,        18,     21 }, //Apr
+  { "the month of wind",         30,        7,         12,        18,     22 }, //May
+  { "the month of medians",      30,        6,         12,        18,     22 }, //Jun
+  { "the month of freedom",      30,        6,         12,        18,     22 }, //Jul
+  { "the month of heat",         30,        6,         12,        18,     22 }, //Aug
+  { "the month of harvest",      30,        6,         12,        18,     22 }, //Sep
+  { "the month of rememberance", 30,        7,         13,        17,     21 }, //Oct
+  { "the month of fellowship",   30,        7,         13,        17,     21 }, //Nov
+  { "the month of endings",      30,        8,         13,        16,     20 }, //Dec
 };
 
 const struct day_data day_info[DAYS_PER_WEEK] = {
-  { "the day of work" },
-  { "the day of play" },
-  { "the day of rest" },
+  { "Menz day" },
+  { "Tez day"  },
+  { "Waz day"  },
+  { "Tinz day" },
+  { "Fuz day"  },
+  { "Suz day"  },
+  { "Ezd day"  },
 };
 
 
@@ -139,7 +151,9 @@ PyObject *PyMud_IsNight(PyObject *self) {
 //
 void handle_time_update(void *self, void *data, char *arg) {
   curr_hour++;
-
+/*  log_string("Time update: hour=%d, day_week=%d, day_month=%d, month=%d, year=%d",
+             curr_hour, curr_day_of_week, curr_day_of_month, curr_month, curr_year); */
+             
   if(curr_hour >= HOURS_PER_DAY) {
     curr_hour = 0;
     curr_day_of_week++;
@@ -152,13 +166,11 @@ void handle_time_update(void *self, void *data, char *arg) {
   if(curr_day_of_month >= month_info[curr_month].num_days) {
     curr_day_of_month = 0;
     curr_month++;
-  }
-
-  if(curr_month >= NUM_MONTHS) {
-    curr_month = 0;
-    curr_year++;
-  }
-
+    }
+  if(curr_month >= NUM_MONTHS) {  // Check immediately
+      curr_month = 0;
+      curr_year++;
+    }
 
   // check to see if we've rolled over to a new time of day
   if(curr_hour == month_info[curr_month].morning_starts)
@@ -183,6 +195,8 @@ void handle_time_update(void *self, void *data, char *arg) {
 
 
 void init_time() {
+  log_string("TIME: Initializing time system...");
+  
   STORAGE_SET *set  = storage_read(TIME_FILE);
   if(set != NULL) {
     curr_hour         = read_int(set, "hour");
@@ -191,10 +205,13 @@ void init_time() {
     curr_month        = read_int(set, "month");
     curr_year         = read_int(set, "year");
     storage_close(set);
+    log_string("TIME: Loaded from file - h=%d, dw=%d, dm=%d, m=%d, y=%d",
+               curr_hour, curr_day_of_week, curr_day_of_month, curr_month, curr_year);
   }
-  else
+  else {
     curr_hour = curr_day_of_week = curr_day_of_month = curr_month = curr_year = 0;
-
+    log_string("TIME: No save file, starting at 0");
+  }
   // add our mud methods
   PyMud_addMethod("get_hour",     PyMud_GetHour,     METH_NOARGS, 
 		  "get_hour()\n\n"
@@ -215,7 +232,9 @@ void init_time() {
   add_cmd("time", NULL, cmd_time, "player", FALSE);
 
   // start our time updater
+  log_string("TIME: Starting time update loop with delay %d", TIME_UPDATE_DELAY);
   start_update(NULL, TIME_UPDATE_DELAY, handle_time_update, NULL, NULL, NULL);
+  log_string("TIME: Time system initialized successfully");
 }
 
 

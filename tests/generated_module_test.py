@@ -13,7 +13,7 @@ def test_module_loading():
     """Test loading of all discovered Python modules"""
     
     # Modules discovered in source code analysis
-    modules_to_test = ['mud', 'account', 'socket', 'event', 'obj', 'olc', 'hooks', 'room', 'plugs', 'exit', 'storage', 'char', 'auxiliary', 'mudsys']
+    modules_to_test = ['mud', 'account', 'socket', 'event', 'obj', 'olc', 'hooks', 'room', 'plugs', 'exit', 'storage', 'char', 'auxiliary', 'mudsys', 'atrributes', 'vitality', 'progression']
     
     results = {}
     

@@ -1,0 +1,123 @@
+# ============================================================================
+# CLASS: MAGE
+# Location: config/classes/base/mage.yaml
+# ============================================================================
+
+class_name: "Mage"
+class_id: "mage"
+tier: "base"
+
+description: "Student of the arcane: wielder of spells and controller of raw forces."
+flavor: |
+  Mages dedicate their lives to understanding the laws of magic, mastering schools,
+  and shaping energies others do not comprehend. Their towers are centers of study.
+
+starting_skills:
+  "Spellcraft": 1
+  "Mana Control": 1
+  "Spell Lore": 1
+  "Ritual Magic": 1
+  "Elemental Magic": 1
+  "Scholarship": 1
+  "Staves": 1
+  "Light Armor": 1
+attributes:
+  strength: 0
+  reflex: 0
+  agility: 0
+  charisma: 0
+  discipline: 14
+  wisdom: 12
+  intelligence: 16
+  stamina: 0
+skills:
+  primary:
+    - "Magic"
+    - "Scholar"
+    - "Languages"
+  secondary:
+    - "Artisan"
+    - "Crafting"
+  tertiary:
+    - "Gathering"
+    - "Utility"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available:
+      - "basic_attack"
+  10:
+    description: "Journeyman"
+    tdp_granted: 10
+    attribute_bonuses: {}
+    abilities_available: []
+  50:
+    description: "Adept"
+    tdp_granted: 20
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_mage@starter_zone"
+  location: "starter_zone"
+  join_dialog: "mage_join_prompt"
+advanced_paths:
+  - class_id: "spellblade"
+    requires_second_base: "warrior"
+    min_level: 100
+  - class_id: "arcane_knight"
+    requires_second_base: "warrior"
+    min_level: 100
+  - class_id: "arcane_trickster"
+    requires_second_base: "rogue"
+    min_level: 100
+  - class_id: "warlock_heretical"
+    requires_second_base: "rogue"
+    min_level: 100
+  - class_id: "spell_monk"
+    requires_second_base: "monk"
+    min_level: 100
+  - class_id: "runeblade"
+    requires_second_base: "barbarian"
+    min_level: 100
+  - class_id: "arcane_archer"
+    requires_second_base: "hunter"
+    min_level: 100
+  - class_id: "spell_tracker"
+    requires_second_base: "hunter"
+    min_level: 100
+  - class_id: "theurge"
+    requires_second_base: "cleric"
+    min_level: 100
+  - class_id: "gatekeeper"
+    requires_second_base: "cleric"
+    min_level: 100
+  - class_id: "enchanter"
+    requires_second_base: "scholar"
+    min_level: 100
+  - class_id: "necromancer"
+    requires_second_base: "scholar"
+    min_level: 100
+  - class_id: "artificer"
+    requires_second_base: "scholar"
+    min_level: 100
+  - class_id: "warlock"
+    requires_second_base: "scholar"
+    min_level: 100
+  - class_id: "elementalist"
+    requires_second_base: "scholar"
+    min_level: 100
+  - class_id: "illusionist"
+    requires_second_base: "scholar"
+    min_level: 100
+  - class_id: "conjuror"
+    requires_second_base: "scholar"
+    min_level: 100
+class_restricted_skills:
+passive_abilities:
+  - id: "basic_resolve"
+    description: "Base class resolve: small passive bonuses based on class."
+notes: |
+  - Developer notes for the class.
+

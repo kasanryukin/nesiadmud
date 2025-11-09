@@ -1,0 +1,60 @@
+# ============================================================================
+# CLASS: NECROMANCER
+# Location: config/classes/advanced/necromancer.yaml
+# ============================================================================
+
+class_name: "Necromancer"
+class_id: "necromancer"
+tier: "advanced"
+
+description: "Practitioner of death magics and spirit binding."
+flavor: |
+  Practitioner of death magics and spirit binding.
+
+requirements:
+  min_level: 100
+  min_skills: {}
+  requires_base_classes:
+    - "mage"
+    - "scholar"
+  quests_required: []
+
+attributes:
+  strength: 0
+  reflex: 0
+  agility: 0
+  charisma: 50
+  discipline: 140
+  wisdom: 130
+  intelligence: 150
+  stamina: 0
+skills:
+  primary:
+    - "Magic"
+    - "Scholar"
+    - "Necromancy"
+  secondary:
+    - "Gathering"
+    - "Crafting"
+    - "Processing"
+  tertiary:
+    - "Combat"
+    - "Languages"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_{aid}@starter_zone"
+  location: "starter_zone"
+  join_dialog: "{aid}_join_prompt"
+class_restricted_skills:
+  - "{primary[0]}"
+passive_abilities:
+  - id: "{aid}_passive"
+    description: "Passive ability placeholder for {name}."
+notes: |
+  - Auto-generated advanced class from combination {base1} + {base2}.
+

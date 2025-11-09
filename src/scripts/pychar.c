@@ -413,6 +413,382 @@ PyObject *PyChar_getbodyparts(PyChar *self, PyObject *args) {
   return list;
 }
 
+// Hair Color
+PyObject *PyChar_gethaircolor(PyChar *self, void *closure) {
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch != NULL) return Py_BuildValue("s", charGetHairColor(ch));
+  else           return NULL;
+}
+
+int PyChar_sethaircolor(PyChar *self, PyObject *value, void *closure) {
+  if (value == NULL) {
+    PyErr_Format(PyExc_TypeError, "Cannot delete character's hair color");
+    return -1;
+  }
+  if (!PyUnicode_Check(value)) {
+    PyErr_Format(PyExc_TypeError, "Character hair color must be a string");
+    return -1;
+  }
+  CHAR_DATA *ch = propertyTableGet(mob_table, self->uid);
+  if(ch == NULL) {
+    PyErr_Format(PyExc_TypeError, "Tried to modify nonexistant character, %d", self->uid);
+    return -1;
+  }
+  charSetHairColor(ch, PyUnicode_AsUTF8(value));
+  return 0;
+}
+
+// Hair Style
+PyObject *PyChar_gethairstyle(PyChar *self, void *closure) {
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch != NULL) return Py_BuildValue("s", charGetHairStyle(ch));
+  else           return NULL;
+}
+
+int PyChar_sethairstyle(PyChar *self, PyObject *value, void *closure) {
+  if (value == NULL) {
+    PyErr_Format(PyExc_TypeError, "Cannot delete character's hair style");
+    return -1;
+  }
+  if (!PyUnicode_Check(value)) {
+    PyErr_Format(PyExc_TypeError, "Character hair style must be a string");
+    return -1;
+  }
+  CHAR_DATA *ch = propertyTableGet(mob_table, self->uid);
+  if(ch == NULL) {
+    PyErr_Format(PyExc_TypeError, "Tried to modify nonexistant character, %d", self->uid);
+    return -1;
+  }
+  charSetHairStyle(ch, PyUnicode_AsUTF8(value));
+  return 0;
+}
+
+// Fur Color
+PyObject *PyChar_getfurcolor(PyChar *self, void *closure) {
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch != NULL) return Py_BuildValue("s", charGetFurColor(ch));
+  else           return NULL;
+}
+
+int PyChar_setfurcolor(PyChar *self, PyObject *value, void *closure) {
+  if (value == NULL) {
+    PyErr_Format(PyExc_TypeError, "Cannot delete character's fur color");
+    return -1;
+  }
+  if (!PyUnicode_Check(value)) {
+    PyErr_Format(PyExc_TypeError, "Character fur color must be a string");
+    return -1;
+  }
+  CHAR_DATA *ch = propertyTableGet(mob_table, self->uid);
+  if(ch == NULL) {
+    PyErr_Format(PyExc_TypeError, "Tried to modify nonexistant character, %d", self->uid);
+    return -1;
+  }
+  charSetFurColor(ch, PyUnicode_AsUTF8(value));
+  return 0;
+}
+
+// Feather Color
+PyObject *PyChar_getfeathercolor(PyChar *self, void *closure) {
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch != NULL) return Py_BuildValue("s", charGetFeatherColor(ch));
+  else           return NULL;
+}
+
+int PyChar_setfeathercolor(PyChar *self, PyObject *value, void *closure) {
+  if (value == NULL) {
+    PyErr_Format(PyExc_TypeError, "Cannot delete character's feather color");
+    return -1;
+  }
+  if (!PyUnicode_Check(value)) {
+    PyErr_Format(PyExc_TypeError, "Character feather color must be a string");
+    return -1;
+  }
+  CHAR_DATA *ch = propertyTableGet(mob_table, self->uid);
+  if(ch == NULL) {
+    PyErr_Format(PyExc_TypeError, "Tried to modify nonexistant character, %d", self->uid);
+    return -1;
+  }
+  charSetFeatherColor(ch, PyUnicode_AsUTF8(value));
+  return 0;
+}
+
+// Scale Color
+PyObject *PyChar_getscalecolor(PyChar *self, void *closure) {
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch != NULL) return Py_BuildValue("s", charGetScaleColor(ch));
+  else           return NULL;
+}
+
+int PyChar_setscalecolor(PyChar *self, PyObject *value, void *closure) {
+  if (value == NULL) {
+    PyErr_Format(PyExc_TypeError, "Cannot delete character's scale color");
+    return -1;
+  }
+  if (!PyUnicode_Check(value)) {
+    PyErr_Format(PyExc_TypeError, "Character scale color must be a string");
+    return -1;
+  }
+  CHAR_DATA *ch = propertyTableGet(mob_table, self->uid);
+  if(ch == NULL) {
+    PyErr_Format(PyExc_TypeError, "Tried to modify nonexistant character, %d", self->uid);
+    return -1;
+  }
+  charSetScaleColor(ch, PyUnicode_AsUTF8(value));
+  return 0;
+}
+
+// Scale Marking
+PyObject *PyChar_getscalemarking(PyChar *self, void *closure) {
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch != NULL) return Py_BuildValue("s", charGetScaleMarking(ch));
+  else           return NULL;
+}
+
+int PyChar_setscalemarking(PyChar *self, PyObject *value, void *closure) {
+  if (value == NULL) {
+    PyErr_Format(PyExc_TypeError, "Cannot delete character's scale marking");
+    return -1;
+  }
+  if (!PyUnicode_Check(value)) {
+    PyErr_Format(PyExc_TypeError, "Character scale marking must be a string");
+    return -1;
+  }
+  CHAR_DATA *ch = propertyTableGet(mob_table, self->uid);
+  if(ch == NULL) {
+    PyErr_Format(PyExc_TypeError, "Tried to modify nonexistant character, %d", self->uid);
+    return -1;
+  }
+  charSetScaleMarking(ch, PyUnicode_AsUTF8(value));
+  return 0;
+}
+
+// Marking Color
+PyObject *PyChar_getmarkingcolor(PyChar *self, void *closure) {
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch != NULL) return Py_BuildValue("s", charGetMarkingColor(ch));
+  else           return NULL;
+}
+
+int PyChar_setmarkingcolor(PyChar *self, PyObject *value, void *closure) {
+  if (value == NULL) {
+    PyErr_Format(PyExc_TypeError, "Cannot delete character's marking color");
+    return -1;
+  }
+  if (!PyUnicode_Check(value)) {
+    PyErr_Format(PyExc_TypeError, "Character marking color must be a string");
+    return -1;
+  }
+  CHAR_DATA *ch = propertyTableGet(mob_table, self->uid);
+  if(ch == NULL) {
+    PyErr_Format(PyExc_TypeError, "Tried to modify nonexistant character, %d", self->uid);
+    return -1;
+  }
+  charSetMarkingColor(ch, PyUnicode_AsUTF8(value));
+  return 0;
+}
+
+// Tail Style
+PyObject *PyChar_gettailstyle(PyChar *self, void *closure) {
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch != NULL) return Py_BuildValue("s", charGetTailStyle(ch));
+  else           return NULL;
+}
+
+int PyChar_settailstyle(PyChar *self, PyObject *value, void *closure) {
+  if (value == NULL) {
+    PyErr_Format(PyExc_TypeError, "Cannot delete character's tail style");
+    return -1;
+  }
+  if (!PyUnicode_Check(value)) {
+    PyErr_Format(PyExc_TypeError, "Character tail style must be a string");
+    return -1;
+  }
+  CHAR_DATA *ch = propertyTableGet(mob_table, self->uid);
+  if(ch == NULL) {
+    PyErr_Format(PyExc_TypeError, "Tried to modify nonexistant character, %d", self->uid);
+    return -1;
+  }
+  charSetTailStyle(ch, PyUnicode_AsUTF8(value));
+  return 0;
+}
+
+// Mane Style
+PyObject *PyChar_getmanestyle(PyChar *self, void *closure) {
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch != NULL) return Py_BuildValue("s", charGetManeStyle(ch));
+  else           return NULL;
+}
+
+int PyChar_setmanestyle(PyChar *self, PyObject *value, void *closure) {
+  if (value == NULL) {
+    PyErr_Format(PyExc_TypeError, "Cannot delete character's mane style");
+    return -1;
+  }
+  if (!PyUnicode_Check(value)) {
+    PyErr_Format(PyExc_TypeError, "Character mane style must be a string");
+    return -1;
+  }
+  CHAR_DATA *ch = propertyTableGet(mob_table, self->uid);
+  if(ch == NULL) {
+    PyErr_Format(PyExc_TypeError, "Tried to modify nonexistant character, %d", self->uid);
+    return -1;
+  }
+  charSetManeStyle(ch, PyUnicode_AsUTF8(value));
+  return 0;
+}
+
+// Build
+PyObject *PyChar_getbuild(PyChar *self, void *closure) {
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch != NULL) return Py_BuildValue("s", charGetBuild(ch));
+  else           return NULL;
+}
+
+int PyChar_setbuild(PyChar *self, PyObject *value, void *closure) {
+  if (value == NULL) {
+    PyErr_Format(PyExc_TypeError, "Cannot delete character's build");
+    return -1;
+  }
+  if (!PyUnicode_Check(value)) {
+    PyErr_Format(PyExc_TypeError, "Character build must be a string");
+    return -1;
+  }
+  CHAR_DATA *ch = propertyTableGet(mob_table, self->uid);
+  if(ch == NULL) {
+    PyErr_Format(PyExc_TypeError, "Tried to modify nonexistant character, %d", self->uid);
+    return -1;
+  }
+  charSetBuild(ch, PyUnicode_AsUTF8(value));
+  return 0;
+}
+
+// Skin Tone
+PyObject *PyChar_getskintone(PyChar *self, void *closure) {
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch != NULL) return Py_BuildValue("s", charGetSkinTone(ch));
+  else           return NULL;
+}
+
+int PyChar_setskintone(PyChar *self, PyObject *value, void *closure) {
+  if (value == NULL) {
+    PyErr_Format(PyExc_TypeError, "Cannot delete character's skin tone");
+    return -1;
+  }
+  if (!PyUnicode_Check(value)) {
+    PyErr_Format(PyExc_TypeError, "Character skin tone must be a string");
+    return -1;
+  }
+  CHAR_DATA *ch = propertyTableGet(mob_table, self->uid);
+  if(ch == NULL) {
+    PyErr_Format(PyExc_TypeError, "Tried to modify nonexistant character, %d", self->uid);
+    return -1;
+  }
+  charSetSkinTone(ch, PyUnicode_AsUTF8(value));
+  return 0;
+}
+
+// Eye Color (Left)
+PyObject *PyChar_geteyecolor(PyChar *self, void *closure) {
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch != NULL) return Py_BuildValue("s", charGetEyeColor(ch));
+  else           return NULL;
+}
+
+int PyChar_seteyecolor(PyChar *self, PyObject *value, void *closure) {
+  if (value == NULL) {
+    PyErr_Format(PyExc_TypeError, "Cannot delete character's eye color");
+    return -1;
+  }
+  if (!PyUnicode_Check(value)) {
+    PyErr_Format(PyExc_TypeError, "Character eye color must be a string");
+    return -1;
+  }
+  CHAR_DATA *ch = propertyTableGet(mob_table, self->uid);
+  if(ch == NULL) {
+    PyErr_Format(PyExc_TypeError, "Tried to modify nonexistant character, %d", self->uid);
+    return -1;
+  }
+  charSetEyeColor(ch, PyUnicode_AsUTF8(value));
+  return 0;
+}
+
+// Eye Color Right (for heterochromia)
+PyObject *PyChar_geteyecolorright(PyChar *self, void *closure) {
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch != NULL) return Py_BuildValue("s", charGetEyeColorRight(ch));
+  else           return NULL;
+}
+
+int PyChar_seteyecolorright(PyChar *self, PyObject *value, void *closure) {
+  if (value == NULL) {
+    PyErr_Format(PyExc_TypeError, "Cannot delete character's right eye color");
+    return -1;
+  }
+  if (!PyUnicode_Check(value)) {
+    PyErr_Format(PyExc_TypeError, "Character right eye color must be a string");
+    return -1;
+  }
+  CHAR_DATA *ch = propertyTableGet(mob_table, self->uid);
+  if(ch == NULL) {
+    PyErr_Format(PyExc_TypeError, "Tried to modify nonexistant character, %d", self->uid);
+    return -1;
+  }
+  charSetEyeColorRight(ch, PyUnicode_AsUTF8(value));
+  return 0;
+}
+
+// Heterochromia (boolean flag)
+PyObject *PyChar_getheterochromia(PyChar *self, void *closure) {
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch != NULL) return Py_BuildValue("i", charGetHeterochromia(ch));
+  else           return NULL;
+}
+
+int PyChar_setheterochromia(PyChar *self, PyObject *value, void *closure) {
+  if (value == NULL) {
+    PyErr_Format(PyExc_TypeError, "Cannot delete character's heterochromia flag");
+    return -1;
+  }
+  if (!PyLong_Check(value)) {
+    PyErr_Format(PyExc_TypeError, "Character heterochromia must be an integer");
+    return -1;
+  }
+  CHAR_DATA *ch = propertyTableGet(mob_table, self->uid);
+  if(ch == NULL) {
+    PyErr_Format(PyExc_TypeError, "Tried to modify nonexistant character, %d", self->uid);
+    return -1;
+  }
+  charSetHeterochromia(ch, PyLong_AsLong(value));
+  return 0;
+}
+
+// Beard Style
+PyObject *PyChar_getbeardstyle(PyChar *self, void *closure) {
+  CHAR_DATA *ch = PyChar_AsChar((PyObject *)self);
+  if(ch != NULL) return Py_BuildValue("s", charGetBeardStyle(ch));
+  else           return NULL;
+}
+
+int PyChar_setbeardstyle(PyChar *self, PyObject *value, void *closure) {
+  if (value == NULL) {
+    PyErr_Format(PyExc_TypeError, "Cannot delete character's beard style");
+    return -1;
+  }
+  if (!PyUnicode_Check(value)) {
+    PyErr_Format(PyExc_TypeError, "Character beard style must be a string");
+    return -1;
+  }
+  CHAR_DATA *ch = propertyTableGet(mob_table, self->uid);
+  if(ch == NULL) {
+    PyErr_Format(PyExc_TypeError, "Tried to modify nonexistant character, %d", self->uid);
+    return -1;
+  }
+  charSetBeardStyle(ch, PyUnicode_AsUTF8(value));
+  return 0;
+}
+
+
 PyObject *PyChar_add_bodypart(PyChar *self, PyObject *args) {
   char *name = NULL;
   char *type_name = NULL;
@@ -2326,6 +2702,37 @@ PyMODINIT_FUNC PyInit_PyChar(void) {
     "current system time. Immutable.");
   PyChar_addGetSetter("birth", PyChar_getbirth, NULL,
     "Value is the character's creation time (system time). Immutable.");
+
+  PyChar_addGetSetter("hair_color", PyChar_gethaircolor, PyChar_sethaircolor,
+    "The character's hair color.");
+  PyChar_addGetSetter("hair_style", PyChar_gethairstyle, PyChar_sethairstyle,
+    "The character's hair style.");
+  PyChar_addGetSetter("fur_color", PyChar_getfurcolor, PyChar_setfurcolor,
+    "The character's fur color.");
+  PyChar_addGetSetter("feather_color", PyChar_getfeathercolor, PyChar_setfeathercolor,
+    "The character's feather color.");
+  PyChar_addGetSetter("scale_color", PyChar_getscalecolor, PyChar_setscalecolor,
+    "The character's scale color.");
+  PyChar_addGetSetter("scale_marking", PyChar_getscalemarking, PyChar_setscalemarking,
+    "The character's scale marking pattern.");
+  PyChar_addGetSetter("marking_color", PyChar_getmarkingcolor, PyChar_setmarkingcolor,
+    "The color of the character's markings.");
+  PyChar_addGetSetter("tail_style", PyChar_gettailstyle, PyChar_settailstyle,
+    "The character's tail style.");
+  PyChar_addGetSetter("mane_style", PyChar_getmanestyle, PyChar_setmanestyle,
+    "The character's mane style.");
+  PyChar_addGetSetter("build", PyChar_getbuild, PyChar_setbuild,
+    "The character's body build (e.g., slim, athletic, muscular).");
+  PyChar_addGetSetter("skin_tone", PyChar_getskintone, PyChar_setskintone,
+    "The character's skin tone.");
+  PyChar_addGetSetter("eye_color", PyChar_geteyecolor, PyChar_seteyecolor,
+    "The character's eye color (left eye, or both if not heterochromatic).");
+  PyChar_addGetSetter("eye_color_right", PyChar_geteyecolorright, PyChar_seteyecolorright,
+    "The character's right eye color (for heterochromia).");
+  PyChar_addGetSetter("heterochromia", PyChar_getheterochromia, PyChar_setheterochromia,
+    "Whether the character has heterochromia (different colored eyes). Integer flag.");
+  PyChar_addGetSetter("beard_style", PyChar_getbeardstyle, PyChar_setbeardstyle,
+    "The character's beard style.");
 
   // add in all of our methods for the Char class
   PyChar_addMethod("attach", PyChar_attach, METH_VARARGS,

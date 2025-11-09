@@ -5,9 +5,9 @@ script  :~
   ### conventions laid out by redit, or delete the top line
   
   ### string values
-  me.name       = "an unfinished room"
-  me.terrain    = "City"
-  me.desc       = me.desc + " " + "    It looks unfinished.\r\n"
+  me.name       = "The Grand Temple Steps"
+  me.terrain    = "Road"
+  me.desc       = me.desc + " " + "    You stand on the front steps leading into the Temple, where the foundation \r\nand exterior walls are hewn from polished Red Dragon Granite, seamlessly \r\nfitting together to create a majestic and awe-inspiring structure.  The steps \r\nare wide and well-worn, leading up to the entrance of the Temple.  The grand \r\ntemple itself looms, its imposing presence both solemn and majestic.  A large \r\npair of double doors banded with a silvery metal separate the outside world \r\nfrom the Temple interior.\r\n\r\nIn front of the temple steps lies a large reflecting pool, its surface calm.\r\n[if is_night()]The torchlight sways and dances along the surface.[else]Sunlight\r\ngives the pool a mirror sheen.[/if] Benches line the sides of the pool, \r\ninviting visitors to rest and contemplate.  The pool is surrounded by \r\nmeticulously maintained gardens, adding a serene and peaceful atmosphere to the\r\narea.\r\n"
   
   ### room bits
   me.bits     = ', '.join([me.bits, "nowander"])

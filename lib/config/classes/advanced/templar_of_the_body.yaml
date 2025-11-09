@@ -1,0 +1,61 @@
+# ============================================================================
+# CLASS: TEMPLAR OF THE BODY
+# Location: config/classes/advanced/templar_of_the_body.yaml
+# ============================================================================
+
+class_name: "Templar of the Body"
+class_id: "templar_of_the_body"
+tier: "advanced"
+
+description: "Faith expressed via disciplined physical mastery."
+flavor: |
+  Faith expressed via disciplined physical mastery.
+
+requirements:
+  min_level: 100
+  min_skills: {}
+  requires_base_classes:
+    - "monk"
+    - "cleric"
+  quests_required: []
+
+attributes:
+  strength: 100
+  reflex: 50
+  agility: 50
+  charisma: 130
+  discipline: 150
+  wisdom: 140
+  intelligence: 120
+  stamina: 110
+skills:
+  primary:
+    - "Combat"
+    - "Magic"
+    - "Monk"
+    - "Cleric"
+    - "Scholar"
+  secondary:
+    - "Utility"
+    - "Artisan"
+    - "Crafting"
+  tertiary:
+    - "Processing"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_{aid}@starter_zone"
+  location: "starter_zone"
+  join_dialog: "{aid}_join_prompt"
+class_restricted_skills:
+  - "{primary[0]}"
+passive_abilities:
+  - id: "{aid}_passive"
+    description: "Passive ability placeholder for {name}."
+notes: |
+  - Auto-generated advanced class from combination {base1} + {base2}.
+

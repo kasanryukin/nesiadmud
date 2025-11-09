@@ -103,6 +103,7 @@ void init_bitvectors() {
   bitvectorAddBit("room_bits", "no_magic");
   bitvectorAddBit("room_bits", "no_telepot");
   bitvectorAddBit("room_bits", "no_portal");
+  bitvectorAddBit("room_bits", "no_combat");
 
   bitvectorCreate("user_groups");
   bitvectorAddBit("user_groups", "admin");

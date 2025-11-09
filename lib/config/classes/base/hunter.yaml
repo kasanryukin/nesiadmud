@@ -1,0 +1,109 @@
+# ============================================================================
+# CLASS: HUNTER
+# Location: config/classes/base/hunter.yaml
+# ============================================================================
+
+class_name: "Hunter"
+class_id: "hunter"
+tier: "base"
+
+description: "Survivalist and tracker, deadly at range and attuned to the wilds."
+flavor: |
+  Hunters are at home in forests, deserts, and mountains. Their senses are honed for
+  tracking, their bows are deadly, and their knowledge of beasts keeps them alive where
+  others would perish.
+
+starting_skills:
+  "Ranged Combat": 1
+  "Tracking": 1
+  "Survival": 1
+  "Stealth": 1
+  "Bows": 1
+  "Short Blades": 1
+  "Skinning": 1
+  "Nature Magic": 1
+attributes:
+  strength: 12
+  reflex: 12
+  agility: 12
+  charisma: 0
+  discipline: 10
+  wisdom: 10
+  intelligence: 10
+  stamina: 10
+skills:
+  primary:
+    - "Utility"
+    - "Combat"
+    - "Ranger"
+  secondary:
+    - "Weapons"
+    - "Processing"
+  tertiary:
+    - "Magic"
+    - "Scholar"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available:
+      - "basic_attack"
+  10:
+    description: "Journeyman"
+    tdp_granted: 10
+    attribute_bonuses: {}
+    abilities_available: []
+  50:
+    description: "Adept"
+    tdp_granted: 20
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_hunter@starter_zone"
+  location: "starter_zone"
+  join_dialog: "hunter_join_prompt"
+advanced_paths:
+  - class_id: "skirmisher"
+    requires_second_base: "warrior"
+    min_level: 100
+  - class_id: "beast_knight"
+    requires_second_base: "warrior"
+    min_level: 100
+  - class_id: "trapper"
+    requires_second_base: "rogue"
+    min_level: 100
+  - class_id: "scout"
+    requires_second_base: "rogue"
+    min_level: 100
+  - class_id: "wayfarer"
+    requires_second_base: "monk"
+    min_level: 100
+  - class_id: "woodsman"
+    requires_second_base: "barbarian"
+    min_level: 100
+  - class_id: "beast_master"
+    requires_second_base: "barbarian"
+    min_level: 100
+  - class_id: "warden"
+    requires_second_base: "cleric"
+    min_level: 100
+  - class_id: "druid"
+    requires_second_base: "cleric"
+    min_level: 100
+  - class_id: "arcane_archer"
+    requires_second_base: "mage"
+    min_level: 100
+  - class_id: "spell_tracker"
+    requires_second_base: "mage"
+    min_level: 100
+  - class_id: "naturalist"
+    requires_second_base: "scholar"
+    min_level: 100
+class_restricted_skills:
+passive_abilities:
+  - id: "basic_resolve"
+    description: "Base class resolve: small passive bonuses based on class."
+notes: |
+  - Developer notes for the class.
+

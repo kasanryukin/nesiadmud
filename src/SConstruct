@@ -62,7 +62,7 @@ binary = 'NakedMud'
 modules = ['dyn_vars', 'set_val', 'olc2', 'editor', 'items', 'scripts']
 
 # Optional modules
-modules += ['time', 'alias', 'help2']
+modules += ['time', 'alias', 'help2', 'gearskills',]
 
 # Compiler flags
 nakedmud.Append(CCFLAGS=['-Wall', '-g', '-ggdb', '-O2'])

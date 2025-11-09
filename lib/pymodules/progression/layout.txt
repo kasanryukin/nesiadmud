@@ -1,0 +1,28 @@
+prompt> skills
+*-----------------------------------------------------------------------------*
+##Category Header##
+ <skill> <rank>.<bits as %>                         <skill> <rank>.<bits as %>     <---- align the second experience value to the 80th column.
+ <skill> <rank>.<bits as %>                         <skill> <rank>.<bits as %>     <---- align the second experience value to the 80th column.
+ <skill> <rank>.<bits as %>                         <skill> <rank>.<bits as %>     <---- align the second experience value to the 80th column.
+ 
+##Category Header##
+ <skill> <rank>.<bits as %>                         <skill> <rank>.<bits as %>     <---- align the second experience value to the 80th column.
+
+##Category Header##
+ <skill> <rank>.<bits as %>                         <skill> <rank>.<bits as %>     <---- align the second experience value to the 80th column.
+
+##Category Header##
+ <skill> <rank>.<bits as %>                         <skill> <rank>.<bits as %>     <---- align the second experience value to the 80th column.
+
+##Category Header##
+ <skill> <rank>.<bits as %>                         <skill> <rank>.<bits as %>     <---- align the second experience value to the 80th column.
+
+##Category Header##
+ <skill> <rank>.<bits as %>                         <skill> <rank>.<bits as %>     <---- align the second experience value to the 80th column.
+
+##Category Header##
+ <skill> <rank>.<bits as %>                         <skill> <rank>.<bits as %>     <---- align the second experience value to the 80th column.
+*-----------------------------------------------------------------------------*
+|Total Ranks: <all ranks added together, discarding the bits>                 |
+|Level: <level> <current class> * TDPs: <tdp> * Favors: <placeholder>         |
+*-----------------------------------------------------------------------------*

@@ -1,0 +1,60 @@
+# ============================================================================
+# CLASS: TRAPPER
+# Location: config/classes/advanced/trapper.yaml
+# ============================================================================
+
+class_name: "Trapper"
+class_id: "trapper"
+tier: "advanced"
+
+description: "Snares, poisons, and environmental control specialist."
+flavor: |
+  Snares, poisons, and environmental control specialist.
+
+requirements:
+  min_level: 100
+  min_skills: {}
+  requires_base_classes:
+    - "rogue"
+    - "hunter"
+  quests_required: []
+
+attributes:
+  strength: 110
+  reflex: 130
+  agility: 140
+  charisma: 50
+  discipline: 110
+  wisdom: 50
+  intelligence: 50
+  stamina: 90
+skills:
+  primary:
+    - "Combat"
+    - "Trapper"
+    - "Rogue"
+    - "Hunter"
+  secondary:
+    - "Utility"
+    - "Scholar"
+  tertiary:
+    - "Processing"
+    - "Gathering"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_{aid}@starter_zone"
+  location: "starter_zone"
+  join_dialog: "{aid}_join_prompt"
+class_restricted_skills:
+  - "{primary[0]}"
+passive_abilities:
+  - id: "{aid}_passive"
+    description: "Passive ability placeholder for {name}."
+notes: |
+  - Auto-generated advanced class from combination {base1} + {base2}.
+

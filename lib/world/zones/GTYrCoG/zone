@@ -1,0 +1,11 @@
+pulse_timer: 5
+name       : GreatTempleOfYttribus-ChaplesOfTheGods
+desc       :~
+      Chaples of the Gods, located downstairs in the Grand Temple of Yttribus 
+editors    : Niam
+resettable :=
+  room: necropolisentrance
+  -
+  room: theallmother
+  -
+-

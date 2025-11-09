@@ -6,7 +6,14 @@ script  :~
   
   ### string values
   me.name       = "Junction"
-  me.desc       = me.desc + " " + "    The corridor opens into a wide junction of smooth, timeworn stone.  Iron \r\nsconces line the walls, their torches casting a steady glow that pushes back \r\nthe surrounding gloom.  Footsteps echo softly here, swallowed quickly by the \r\nvast stillness of the temple.  Passages stretch east and west into deeper \r\nhalls, while the northern stairs rise toward the open roof above.\r\n"
+  me.desc       = me.desc + " " + "    The corridor opens into a wide junction of smooth, timeworn stone.  Iron \r\nsconces line the walls, their torches casting a steady glow that pushes back \r\nthe surrounding gloom.  Footsteps echo softly here, swallowed quickly by the \r\nvast stillness of the temple.  Passages stretch east and west into deeper \r\nhalls, while the northern stairs rise toward the open roof above.  A narrow \r\nstaircase leads down, further into the temple.  A small placard is on the wall \r\nby the stairs.\r\n"
+  
+  ### extra descriptions
+  me.edesc("placard, sign", "    {gChapels of the Gods{n\r\n\r\nPlease be respectful of worshipers in prayer.\r\n")
+  
+  ### begin exit: down
+  exit = me.dig("down", "theallmother@GTYrCoG")
+  ### end exit
   
   ### begin exit: north
   exit = me.dig("north", "grandstair")

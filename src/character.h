@@ -80,6 +80,39 @@ const char  *charGetRdesc     (CHAR_DATA *ch);
 const char  *charGetMultiRdesc(CHAR_DATA *ch);
 const char  *charGetMultiName (CHAR_DATA *ch);
 int          charGetSex       (CHAR_DATA *ch);
+
+// Appearance functions
+void charSetHairColor(CHAR_DATA *ch, const char *color);
+const char *charGetHairColor(CHAR_DATA *ch);
+void charSetHairStyle(CHAR_DATA *ch, const char *style);
+const char *charGetHairStyle(CHAR_DATA *ch);
+void charSetFurColor(CHAR_DATA *ch, const char *color);
+const char *charGetFurColor(CHAR_DATA *ch);
+void charSetFeatherColor(CHAR_DATA *ch, const char *color);
+const char *charGetFeatherColor(CHAR_DATA *ch);
+void charSetScaleColor(CHAR_DATA *ch, const char *color);
+const char *charGetScaleColor(CHAR_DATA *ch);
+void charSetScaleMarking(CHAR_DATA *ch, const char *marking);
+const char *charGetScaleMarking(CHAR_DATA *ch);
+void charSetMarkingColor(CHAR_DATA *ch, const char *color);
+const char *charGetMarkingColor(CHAR_DATA *ch);
+void charSetTailStyle(CHAR_DATA *ch, const char *style);
+const char *charGetTailStyle(CHAR_DATA *ch);
+void charSetManeStyle(CHAR_DATA *ch, const char *style);
+const char *charGetManeStyle(CHAR_DATA *ch);
+void charSetBuild(CHAR_DATA *ch, const char *build);
+const char *charGetBuild(CHAR_DATA *ch);
+void charSetSkinTone(CHAR_DATA *ch, const char *tone);
+const char *charGetSkinTone(CHAR_DATA *ch);
+void charSetEyeColor(CHAR_DATA *ch, const char *color);
+const char *charGetEyeColor(CHAR_DATA *ch);
+void charSetEyeColorRight(CHAR_DATA *ch, const char *color);
+const char *charGetEyeColorRight(CHAR_DATA *ch);
+void charSetHeterochromia(CHAR_DATA *ch, int heterochromia);
+int charGetHeterochromia(CHAR_DATA *ch);
+void charSetBeardStyle(CHAR_DATA *ch, const char *style);
+const char *charGetBeardStyle(CHAR_DATA *ch);
+
 // for editing with the text editor
 BUFFER      *charGetDescBuffer(CHAR_DATA *ch);
 BUFFER      *charGetLookBuffer(CHAR_DATA *ch);

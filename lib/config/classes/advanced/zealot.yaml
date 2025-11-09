@@ -1,0 +1,59 @@
+# ============================================================================
+# CLASS: ZEALOT
+# Location: config/classes/advanced/zealot.yaml
+# ============================================================================
+
+class_name: "Zealot"
+class_id: "zealot"
+tier: "advanced"
+
+description: "Fanatical warrior empowered by faith."
+flavor: |
+  Fanatical warrior empowered by faith.
+
+requirements:
+  min_level: 100
+  min_skills: {}
+  requires_base_classes:
+    - "barbarian"
+    - "cleric"
+  quests_required: []
+
+attributes:
+  strength: 120
+  reflex: 60
+  agility: 60
+  charisma: 80
+  discipline: 120
+  wisdom: 80
+  intelligence: 60
+  stamina: 130
+skills:
+  primary:
+    - "Combat"
+    - "Weapons"
+    - "Cleric"
+    - "Magic"
+  secondary:
+    - "Utility"
+    - "Armor"
+  tertiary:
+    - "Scholar"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_{aid}@starter_zone"
+  location: "starter_zone"
+  join_dialog: "{aid}_join_prompt"
+class_restricted_skills:
+  - "{primary[0]}"
+passive_abilities:
+  - id: "{aid}_passive"
+    description: "Passive ability placeholder for {name}."
+notes: |
+  - Auto-generated advanced class from combination {base1} + {base2}.
+

@@ -1,0 +1,61 @@
+# ============================================================================
+# CLASS: ORDER OF THE BALANCED SCALES
+# Location: config/classes/advanced/order_balanced_scales.yaml
+# ============================================================================
+
+class_name: "Order of the Balanced Scales"
+class_id: "order_balanced_scales"
+tier: "advanced"
+
+description: "Knightly order dedicated to impartial justice."
+flavor: |
+  Knightly order dedicated to impartial justice.
+
+requirements:
+  min_level: 100
+  min_skills: {}
+  requires_base_classes:
+    - "warrior"
+    - "cleric"
+  quests_required: []
+
+attributes:
+  strength: 130
+  reflex: 60
+  agility: 60
+  charisma: 80
+  discipline: 100
+  wisdom: 80
+  intelligence: 60
+  stamina: 110
+skills:
+  primary:
+    - "Combat"
+    - "Magic"
+    - "Scholar"
+    - "Knight"
+  secondary:
+    - "Armor"
+    - "Weapons"
+  tertiary:
+    - "Service"
+    - "Languages"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_{aid}@starter_zone"
+  location: "starter_zone"
+  join_dialog: "{aid}_join_prompt"
+class_restricted_skills:
+  - "{primary[0]}"
+passive_abilities:
+  - id: "{aid}_passive"
+    description: "Passive ability placeholder for {name}."
+notes: |
+  - Auto-generated advanced class from combination {base1} + {base2}.
+  - Lore: Knightly Order; special world-gated trainers and questlines anticipated.
+

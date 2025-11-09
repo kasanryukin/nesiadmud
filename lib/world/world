@@ -1,8 +1,14 @@
 zones:=
   key: examples
   -
-  key: GTYr
+  key: ytrnecrop
+  -
+  key: yttrcity
+  -
+  key: GTYrCoG
   -
   key: limbo
+  -
+  key: GTYr
   -
 -

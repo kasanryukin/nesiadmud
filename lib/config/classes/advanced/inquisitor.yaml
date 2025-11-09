@@ -1,0 +1,61 @@
+# ============================================================================
+# CLASS: INQUISITOR
+# Location: config/classes/advanced/inquisitor.yaml
+# ============================================================================
+
+class_name: "Inquisitor"
+class_id: "inquisitor"
+tier: "advanced"
+
+description: "Hunter of heresy and divine investigator."
+flavor: |
+  Hunter of heresy and divine investigator.
+
+requirements:
+  min_level: 100
+  min_skills: {}
+  requires_base_classes:
+    - "rogue"
+    - "cleric"
+  quests_required: []
+
+attributes:
+  strength: 100
+  reflex: 70
+  agility: 80
+  charisma: 130
+  discipline: 120
+  wisdom: 80
+  intelligence: 60
+  stamina: 90
+skills:
+  primary:
+    - "Rogue"
+    - "Cleric"
+    - "Magic"
+    - "Scholar"
+  secondary:
+    - "Utility"
+    - "Armor"
+    - "Combat"
+    - "Weapons"
+  tertiary:
+    - "Processing" 
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_{aid}@starter_zone"
+  location: "starter_zone"
+  join_dialog: "{aid}_join_prompt"
+class_restricted_skills:
+  - "{primary[0]}"
+passive_abilities:
+  - id: "{aid}_passive"
+    description: "Passive ability placeholder for {name}."
+notes: |
+  - Auto-generated advanced class from combination {base1} + {base2}.
+

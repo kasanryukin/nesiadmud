@@ -1,0 +1,60 @@
+# ============================================================================
+# CLASS: SAVANT
+# Location: config/classes/advanced/savant.yaml
+# ============================================================================
+
+class_name: "Savant"
+class_id: "savant"
+tier: "advanced"
+
+description: "Polymath blending art, craft, and study."
+flavor: |
+  Polymath blending art, craft, and study.
+
+requirements:
+  min_level: 100
+  min_skills: {}
+  requires_base_classes:
+    - "bard"
+    - "scholar"
+  quests_required: []
+
+attributes:
+  strength: 0
+  reflex: 60
+  agility: 60
+  charisma: 140
+  discipline: 140
+  wisdom: 130
+  intelligence: 130
+  stamina: 60
+skills:
+  primary:
+    - "Scholar"
+    - "Bard"
+    - "Utiltiy"
+  secondary:
+    - "Service"
+    - "Magic"
+    - "Processing"
+  tertiary:
+    - "Crafting"
+    - "Artisan"
+levels:
+  1:
+    description: "Novice"
+    tdp_granted: 0
+    attribute_bonuses: {}
+    abilities_available: []
+trainer:
+  npc_key: "trainer_{aid}@starter_zone"
+  location: "starter_zone"
+  join_dialog: "{aid}_join_prompt"
+class_restricted_skills:
+  - "{primary[0]}"
+passive_abilities:
+  - id: "{aid}_passive"
+    description: "Passive ability placeholder for {name}."
+notes: |
+  - Auto-generated advanced class from combination {base1} + {base2}.
+

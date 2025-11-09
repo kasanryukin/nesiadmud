@@ -5,7 +5,7 @@ The basic character generation module. Allows accounts to create new characters
 with basic selection for name, sex, and race.
 '''
 import mudsys, mud, socket, char, hooks
-
+from char_gen_enhancements import cg_appearance_entry_handler, cg_appearance_entry_prompt, apply_race_special_attributes
 # Import attributes module for character initialization
 try:
     import attributes.attribute_aux as attribute_aux
@@ -14,6 +14,13 @@ except ImportError:
     ATTRIBUTES_AVAILABLE = False
     mud.log_string("char_gen: Attributes module not available")
 
+# Import progression module for character initialization
+try:
+    import progression
+    PROGRESSION_AVAILABLE = True
+except ImportError:
+    PROGRESSION_AVAILABLE = False
+    mud.log_string("char_gen: Progression module not available")
 
 def check_char_name(arg):
     '''checks to make sure the character name is valid. Names are valid if they
@@ -69,10 +76,40 @@ def cg_finish_handler(sock, arg):
     mud.log_string("New player: " + sock.ch.name + " has entered the game.")
     
     # register and save him to disk and to an account
-    mudsys.do_register(sock.ch)
+    mud.log_string("Attempting to register new player to disk.")
+    mud.log_string(f"DEBUG: Character name: {sock.ch.name}")
+
+    try:
+        skills_aux = sock.ch.getAuxiliary('skills')
+        mud.log_string(f"DEBUG: Character has skills aux: {skills_aux is not None}")
+    except:
+        mud.log_string(f"DEBUG: Character has skills aux: False (error getting it)")
+
+    try:
+        exp_aux = sock.ch.getAuxiliary('experience')
+        mud.log_string(f"DEBUG: Character has experience aux: {exp_aux is not None}")
+    except:
+        mud.log_string(f"DEBUG: Character has experience aux: False (error getting it)")
+
+    try:
+        level_aux = sock.ch.getAuxiliary('leveling')
+        mud.log_string(f"DEBUG: Character has leveling aux: {level_aux is not None}")
+    except:
+        mud.log_string(f"DEBUG: Character has leveling aux: False (error getting it)")
+    
+    mud.log_string("DEBUG: About to call do_register")
+    try:
+        mudsys.do_register(sock.ch)
+        mud.log_string("Character written to disk.")
+    except Exception as e:
+        mud.log_string(f"CRITICAL: do_register failed: {str(e)}")
+        import traceback
+        mud.log_string(traceback.format_exc())
+        raise
 
     # Initialize attributes based on race
     if ATTRIBUTES_AVAILABLE:
+        mud.log_string("Attributes availible, starting handler.")
         try:
             aux = attribute_aux.get_attributes(sock.ch)
             if aux and not aux.initialized:
@@ -115,7 +152,31 @@ def cg_finish_handler(sock, arg):
         except Exception as e:
             mud.log_string(f"Error initializing attributes for {sock.ch.name}: {str(e)}")
 
+    # Initialize progression system (moved outside attributes block)
+    if PROGRESSION_AVAILABLE:
+        try:
+            mud.log_string(f"DEBUG: About to initialize progression for {sock.ch.name}")
+            default_class_config = {
+                'class_name': 'Novice',
+                'skills': {
+                    'primary': [],
+                    'secondary': [],
+                    'tertiary': [],
+                    'else': progression.get_skill_registry().list_all_skills()
+                },
+                'levels': {
+                    1: {'tdp': 0, 'requirements': {}}
+                }
+            }
+            progression.setup_progression(sock.ch, default_class_config)
+            mud.log_string(f"Initialized progression for {sock.ch.name}")
+        except Exception as e:
+            mud.log_string(f"Error initializing progression for {sock.ch.name}: {str(e)}")
+            import traceback
+            mud.log_string(traceback.format_exc())
+    
     # make him exist in the game for functions to look him up
+    apply_race_special_attributes(sock.ch)
     mudsys.try_enter_game(sock.ch)
 
     # run the init_player hook
@@ -164,7 +225,7 @@ def char_gen_hook(info):
     sock, = hooks.parse_info(info)
     sock.push_ih(mudsys.handle_cmd_input, mudsys.show_prompt, "playing")
     sock.push_ih(cg_finish_handler, cg_finish_prompt)
-    sock.push_ih(cg_race_handler, cg_race_prompt)
+    sock.push_ih(cg_appearance_entry_handler, cg_appearance_entry_prompt)
     sock.push_ih(cg_sex_handler, cg_sex_prompt)
     sock.push_ih(cg_name_handler, cg_name_prompt)
 
